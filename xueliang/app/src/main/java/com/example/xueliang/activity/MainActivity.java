@@ -15,6 +15,7 @@
 package com.example.xueliang.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -23,6 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.xueliang.R;
+import com.example.xueliang.utils.IOSDialogUtil;
 import com.example.xueliang.utils.ScreenUtils;
 import com.example.xueliang.view.readview.PageLoader;
 import com.example.xueliang.view.readview.PageView;
@@ -38,11 +40,12 @@ public class MainActivity extends Activity {
     public PageLoader mPageLoader;
     public TextView mLogout;
     public LinearLayout dot_ll;
+    public Context mContext;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        mContext = this;
         setContentView(R.layout.activity_main);
         mPvPage = findViewById(R.id.read_pv_page);
         mLogout = findViewById(R.id.tv_logout);
@@ -104,6 +107,12 @@ public class MainActivity extends Activity {
 
         mLogout.setOnClickListener(v->{
            //退出登录
+            IOSDialogUtil.showAlert(mContext, null, "您确认要退出吗？",
+                  "取 消", (dialog, which) -> {
+                        dialog.dismiss();
+                    }, "确 定", (dialog, which) -> {
+                        dialog.dismiss();
+                    }, false);
         });
 
         mPvPage.postDelayed(new Runnable() {

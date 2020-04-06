@@ -84,7 +84,7 @@ public class IOSDialogUtil {
 //        lp.y = 100; // 新位置Y坐标
 //        lp.width = AppUtils.dip2px(context, 267); // 宽度
         Display display = w.getWindowManager().getDefaultDisplay();
-        lp.width = (int) (display.getWidth() - AppUtils.dip2px(106)); // 宽度
+        lp.width = (int) (display.getWidth()/2); // 宽度
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT; // 高度
 //        lp.alpha = 0.7f; // 透明度
         // 当Window的Attributes改变时系统会调用此函数,可以直接调用以应用上面对窗口参数的更改,也可以用setAttributes
