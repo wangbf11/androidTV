@@ -24,7 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.xueliang.R;
-import com.example.xueliang.utils.IOSDialogUtil;
+import com.example.xueliang.utils.DialogUtil;
 import com.example.xueliang.utils.ScreenUtils;
 import com.example.xueliang.view.readview.PageLoader;
 import com.example.xueliang.view.readview.PageView;
@@ -107,10 +107,10 @@ public class MainActivity extends Activity {
 
         mLogout.setOnClickListener(v->{
            //退出登录
-            IOSDialogUtil.showAlert(mContext, null, "您确认要退出吗？",
-                  "取 消", (dialog, which) -> {
+            DialogUtil.showAlert(mContext, null, "您确认要退出吗？",
+                  "确 定", (dialog, which) -> {
                         dialog.dismiss();
-                    }, "确 定", (dialog, which) -> {
+                    }, "取 消", (dialog, which) -> {
                         dialog.dismiss();
                     }, false);
         });

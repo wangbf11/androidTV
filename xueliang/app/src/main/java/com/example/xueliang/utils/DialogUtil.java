@@ -20,7 +20,7 @@ import com.example.xueliang.R;
  * Created by wbf on 2019/1/17.
  */
 
-public class IOSDialogUtil {
+public class DialogUtil {
 
     /**
      * 普通弹框
@@ -28,11 +28,11 @@ public class IOSDialogUtil {
     public static Dialog showAlert(Context context, String title, String message, String negStr, final DialogInterface.OnClickListener negLis, String posStr, final DialogInterface.OnClickListener posLis, boolean isCancel) {
         final Dialog dlg = new Dialog(context, R.style.Dialog);
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.dialog_ios_confirm, null);
+        LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.dialog_confirm, null);
         TextView dialog_title = (TextView) layout.findViewById(R.id.dialog_title);
         TextView dialog_message = (TextView) layout.findViewById(R.id.dialog_message);
-        Button button_pos = (Button) layout.findViewById(R.id.button_pos);
-        Button button_neg = (Button) layout.findViewById(R.id.button_neg);
+        TextView button_pos = (TextView) layout.findViewById(R.id.button_pos);
+        TextView button_neg = (TextView) layout.findViewById(R.id.button_neg);
         if (StringUtils.isEmpty(title)) {
             dialog_title.setVisibility(View.GONE);
         } else {
