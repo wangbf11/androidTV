@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTheme" parent="@style/Theme.Leanback" />
 
     <style name="dialog_anim_style">
         <!-- 指定显示的动画xml -->
