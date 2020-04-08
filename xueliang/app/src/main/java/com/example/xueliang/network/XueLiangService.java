@@ -31,8 +31,8 @@ public interface XueLiangService {
      * @return
      */
     @Headers({"Content-Type:application/json; charset=utf-8", RetrofitManager.CACHE_CONTROL_AGE + RetrofitManager.CACHE_CONTROL_NETWORK})
-    @GET("/api/get/user-info")
-    Observable<CommonResult<Map<String,Object>>> getMineUserInfo();
+    @GET("/interface/rest/http/xlgc/wb-test.htm")
+    Observable<Map<String,Object>> getList();
 
 
     @Multipart

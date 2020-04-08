@@ -1,6 +1,8 @@
 package com.example.xueliang.presenter;
 
 
+import android.util.Log;
+
 import com.example.xueliang.activity.MainActivity;
 import com.example.xueliang.base.BasePresenter;
 import com.example.xueliang.network.ResponceSubscriber2;
@@ -18,15 +20,18 @@ public class MainPresenter extends BasePresenter<MainActivity> {
     public void processLogic() {
         Map<String, Object> params = new HashMap<>();
         params.put("phoneContactList", "");
-        RetrofitManager.getDefault().getdemo(params)
+        RetrofitManager.getDefault().getList()
                 .compose(RxSchedulerUtils::toSimpleSingle)
                 .subscribe(new ResponceSubscriber2<Map<String,Object>>() {
                     @Override
-                    protected void onSucess(Map<String,Object> myMessage) {
+                    protected void onSucess(Map<String,Object> obj) {
+                        Log.e("dd","dd");
                     }
 
                     @Override
                     protected void onFail(String err) {
+
+                        Log.e("err","err");
                     }
                 });
     }

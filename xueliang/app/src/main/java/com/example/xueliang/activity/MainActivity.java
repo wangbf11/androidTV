@@ -43,6 +43,11 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Load
     }
 
     @Override
+    public void loadData() {
+        presenter.processLogic();//调用接口
+    }
+
+    @Override
     public void initView() {
         mPvPage = findViewById(R.id.read_pv_page);
         mLogout = findViewById(R.id.tv_logout);
