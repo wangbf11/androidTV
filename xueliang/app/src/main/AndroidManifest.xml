@@ -40,6 +40,9 @@
         <activity
             android:name=".activity.LoginActivity"
             android:screenOrientation="landscape" />
+        <activity
+            android:name=".activity.MonitorListActivity"
+            android:screenOrientation="landscape" />
     </application>
 
 </manifest>

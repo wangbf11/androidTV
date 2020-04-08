@@ -1,8 +1,10 @@
 package com.example.xueliang.activity;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Handler;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -25,6 +27,7 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Load
     public PageLoader mPageLoader;
     public TextView mLogout;
     public LinearLayout dot_ll;
+    public FrameLayout fl_monitor;
 
 
     @Override
@@ -51,6 +54,7 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Load
     public void initView() {
         mPvPage = findViewById(R.id.read_pv_page);
         mLogout = findViewById(R.id.tv_logout);
+        fl_monitor = findViewById(R.id.fl_monitor);
         dot_ll = (LinearLayout) findViewById(R.id.dot_ll);
         // 如果 API < 18 取消硬件加速
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2
@@ -127,6 +131,12 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Load
                 new Handler().postDelayed(runnable,5000);
             }
         },1000);
+
+        fl_monitor.setOnClickListener(v->{
+            Intent intent = new Intent();
+            intent.setClass(this, MonitorListActivity.class);
+            startActivity(intent);
+        });
     }
 
     /**
