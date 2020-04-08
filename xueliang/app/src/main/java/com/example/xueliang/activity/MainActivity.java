@@ -7,7 +7,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.xueliang.R;
-import com.example.xueliang.base.BasePresenter;
+import com.example.xueliang.base.LoadCallBack;
+import com.example.xueliang.presenter.MainPresenter;
 import com.example.xueliang.utils.DialogUtil;
 import com.example.xueliang.utils.ScreenUtils;
 import com.example.xueliang.view.readview.PageLoader;
@@ -19,7 +20,7 @@ import static androidx.core.view.ViewCompat.LAYER_TYPE_SOFTWARE;
 /*
  * Main Activity class that loads {@link MainFragment}.
  */
-public class MainActivity extends BaseMvpActivity {
+public class MainActivity extends BaseMvpActivity<MainPresenter> implements LoadCallBack {
     PageView mPvPage;
     public PageLoader mPageLoader;
     public TextView mLogout;
@@ -27,8 +28,8 @@ public class MainActivity extends BaseMvpActivity {
 
 
     @Override
-    public BasePresenter setPresenter() {
-        return null;
+    public MainPresenter setPresenter() {
+        return new MainPresenter(this);
     }
 
     @Override
@@ -155,4 +156,14 @@ public class MainActivity extends BaseMvpActivity {
             new Handler().postDelayed(runnable,5000);
         }
     };
+
+    @Override
+    public void onLoad(Object data) {
+
+    }
+
+    @Override
+    public void onLoadFail(String message) {
+
+    }
 }

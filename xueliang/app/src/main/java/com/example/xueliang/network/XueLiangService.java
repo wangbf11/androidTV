@@ -19,7 +19,7 @@ import retrofit2.http.Path;
  * Created by wbf on 2020/3/21
  */
 
-public interface TalkService {
+public interface XueLiangService {
     /**
      * @return
      */
