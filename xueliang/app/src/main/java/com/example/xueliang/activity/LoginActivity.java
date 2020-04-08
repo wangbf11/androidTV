@@ -1,33 +1,45 @@
 package com.example.xueliang.activity;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
 import android.widget.ImageView;
 
 import com.example.xueliang.R;
+import com.example.xueliang.base.BasePresenter;
 
 /*
  * 登录页面
  */
-public class LoginActivity extends Activity {
+public class LoginActivity extends BaseMvpActivity {
 
     private ImageView mQrCode;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        mQrCode = findViewById(R.id.iv_qrcode);
-        initView();
+    public BasePresenter setPresenter() {
+        return null;
     }
 
-    private void initView() {
+    @Override
+    public int getLayoutId() {
+        return R.layout.activity_login;
+    }
+
+    @Override
+    public void initData() {
+
+    }
+    @Override
+    public void initView() {
+        mQrCode = findViewById(R.id.iv_qrcode);
         mQrCode.setOnClickListener(v->{
             Intent intent = new Intent();
             intent.setClass(LoginActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
         });
+    }
+
+    @Override
+    public void initListener() {
+
     }
 }

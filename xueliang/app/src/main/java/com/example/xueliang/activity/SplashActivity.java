@@ -1,21 +1,32 @@
 package com.example.xueliang.activity;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
 
 import com.example.xueliang.R;
+import com.example.xueliang.base.BasePresenter;
 
-public class SplashActivity  extends Activity {
+public class SplashActivity extends BaseMvpActivity {
     //跳转延迟1s时间
     private int TIME = 1000;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
+    public BasePresenter setPresenter() {
+        return null;
+    }
 
+    @Override
+    public int getLayoutId() {
+        return R.layout.activity_splash;
+    }
+
+    @Override
+    public void initData() {
+
+    }
+
+    @Override
+    public void initView() {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -25,6 +36,11 @@ public class SplashActivity  extends Activity {
                 finish();
             }
         }, TIME);
+    }
+
+    @Override
+    public void initListener() {
+
     }
 }
 
