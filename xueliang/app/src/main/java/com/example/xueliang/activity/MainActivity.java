@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Handler;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -13,6 +12,7 @@ import com.example.xueliang.base.LoadCallBack;
 import com.example.xueliang.presenter.MainPresenter;
 import com.example.xueliang.utils.DialogUtil;
 import com.example.xueliang.utils.ScreenUtils;
+import com.example.xueliang.view.listener.MyFocusChange;
 import com.example.xueliang.view.readview.PageLoader;
 import com.example.xueliang.view.readview.PageView;
 import com.example.xueliang.view.readview.TxtChapter;
@@ -27,7 +27,7 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Load
     public PageLoader mPageLoader;
     public TextView mLogout;
     public LinearLayout dot_ll;
-    public FrameLayout fl_monitor;
+    public LinearLayout ll_monitor;
 
 
     @Override
@@ -54,7 +54,7 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Load
     public void initView() {
         mPvPage = findViewById(R.id.read_pv_page);
         mLogout = findViewById(R.id.tv_logout);
-        fl_monitor = findViewById(R.id.fl_monitor);
+        ll_monitor = findViewById(R.id.ll_monitor);
         dot_ll = (LinearLayout) findViewById(R.id.dot_ll);
         // 如果 API < 18 取消硬件加速
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2
@@ -62,6 +62,8 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Load
             mPvPage.setLayerType(LAYER_TYPE_SOFTWARE, null);
         }
         mPageLoader = mPvPage.getPageLoader();
+        ll_monitor.setOnFocusChangeListener(new MyFocusChange());
+        mLogout.requestFocus();
     }
 
     @Override
@@ -132,7 +134,7 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Load
             }
         },1000);
 
-        fl_monitor.setOnClickListener(v->{
+        ll_monitor.setOnClickListener(v->{
             Intent intent = new Intent();
             intent.setClass(this, MonitorListActivity.class);
             startActivity(intent);

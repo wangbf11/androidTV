@@ -56,9 +56,12 @@
         <TextView
             android:id="@+id/tv_logout"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="16dp"
             android:drawableRight="@drawable/ic_logout"
             android:drawablePadding="5dp"
+            android:focusable="true"
+            android:paddingHorizontal="10dp"
+            android:background="@drawable/selector_bt_background"
             android:gravity="center"
             android:text="退出登录"
             android:textColor="#ffffffff"
@@ -118,13 +121,14 @@
         android:orientation="horizontal">
 
         <FrameLayout
-            android:id="@+id/fl_monitor"
             android:layout_width="0dp"
+            android:focusable="true"
             android:layout_height="match_parent"
             android:layout_weight="49"
             android:background="@drawable/ic_main_background">
 
             <LinearLayout
+                android:id="@+id/ll_monitor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
