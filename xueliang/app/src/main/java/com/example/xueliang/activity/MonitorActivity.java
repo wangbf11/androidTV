@@ -5,11 +5,18 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.xueliang.R;
+import com.example.xueliang.adapter.NavCunAdapter;
+import com.example.xueliang.adapter.NavMonitorAdapter;
 import com.example.xueliang.base.LoadCallBack;
 import com.example.xueliang.presenter.MonitorPresenter;
 import com.example.xueliang.utils.DialogUtil;
+import com.yan.tvprojectutils.FocusRecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implements LoadCallBack {
 
@@ -18,6 +25,13 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
     private LinearLayout ll_left_list;
     private boolean mIsBottomHide =false;
     private boolean mIsLeftHide = false;
+    private FocusRecyclerView mRv_cun;
+    private FocusRecyclerView mRv_monitor;
+    private NavCunAdapter cunAdapter;
+    private NavMonitorAdapter monitorAdapter;
+    private List<String> cunList = new ArrayList<>();
+    private List<String> monitorList = new ArrayList<>();
+
 
     @Override
     public MonitorPresenter setPresenter() {
@@ -39,7 +53,6 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
         mTv_time = findViewById(R.id.tv_time);
         ll_abnormal = findViewById(R.id.ll_abnormal);
         ll_left_list = findViewById(R.id.ll_left_list);
-
         mTv_time.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -49,12 +62,19 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
                 mIsLeftHide = true;
             }
         },0);
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
 
+        mRv_cun = (FocusRecyclerView)findViewById(R.id.rv_cun_data);
+        mRv_monitor = (FocusRecyclerView)findViewById(R.id.rv_monitor_data);
+
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+        mRv_cun.setLayoutManager(mLayoutManager);
+        mRv_cun.setHasFixedSize(true);
+        mRv_cun.setAdapter(cunAdapter = new NavCunAdapter(this, cunList));
+        LinearLayoutManager mLayoutManager2 = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+        mRv_monitor.setLayoutManager(mLayoutManager2);
+        mRv_monitor.setHasFixedSize(true);
+        mRv_monitor.setAdapter(monitorAdapter = new NavMonitorAdapter(this, monitorList));
     }
 
     @Override
@@ -68,6 +88,25 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
                         dialog.dismiss();
                     }, false);
         });
+    }
+
+    @Override
+    public void loadData() {
+        cunList.add("SDFASDFSDFADFSDAF");
+        cunList.add("测试测试测试测试测试测试测试测试");
+        cunList.add("测试测试测试测试");
+        cunList.add("测试");
+        cunAdapter.notifyDataSetChanged();
+
+
+        monitorList.add("SDFASDFSDFADFSDAF");
+        monitorList.add("测试测试测试测试测试测试测试测试");
+        monitorList.add("测试测试测试测试");
+        monitorList.add("测试");
+        monitorList.add("SDFASDFSDFADFSDAF");
+        monitorList.add("测试测试测试测试测试测试测试测试");
+        monitorList.add("测试测试测试测试");
+        monitorAdapter.notifyDataSetChanged();
     }
 
     @Override
