@@ -44,6 +44,7 @@ public class MonitorListActivity extends BaseMvpActivity<MonitorListPresenter> i
     @Override
     public void initView() {
         mTv_one = findViewById(R.id.tv_one);
+        mTv_one.setSelected(true);
         mTv_four = findViewById(R.id.tv_four);
 
 
@@ -74,10 +75,14 @@ public class MonitorListActivity extends BaseMvpActivity<MonitorListPresenter> i
             GridLayoutManager focusGrid= new GridLayoutManager(getApplicationContext(), 1);
             mRv_grid.setLayoutManager(focusGrid);
             mRv_grid.setAdapter(gridAdapter = new NavGridMonitorAdapter(this, gridList));
+            mTv_one.setSelected(true);
+            mTv_four.setSelected(false);
         });
 
         mTv_four.setOnClickListener(v->{
             //切换四分屏
+            mTv_four.setSelected(true);
+            mTv_one.setSelected(false);
             gridList.clear();
             gridList.add("SDFASDFSDFADFSDAF");
             gridList.add("SDFASDFSDFADFSDAF");
