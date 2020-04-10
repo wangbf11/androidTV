@@ -1,6 +1,9 @@
 package com.example.xueliang.activity;
 
 import android.view.KeyEvent;
+import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -23,6 +26,7 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
     private TextView mTv_time;
     private LinearLayout ll_abnormal;
     private LinearLayout ll_left_list;
+    private LinearLayout ll_tips;
     private boolean mIsBottomHide =false;
     private boolean mIsLeftHide = false;
     private FocusRecyclerView mRv_cun;
@@ -51,6 +55,7 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
     @Override
     public void initView() {
         mTv_time = findViewById(R.id.tv_time);
+        ll_tips = findViewById(R.id.ll_tips);
         ll_abnormal = findViewById(R.id.ll_abnormal);
         ll_left_list = findViewById(R.id.ll_left_list);
         mTv_time.postDelayed(new Runnable() {
@@ -75,6 +80,8 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
         mRv_monitor.setLayoutManager(mLayoutManager2);
         mRv_monitor.setHasFixedSize(true);
         mRv_monitor.setAdapter(monitorAdapter = new NavMonitorAdapter(this, monitorList));
+
+        createCountDownTimer();
     }
 
     @Override
@@ -223,5 +230,32 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
         }
 
         mIsLeftHide = !mIsLeftHide;
+    }
+
+    /**
+     * 2秒后消失提示
+     */
+    private void createCountDownTimer() {
+        AlphaAnimation a = new AlphaAnimation(1,0);
+        // 动画时长
+        a.setDuration(4000);
+        // 开启动画
+        ll_tips.startAnimation(a);
+        a.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                ll_tips.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
     }
 }

@@ -31,6 +31,7 @@
 
 
         <TextView
+            android:id="@+id/tv_one"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
@@ -40,6 +41,7 @@
 
 
         <TextView
+            android:id="@+id/tv_four"
             android:layout_marginLeft="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -71,6 +73,14 @@
                 android:text="监控点位选择"
                 android:textColor="#ffffffff"
                 android:textSize="10sp" />
+
+
+
+            <com.yan.tvprojectutils.FocusRecyclerView
+                android:id="@+id/rv_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -78,7 +88,11 @@
             android:layout_weight="5"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
+            <com.yan.tvprojectutils.FocusRecyclerView
+                android:id="@+id/rv_grid"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="2dp"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
