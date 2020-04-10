@@ -131,9 +131,9 @@
 
     <!--上报异常按钮-->
     <LinearLayout
+        android:id="@+id/ll_abnormal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -149,7 +149,6 @@
 
 
         <LinearLayout
-            android:id="@+id/ll_abnormal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -180,8 +179,57 @@
             android:layout_width="14dp"
             android:layout_height="8dp"
             android:layout_marginTop="5dp"
+            android:layout_marginBottom="8dp"
             android:src="@drawable/ic_arrow_down" />
     </LinearLayout>
 
 
+    <!--左边位置列表栏目-->
+    <LinearLayout
+        android:id="@+id/ll_left_list"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="8dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="parent">
+
+        <!--2个列表-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="#1d000000"
+            android:layout_marginTop="50dp"
+            android:orientation="horizontal">
+
+            <com.yan.tvprojectutils.FocusRecyclerView
+                android:id="@+id/rv_cun_data"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
+                android:layout_marginRight="8dp" />
+
+            <com.yan.tvprojectutils.FocusRecyclerView
+                android:id="@+id/rv_monitor_data"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
+                android:layout_marginRight="8dp" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/shape_bg_hor"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="31dp"
+                android:layout_height="31dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:src="@drawable/icon_back_left_list"/>
+        </LinearLayout>
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

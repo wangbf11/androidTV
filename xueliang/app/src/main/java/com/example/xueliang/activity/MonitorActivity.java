@@ -9,10 +9,15 @@ import com.example.xueliang.base.LoadCallBack;
 import com.example.xueliang.presenter.MonitorPresenter;
 import com.example.xueliang.utils.DialogUtil;
 
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
+
 public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implements LoadCallBack {
 
     private TextView mTv_time;
     private LinearLayout ll_abnormal;
+    private LinearLayout ll_left_list;
+    private boolean mIsBottomHide =false;
+    private boolean mIsLeftHide = false;
 
     @Override
     public MonitorPresenter setPresenter() {
@@ -33,7 +38,22 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
     public void initView() {
         mTv_time = findViewById(R.id.tv_time);
         ll_abnormal = findViewById(R.id.ll_abnormal);
+        ll_left_list = findViewById(R.id.ll_left_list);
 
+        mTv_time.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ll_abnormal.setTranslationY(ll_abnormal.getMeasuredHeight());
+                ll_left_list.setTranslationX(-ll_left_list.getMeasuredHeight());
+                mIsBottomHide =true;
+                mIsLeftHide = true;
+            }
+        },0);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
 
     }
 
@@ -80,6 +100,7 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
             case KeyEvent.KEYCODE_DPAD_DOWN:   //向下键
                 if (event.getAction() == KeyEvent.ACTION_DOWN) {
                     //打开异常提交栏目
+                    openError();
                 }
                 break;
             case KeyEvent.KEYCODE_DPAD_UP:   //向上键
@@ -91,6 +112,7 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
             case KeyEvent.KEYCODE_DPAD_LEFT: //向左键
                 if (event.getAction() == KeyEvent.ACTION_DOWN) {
                     //打开左边位置选中栏目
+                    openList();
                 }
                 break;
             case KeyEvent.KEYCODE_DPAD_RIGHT:  //向右键
@@ -121,5 +143,46 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
         }
         return super.onKeyDown(keyCode, event);
 
+    }
+
+
+    /**
+     * 打开和隐藏报警按钮
+     */
+    public void openError() {
+        //图片点击事件 上下 toolbar 动画
+        if (mIsBottomHide) {
+            ll_abnormal.animate()
+                    .translationYBy(-ll_abnormal.getMeasuredHeight())
+                    .setInterpolator(new FastOutSlowInInterpolator())
+                    .start();
+        } else {
+            ll_abnormal.animate()
+                    .setInterpolator(new FastOutSlowInInterpolator())
+                    .translationYBy(ll_abnormal.getMeasuredHeight())
+                    .start();
+        }
+
+        mIsBottomHide = !mIsBottomHide;
+    }
+
+    /**
+     * 打开和隐藏左边栏目
+     */
+    public void openList() {
+        //图片点击事件 上下 toolbar 动画
+        if (mIsLeftHide) {
+            ll_left_list.animate()
+                    .setInterpolator(new FastOutSlowInInterpolator())
+                    .translationXBy(ll_left_list.getMeasuredHeight())
+                    .start();
+        } else {
+            ll_left_list.animate()
+                    .setInterpolator(new FastOutSlowInInterpolator())
+                    .translationXBy(-ll_left_list.getMeasuredHeight())
+                    .start();
+        }
+
+        mIsLeftHide = !mIsLeftHide;
     }
 }
