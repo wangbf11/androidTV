@@ -7,6 +7,7 @@ import com.example.xueliang.adapter.NavGridMonitorAdapter;
 import com.example.xueliang.adapter.NavLocationAdapter;
 import com.example.xueliang.base.LoadCallBack;
 import com.example.xueliang.presenter.MonitorListPresenter;
+import com.example.xueliang.view.listener.MyFocusChange;
 import com.yan.tvprojectutils.FocusRecyclerView;
 
 import java.util.ArrayList;
@@ -59,6 +60,9 @@ public class MonitorListActivity extends BaseMvpActivity<MonitorListPresenter> i
         GridLayoutManager focusGrid= new GridLayoutManager(getApplicationContext(), 1);
         mRv_grid.setLayoutManager(focusGrid);
         mRv_grid.setAdapter(gridAdapter = new NavGridMonitorAdapter(this, gridList));
+
+        mTv_one.setOnFocusChangeListener(new MyFocusChange());
+        mTv_four.setOnFocusChangeListener(new MyFocusChange());
     }
 
     @Override
