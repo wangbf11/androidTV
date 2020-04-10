@@ -3,13 +3,16 @@ package com.example.xueliang.activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Handler;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.xueliang.R;
 import com.example.xueliang.base.LoadCallBack;
 import com.example.xueliang.presenter.MainPresenter;
+import com.example.xueliang.utils.AppUtils;
 import com.example.xueliang.utils.DialogUtil;
 import com.example.xueliang.utils.ScreenUtils;
 import com.example.xueliang.view.listener.MyFocusChange;
@@ -182,5 +185,40 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Load
     @Override
     public void onLoadFail(String message) {
 
+    }
+
+
+    /**
+     * 实际开发中有时候会触发两次，所以要判断一下按下时触发 ，松开按键时不触发
+     * exp:KeyEvent.ACTION_UP
+     */
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_BACK:    //返回键
+                try {
+                    exitBy2Click();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return true;
+        }
+        return super.onKeyDown(keyCode, event);
+
+    }
+
+    /**
+     * 双击退出函数
+     */
+    private long exitTime = 0;
+
+    private void exitBy2Click() {
+        if ((System.currentTimeMillis() - exitTime) > 2000) {
+            Toast.makeText(this,"再按一次退出程序", Toast.LENGTH_SHORT).show();
+            exitTime = System.currentTimeMillis();
+        } else {
+            finish();
+            AppUtils.getApplication().exit();
+        }
     }
 }

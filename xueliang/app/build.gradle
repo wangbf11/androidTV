@@ -3,18 +3,18 @@ apply plugin: 'com.android.application'
 android {
     signingConfigs {
         debug {
-//            storeFile file('../keystore/hashkey.keystore')
-//            storePassword "1skalj23"
-//            keyAlias "HashKey"
-//            keyPassword "1skalj23"
-//            v2SigningEnabled false
+            storeFile file('../keystore/xueliangkey.jks')
+            storePassword "123456"
+            keyAlias "xueliang123"
+            keyPassword "123456"
+            v2SigningEnabled false
         }
         release {
-//            storeFile file('../keystore/hashkey.keystore')
-//            storePassword "123123"
-//            keyAlias "123123"
-//            keyPassword "12313"
-//            v2SigningEnabled false
+            storeFile file('../keystore/xueliangkey.jks')
+            storePassword "123456"
+            keyAlias "xueliang123"
+            keyPassword "123456"
+            v2SigningEnabled false
         }
     }
     compileOptions {

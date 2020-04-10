@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 
 import com.example.xueliang.base.BasePresenter;
+import com.example.xueliang.utils.AppUtils;
 
 import androidx.annotation.Nullable;
 
@@ -19,6 +20,7 @@ public abstract class BaseMvpActivity<T extends BasePresenter> extends Activity 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AppUtils.getApplication().addActivity(this);
         setContentView(getLayoutId());
         mContext = this;
         presenter = setPresenter();
@@ -38,6 +40,7 @@ public abstract class BaseMvpActivity<T extends BasePresenter> extends Activity 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        AppUtils.getApplication().removeActivity(this);
         if (null != presenter) {
             presenter.onDestroy();
             presenter = null;
