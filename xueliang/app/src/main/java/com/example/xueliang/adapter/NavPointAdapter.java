@@ -7,52 +7,44 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.xueliang.R;
-import com.example.xueliang.bean.TownBean;
-import com.example.xueliang.bean.VillageBean;
+import com.example.xueliang.bean.PointBean;
 import com.yan.tvprojectutils.AnimationHelper;
-import com.yan.tvprojectutils.FocusRecyclerView;
 
 import java.util.List;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by wbf
  */
 
-public class NavLocationAdapter extends RecyclerView.Adapter<NavLocationAdapter.NavMovieHolder> {
+public class NavPointAdapter extends RecyclerView.Adapter<NavPointAdapter.NavMovieHolder> {
     protected final Context context;
-    private final List<TownBean> list;
+    private final List<PointBean> stringList;
 
-    public NavLocationAdapter(Context context, List<TownBean> objectList) {
-        this.list = objectList;
+    public NavPointAdapter(Context context, List<PointBean> objectList) {
+        this.stringList = objectList;
         this.context = context;
     }
 
     @Override
     public NavMovieHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new NavMovieHolder(LayoutInflater.from(context)
-                .inflate(R.layout.item_list_cun, parent, false));
+                .inflate(R.layout.item_point, parent, false));
     }
 
     @Override
     public void onBindViewHolder(NavMovieHolder holder, int position) {
-        holder.tv_town.setText(list.get(position).gettName());
+        holder.tv_point.setText(stringList.get(position).getpName());
         holder.pflContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LinearLayoutManager mLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
-                holder.rv_cun.setLayoutManager(mLayoutManager);
-                holder.rv_cun.setHasFixedSize(true);
-                List<VillageBean> villages = list.get(position).getVillages();
-                NavCunListAdapter navCunListAdapter = new NavCunListAdapter(context, villages);
-                holder.rv_cun.setAdapter(navCunListAdapter);
+                Toast.makeText(context, "you just touched me", Toast.LENGTH_LONG).show();
             }
         });
-
         holder.pflContainer.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -67,9 +59,6 @@ public class NavLocationAdapter extends RecyclerView.Adapter<NavLocationAdapter.
             }
 
         });
-
-
-
     }
 
     private float dipToPx(Context context, float value) {
@@ -79,22 +68,20 @@ public class NavLocationAdapter extends RecyclerView.Adapter<NavLocationAdapter.
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return stringList.size();
     }
 
 
 
     public class NavMovieHolder extends RecyclerView.ViewHolder {
         public View pflContainer;
-        public FocusRecyclerView rv_cun;
-        public TextView tv_town;
+        public TextView tv_point;
 
         public NavMovieHolder(View itemView) {
             super(itemView);
-            if (itemView.findViewById(R.id.ll_cun_item) != null) {
-                pflContainer = itemView.findViewById(R.id.ll_cun_item);
-                rv_cun = itemView.findViewById(R.id.rv_cun);
-                tv_town = itemView.findViewById(R.id.tv_town);
+            if (itemView.findViewById(R.id.ll_point_item) != null) {
+                pflContainer = itemView.findViewById(R.id.ll_point_item);
+                tv_point = itemView.findViewById(R.id.tv_point);
             }
         }
 

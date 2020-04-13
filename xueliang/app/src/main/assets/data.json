@@ -1,0 +1,61 @@
+[
+  {
+    "tid": "Tirana",
+    "tName": "美兴镇",
+    "villages": [
+      {
+        "vid": "Tirana",
+        "vName": "新街社区",
+        "points": [
+          {
+            "pid": "Tirana",
+            "pName": "监控点1",
+            "url": "Albanian"
+
+          },
+          {
+            "pid": "Tirana",
+            "pName": "监控点2",
+            "url": "Albanian"
+
+          },
+          {
+            "pid": "Tirana",
+            "pName": "监控点3",
+            "url": "Albanian"
+
+          },
+          {
+            "pid": "Tirana",
+            "pName": "监控点4",
+            "url": "Albanian"
+
+          }
+        ]
+      },
+      {
+        "vid": "Tirana",
+        "vName": "三关桥村",
+        "points": [
+          {
+            "pid": "Tirana",
+            "pName": "监控点1",
+            "url": "Albanian"
+
+          },
+          {
+            "pid": "Tirana",
+            "pName": "监控点2",
+            "url": "Albanian"
+
+          },
+          {
+            "pid": "Tirana",
+            "pName": "监控点3",
+            "url": "Albanian"
+          }
+        ]
+      }
+    ]
+  }
+]

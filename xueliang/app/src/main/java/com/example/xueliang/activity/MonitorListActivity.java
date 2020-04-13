@@ -6,6 +6,7 @@ import com.example.xueliang.R;
 import com.example.xueliang.adapter.NavGridMonitorAdapter;
 import com.example.xueliang.adapter.NavLocationAdapter;
 import com.example.xueliang.base.LoadCallBack;
+import com.example.xueliang.bean.TownBean;
 import com.example.xueliang.presenter.MonitorListPresenter;
 import com.example.xueliang.view.listener.MyFocusChange;
 import com.yan.tvprojectutils.FocusRecyclerView;
@@ -16,8 +17,8 @@ import java.util.List;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-public class MonitorListActivity extends BaseMvpActivity<MonitorListPresenter> implements LoadCallBack {
-    private List<String> locationList = new ArrayList<>();
+public class MonitorListActivity extends BaseMvpActivity<MonitorListPresenter> implements LoadCallBack<List<TownBean>> {
+    private List<TownBean> locationList = new ArrayList<>();
     private List<String> gridList = new ArrayList<>();
     private NavLocationAdapter locationAdapter;
     private NavGridMonitorAdapter gridAdapter;
@@ -96,20 +97,16 @@ public class MonitorListActivity extends BaseMvpActivity<MonitorListPresenter> i
 
     @Override
     public void loadData() {
-        locationList.add("SDFASDFSDFADFSDAF");
-        locationList.add("测试测试测试测试测试测试测试测试");
-        locationList.add("测试测试测试测试");
-        locationList.add("测试");
-        locationAdapter.notifyDataSetChanged();
-
-
+        presenter.processLogic();
         gridList.add("SDFASDFSDFADFSDAF");
         gridAdapter.notifyDataSetChanged();
     }
 
     @Override
-    public void onLoad(Object data) {
-
+    public void onLoad(List<TownBean> data) {
+        locationList.clear();
+        locationList.addAll(data);
+        locationAdapter.notifyDataSetChanged();
     }
 
     @Override
