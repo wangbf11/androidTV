@@ -6,6 +6,9 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.xueliang.R;
@@ -44,6 +47,7 @@ public class NavLocationAdapter extends RecyclerView.Adapter<NavLocationAdapter.
         holder.pflContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                openClick( holder.iv_arrow,holder.rv_cun);
                 LinearLayoutManager mLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
                 holder.rv_cun.setLayoutManager(mLayoutManager);
                 holder.rv_cun.setHasFixedSize(true);
@@ -88,6 +92,7 @@ public class NavLocationAdapter extends RecyclerView.Adapter<NavLocationAdapter.
         public View pflContainer;
         public FocusRecyclerView rv_cun;
         public TextView tv_town;
+        public ImageView iv_arrow;
 
         public NavMovieHolder(View itemView) {
             super(itemView);
@@ -95,9 +100,60 @@ public class NavLocationAdapter extends RecyclerView.Adapter<NavLocationAdapter.
                 pflContainer = itemView.findViewById(R.id.ll_cun_item);
                 rv_cun = itemView.findViewById(R.id.rv_cun);
                 tv_town = itemView.findViewById(R.id.tv_town);
+                iv_arrow = itemView.findViewById(R.id.iv_arrow);
             }
         }
 
+    }
+
+
+    /**
+     * 点击了展开详情
+     */
+    private void openClick(ImageView down, FocusRecyclerView tv_detail) {
+        if (tv_detail.getVisibility() == View.GONE){
+            startMoreAnima(true,down,tv_detail);
+        }else {
+            startMoreAnima(false,down,tv_detail);
+        }
+    }
+
+
+    /**
+     * 箭头旋转动画
+     */
+    private void startMoreAnima(final boolean isOpen, ImageView down, final FocusRecyclerView tv_detail) {
+        RotateAnimation ta;
+        if (!isOpen) {
+            ta = new RotateAnimation(90, 0, down.getWidth() / 2, down.getHeight() / 2);
+        } else {
+            ta = new RotateAnimation(0, 90, down.getWidth() / 2, down.getHeight() / 2);
+        }
+        // 设置动画播放的时间
+        ta.setDuration(300);
+        ta.setFillAfter(!ta.getFillAfter());//每次都取相反值，
+        // 开始播放动画
+        down.startAnimation(ta);
+        ta.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                if (isOpen){
+                    tv_detail.setVisibility(View.VISIBLE);
+                }else {
+                    tv_detail.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
     }
 
 }
