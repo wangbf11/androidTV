@@ -1,6 +1,8 @@
 package com.example.xueliang.activity;
 
 import android.view.KeyEvent;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -20,6 +22,7 @@ import java.util.List;
 
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import hikvision.com.streamclient.GA_HIKPlayer;
 
 public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implements LoadCallBack {
 
@@ -35,7 +38,7 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
     private NavMonitorPagePointListAdapter pointAdapter;
     private List<String> cunList = new ArrayList<>();
     private List<String> monitorList = new ArrayList<>();
-
+    private GA_HIKPlayer hikPlayer;
 
     @Override
     public MonitorPresenter setPresenter() {
@@ -58,6 +61,27 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
         ll_tips = findViewById(R.id.ll_tips);
         ll_abnormal = findViewById(R.id.ll_abnormal);
         ll_left_list = findViewById(R.id.ll_left_list);
+
+        SurfaceView surfaceView1 = findViewById(R.id.surfaceView1);
+
+        surfaceView1.getHolder().addCallback(new SurfaceHolder.Callback() {
+            @Override
+            public void surfaceCreated(SurfaceHolder holder) {
+                hikPlayer.setSurfaceViewHolder(holder);
+            }
+
+            @Override
+            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+
+            }
+
+            @Override
+            public void surfaceDestroyed(SurfaceHolder holder) {
+
+            }
+        });
+
+
         mTv_time.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -82,6 +106,37 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
         mRv_monitor.setAdapter(pointAdapter = new NavMonitorPagePointListAdapter(this, monitorList));
 
         createCountDownTimer();
+
+
+
+//        hikPlayer = new GA_HIKPlayer(new GA_HIKPlayerUrlListener() {
+//            @Override
+//            public String getPlayUrl() {
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                    }
+//                });
+//                return "";//hik
+//            }
+//        });
+//
+//        hikPlayer.setPlayerDelegate(new GA_HIKPlayerDelegate() {
+//            @Override
+//            public void didPlayFailed(GA_HIKPlayer ga_hikPlayer, Integer integer) {
+//                //播放失败了
+//            }
+//
+//            @Override
+//            public void didReceivedMessage(GA_HIKPlayer ga_hikPlayer, Integer integer) {
+//                //播放成功了
+//            }
+//
+//            @Override
+//            public void didReceivedDataLength(GA_HIKPlayer ga_hikPlayer, Integer integer) {
+//
+//            }
+//        });
     }
 
     @Override
@@ -257,5 +312,31 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
 
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (null != hikPlayer && !hikPlayer.playing){
+            hikPlayer.startRealPlayer(this,"");
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (null != hikPlayer && hikPlayer.playing){
+            hikPlayer.stopRealPlay();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // 判断是否初始化，是否预览过，判断 context是否存在
+        if (hikPlayer!=null) {
+            hikPlayer.destoryPlayer();
+        }
+
     }
 }
