@@ -66,12 +66,7 @@ public abstract class ResponceSubscriber<T> implements Observer<CommonResult<T>>
         if (null == mBaseModel){
             onSucess(null);
         }else {
-            if ("OK".equals(mBaseModel.getCode())) {
-                onSucess(mBaseModel.getData());
-            } else {
-                //错误的话 直接甩锅后台 显示 msg里面的信息
-                onFail(mBaseModel.getMsg());
-            }
+            onSucess(mBaseModel.getList());
         }
     }
 
@@ -87,8 +82,6 @@ public abstract class ResponceSubscriber<T> implements Observer<CommonResult<T>>
             onFail(e.getMessage());
         } else if (e instanceof HttpCodeException) {
             onFail(e.getMessage());
-            if (((HttpCodeException) e).code() == 203){
-            }
         }else if (e instanceof ServerException) {
             onFail(e.getMessage());
         }else if (e instanceof JsonSyntaxException) {

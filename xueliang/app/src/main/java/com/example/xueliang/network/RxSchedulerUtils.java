@@ -58,8 +58,8 @@ public final class RxSchedulerUtils {
                 return upstream.flatMap(new Function<CommonResult<T>, ObservableSource<T>>() {
                     @Override
                     public ObservableSource<T> apply(CommonResult<T> tCommonResult) throws Exception {
-                        if ("OK".equals(tCommonResult.getCode())){
-                            return createData(tCommonResult.getData());
+                        if ("OK".equals(tCommonResult.getMsg())){
+                            return createData(tCommonResult.getList());
                         }else {
                             return Observable.error(new ServerException(tCommonResult.getMsg()));
                         }
@@ -80,8 +80,8 @@ public final class RxSchedulerUtils {
                 return upstream.flatMap(new Function<CommonResult<T>, ObservableSource<T>>() {
                     @Override
                     public ObservableSource<T> apply(CommonResult<T> tCommonResult) throws Exception {
-                        if ("OK".equals(tCommonResult.getCode()))
-                            return createData(tCommonResult.getData());
+                        if ("OK".equals(tCommonResult.getMsg()))
+                            return createData(tCommonResult.getList());
                         else {
                             return Observable.error(new ServerException(tCommonResult.getMsg()));
                         }

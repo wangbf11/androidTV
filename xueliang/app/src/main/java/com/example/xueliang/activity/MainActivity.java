@@ -31,7 +31,7 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Load
     public TextView mLogout;
     public LinearLayout dot_ll;
     public LinearLayout ll_monitor;
-
+    public TextView mtvNotification;
 
     @Override
     public MainPresenter setPresenter() {
@@ -58,6 +58,7 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Load
         mPvPage = findViewById(R.id.read_pv_page);
         mLogout = findViewById(R.id.tv_logout);
         ll_monitor = findViewById(R.id.ll_monitor);
+        mtvNotification = findViewById(R.id.mtv_notification);
         dot_ll = (LinearLayout) findViewById(R.id.dot_ll);
         // 如果 API < 18 取消硬件加速
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2
@@ -71,14 +72,6 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Load
 
     @Override
     public void initListener() {
-        TxtChapter txtChapter = new TxtChapter();
-        txtChapter.setBody("    为贯彻落实《中共中央国务院关于坚持农业农村优先发展好“三农”工作的若干意见》《中共中央办公厅 国务院办公厅关于加强和改进乡村治理的指导见》的求，中央农办、农业农村部、中央宣传部、民政部、司法部等部门从2019年起组织开展乡村治理示范村镇创建活动，通过示范创建活动推动健全党组织领导的自治、法治、德治相结合的乡村治理体系，培育和树立一批乡村治理典型，发挥其引领示范和辐射带动作用，进一步促进乡村治理体系和治理能力现代化。现将有关事项通知如下。为贯彻落实《中共中央 国务院关于坚持农业农村优先发展做好“三农”" +
-                "工作的若干意见》《中共中央办公厅 国务院办公厅关于加强和改进乡村治理的指导意见》的要求，中央农办、农业农村部、" +
-                "中央宣传部、民政部、司法部等部门从2019年起组织开展乡村治理示范村镇创建活动，通过示范创建活动推动健全党组织领导的自治、" +
-                "法治、德治相结合的乡村治理体系，培育和树立一批乡村治理典型，发挥其引领示范和辐射带动作用，进一步促进乡村治理体系和治理能力现代化。现将有关事项通知如下。现将有关事项通知如下。现将有关事项通知如下。现将有关事项通知如下。现将有关事项通知如下。" +
-                "现将有关事项通知如下。现将有关事项通知如下。现将有关事项通知如下。现将有关事项通知如下。将有关事项通知如下。将有关事项通知如下。将有关事项通知如下。将有关事项通知如下。");
-        mPageLoader.setChapter(txtChapter);
-
         mPageLoader.setPageStyle(); //设置默认颜色
         mPvPage.setTouchListener(new PageView.TouchListener() {
             @Override
@@ -129,13 +122,7 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Load
                     }, false);
         });
 
-        mPvPage.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mPageLoader.parseCurChapter();
-                new Handler().postDelayed(runnable,5000);
-            }
-        },1000);
+
 
         ll_monitor.setOnClickListener(v->{
             Intent intent = new Intent();
@@ -187,6 +174,24 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Load
 
     }
 
+
+    public void onLoadNotice(String data) {
+        TxtChapter txtChapter = new TxtChapter();
+        txtChapter.setBody(data);
+        mPageLoader.setChapter(txtChapter);
+
+        mPvPage.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mPageLoader.parseCurChapter();
+                new Handler().postDelayed(runnable,5000);
+            }
+        },1000);
+    }
+
+    public void onLoadNotification(String data) {
+        mtvNotification.setText(data);
+    }
 
     /**
      * 实际开发中有时候会触发两次，所以要判断一下按下时触发 ，松开按键时不触发

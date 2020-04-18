@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#08213F"
@@ -98,6 +99,7 @@
             android:background="@color/white" />
 
         <com.example.xueliang.view.MarqueeTextView
+            android:id="@+id/mtv_notification"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="marquee"
@@ -106,7 +108,7 @@
             android:marqueeRepeatLimit="marquee_forever"
             android:scrollHorizontally="true"
             android:singleLine="true"
-            android:text="为贯彻落实《中共中央国务院关于坚持农业农村优先发展好“三农”工作的若干意见》《中共中央办公厅 国务院办公厅关于加强和改进乡村治理的指导见》的求，中央农办、农业农村部、中央宣传部、民政部、司法部等部门从2019年起组织开展乡村治理示范村镇创建活动，通过示范创建活动推动健全党组织领导的自治、法治、德治相结合的乡村治理体系，培育和树立一批乡村治理典型，发挥其引领示范和辐射带动作用，进一步促进乡村治理体系和治理能力现代化。现将有关事项通知如下。为贯彻落实《中共中央 国务院关于坚持农业农村优先发展做好“三农”工作的若干意见》《中共中央办公厅 国务院办公厅关于加强和改进乡村治理的指导意见》的要求，中央农办、农业农村部、中央宣传部、民政部、司法部等部门从2019年起组织开展乡村治理示范村镇创建活动，通过示范创建活动推动健全党组织领导的自治、法治、德治相结合的乡村治理体系，培育和树立一批乡村治理典型，发挥其引领示范和辐射带动作用，进一步促进乡村治理体系和治理能力现代化。现将有关事项通知如下。"
+            tools:text="为贯彻落实《中共中央国务院关于坚持农业农村优先发展好“三农”工作的若干意见》《中共中央办公厅 国务院办公厅关于加强和改进乡村治理的指导见》的求，中央农办、农业农村部、中央宣传部、民政部、司法部等部门从2019年起组织开展乡村治理示范村镇创建活动，通过示范创建活动推动健全党组织领导的自治、法治、德治相结合的乡村治理体系，培育和树立一批乡村治理典型，发挥其引领示范和辐射带动作用，进一步促进乡村治理体系和治理能力现代化。现将有关事项通知如下。为贯彻落实《中共中央 国务院关于坚持农业农村优先发展做好“三农”工作的若干意见》《中共中央办公厅 国务院办公厅关于加强和改进乡村治理的指导意见》的要求，中央农办、农业农村部、中央宣传部、民政部、司法部等部门从2019年起组织开展乡村治理示范村镇创建活动，通过示范创建活动推动健全党组织领导的自治、法治、德治相结合的乡村治理体系，培育和树立一批乡村治理典型，发挥其引领示范和辐射带动作用，进一步促进乡村治理体系和治理能力现代化。现将有关事项通知如下。"
             android:textColor="#ffffffff"
             android:textSize="10sp" />
     </LinearLayout>

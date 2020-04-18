@@ -3,6 +3,7 @@ package com.example.xueliang.network;
 
 import com.example.xueliang.bean.CommonResult;
 
+import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
@@ -40,4 +41,17 @@ public interface XueLiangService {
     Observable<CommonResult<Map<String,Object>>> upLoadImg(@Path("domain") String domain, @PartMap Map<String, RequestBody> params);
 
 
+
+    /**
+     * 获取公告
+     */
+    @Headers({"Content-Type:application/json; charset=utf-8", RetrofitManager.CACHE_CONTROL_AGE + RetrofitManager.CACHE_CONTROL_NETWORK})
+    @POST("/interface/rest/http/xlwb/xlgc-wb-jdh-sygg.htm")
+    Observable<CommonResult<List>> getNotice();
+    /**
+     * 获取通知
+     */
+    @Headers({"Content-Type:application/json; charset=utf-8", RetrofitManager.CACHE_CONTROL_AGE + RetrofitManager.CACHE_CONTROL_NETWORK})
+    @POST("/interface/rest/http/xlwb/xlgc-wb-jdh-sytz.htm")
+    Observable<CommonResult<List>> getNotification();
 }

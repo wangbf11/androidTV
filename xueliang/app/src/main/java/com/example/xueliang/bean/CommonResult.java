@@ -5,35 +5,15 @@ package com.example.xueliang.bean;
  */
 
 public class CommonResult<T> {
-    private String code; //"OK" 是正常请求
+    private T list;
+    private String msg;
 
-    private T data;
-    private Object content;//没用到
-    private String msg; //没用到
-    private String status; //状态信息
-    private String timestamp; //时间
-
-    public String getCode() {
-        return code;
+    public T getList() {
+        return list;
     }
 
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public T getData() {
-        return data;
-    }
-
-    public void setData(T data) {
-        this.data = data;
-    }
-    public Object getContent() {
-        return content;
-    }
-
-    public void setContent(Object content) {
-        this.content = content;
+    public void setList(T list) {
+        this.list = list;
     }
 
     public String getMsg() {
@@ -42,21 +22,5 @@ public class CommonResult<T> {
 
     public void setMsg(String msg) {
         this.msg = msg;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(String timestamp) {
-        this.timestamp = timestamp;
     }
 }

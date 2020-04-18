@@ -5,11 +5,11 @@ import android.util.Log;
 
 import com.example.xueliang.activity.MainActivity;
 import com.example.xueliang.base.BasePresenter;
-import com.example.xueliang.network.ResponceSubscriber2;
+import com.example.xueliang.network.ResponceSubscriber;
 import com.example.xueliang.network.RetrofitManager;
 import com.example.xueliang.network.RxSchedulerUtils;
 
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MainPresenter extends BasePresenter<MainActivity> {
@@ -18,14 +18,26 @@ public class MainPresenter extends BasePresenter<MainActivity> {
     }
 
     public void processLogic() {
-        Map<String, Object> params = new HashMap<>();
-        params.put("phoneContactList", "");
-        RetrofitManager.getDefault().getList()
+        getMainNotice();
+        getMainNotification();
+    }
+
+    /**
+     * 获取通知
+     */
+    private void getMainNotice() {
+        RetrofitManager.getDefault().getNotice()
                 .compose(RxSchedulerUtils::toSimpleSingle)
-                .subscribe(new ResponceSubscriber2<Map<String,Object>>() {
+                .subscribe(new ResponceSubscriber<List>() {
                     @Override
-                    protected void onSucess(Map<String,Object> obj) {
-                        Log.e("dd","dd");
+                    protected void onSucess(List list) {
+                        if (null != list && list.size() >0){
+                            Map map = (Map)list.get(0);
+                            String notice = (String)map.get("notice");
+                            if (null != view){
+                                view.onLoadNotice(notice);
+                            }
+                        }
                     }
 
                     @Override
@@ -36,5 +48,31 @@ public class MainPresenter extends BasePresenter<MainActivity> {
                 });
     }
 
+
+    /**
+     * 获取通知
+     */
+    private void getMainNotification() {
+        RetrofitManager.getDefault().getNotification()
+                .compose(RxSchedulerUtils::toSimpleSingle)
+                .subscribe(new ResponceSubscriber<List>() {
+                    @Override
+                    protected void onSucess(List list) {
+                        if (null != list && list.size() >0){
+                            Map map = (Map)list.get(0);
+                            String notication = (String)map.get("notication");
+                            if (null != view){
+                                view.onLoadNotification(notication);
+                            }
+                        }
+                    }
+
+                    @Override
+                    protected void onFail(String err) {
+
+                        Log.e("err","err");
+                    }
+                });
+    }
 
 }

@@ -5,22 +5,18 @@ import android.util.Log;
 
 import com.example.xueliang.config.AppConfig;
 import com.example.xueliang.utils.AppUtils;
-import com.example.xueliang.utils.JSONUtil;
 import com.example.xueliang.utils.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cache;
 import okhttp3.CacheControl;
 import okhttp3.Interceptor;
-import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -111,7 +107,7 @@ public class RetrofitManager {
             String token = "";
 
             if (StringUtils.isBlank(token)){
-//                token = WeTalkCacheUtil.getToken();
+
             }
             if (!RFNetUtil.isNetworkConnected()) {
                 request = request.newBuilder().addHeader("Authorization","")
@@ -119,7 +115,7 @@ public class RetrofitManager {
                         .addHeader("system", String.valueOf(2))
                         .cacheControl(CacheControl.FORCE_CACHE).build();
             }else {
-                request = request.newBuilder().addHeader("Authorization","Bearer " + token)
+                request = request.newBuilder().addHeader("Authorization", token)
                         .addHeader("version", AppUtils.getAppVersion())
                         .addHeader("system", String.valueOf(2))
                         .build();
@@ -127,16 +123,6 @@ public class RetrofitManager {
 
             Log.d("request ----------> ", request.url().toString());
             Response originalResponse = chain.proceed(request);
-            if (originalResponse.code() != 200){
-                //httpcode 不是200的都修改成200 把code放进status 里面
-                MediaType contentType = originalResponse.body().contentType();
-                String string = originalResponse.body().string();
-                Map map = JSONUtil.parseJSON(string, Map.class);
-                map.put("httpCode",originalResponse.code());
-                ResponseBody body = ResponseBody.create(contentType,JSONUtil.toJSON(map));
-                return  originalResponse.newBuilder().code(200).body(body).build();
-            }
-            Log.d("response ----------> " , originalResponse + "");
             if (RFNetUtil.isNetworkConnected()) {
                 //有网的时候读接口上的@Headers里的配置，你可以在这里进行统一的设置
                 String cacheControl = request.cacheControl().toString();
