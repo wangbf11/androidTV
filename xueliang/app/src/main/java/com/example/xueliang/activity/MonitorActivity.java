@@ -8,8 +8,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.xueliang.R;
-import com.example.xueliang.adapter.NavCunAdapter;
-import com.example.xueliang.adapter.NavMonitorAdapter;
+import com.example.xueliang.adapter.NavMonitorPageCunListAdapter;
+import com.example.xueliang.adapter.NavMonitorPagePointListAdapter;
 import com.example.xueliang.base.LoadCallBack;
 import com.example.xueliang.presenter.MonitorPresenter;
 import com.example.xueliang.utils.DialogUtil;
@@ -31,8 +31,8 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
     private boolean mIsLeftHide = false;
     private FocusRecyclerView mRv_cun;
     private FocusRecyclerView mRv_monitor;
-    private NavCunAdapter cunAdapter;
-    private NavMonitorAdapter monitorAdapter;
+    private NavMonitorPageCunListAdapter cunAdapter;
+    private NavMonitorPagePointListAdapter pointAdapter;
     private List<String> cunList = new ArrayList<>();
     private List<String> monitorList = new ArrayList<>();
 
@@ -75,11 +75,11 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
         mRv_cun.setLayoutManager(mLayoutManager);
         mRv_cun.setHasFixedSize(true);
-        mRv_cun.setAdapter(cunAdapter = new NavCunAdapter(this, cunList));
+        mRv_cun.setAdapter(cunAdapter = new NavMonitorPageCunListAdapter(this, cunList));
         LinearLayoutManager mLayoutManager2 = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
         mRv_monitor.setLayoutManager(mLayoutManager2);
         mRv_monitor.setHasFixedSize(true);
-        mRv_monitor.setAdapter(monitorAdapter = new NavMonitorAdapter(this, monitorList));
+        mRv_monitor.setAdapter(pointAdapter = new NavMonitorPagePointListAdapter(this, monitorList));
 
         createCountDownTimer();
     }
@@ -113,7 +113,7 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
         monitorList.add("SDFASDFSDFADFSDAF");
         monitorList.add("测试测试测试测试测试测试测试测试");
         monitorList.add("测试测试测试测试");
-        monitorAdapter.notifyDataSetChanged();
+        pointAdapter.notifyDataSetChanged();
     }
 
     @Override

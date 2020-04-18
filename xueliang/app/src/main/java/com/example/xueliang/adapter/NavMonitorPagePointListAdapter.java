@@ -19,11 +19,11 @@ import androidx.recyclerview.widget.RecyclerView;
  * Created by wbf
  */
 
-public class NavCunAdapter extends RecyclerView.Adapter<NavCunAdapter.NavMovieHolder> {
+public class NavMonitorPagePointListAdapter extends RecyclerView.Adapter<NavMonitorPagePointListAdapter.NavMovieHolder> {
     protected final Context context;
     private final List<String> stringList;
 
-    public NavCunAdapter(Context context, List<String> objectList) {
+    public NavMonitorPagePointListAdapter(Context context, List<String> objectList) {
         this.stringList = objectList;
         this.context = context;
     }
@@ -31,7 +31,7 @@ public class NavCunAdapter extends RecyclerView.Adapter<NavCunAdapter.NavMovieHo
     @Override
     public NavMovieHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new NavMovieHolder(LayoutInflater.from(context)
-                .inflate(R.layout.item_cun, parent, false));
+                .inflate(R.layout.item_monitor, parent, false));
     }
 
     @Override
@@ -75,8 +75,8 @@ public class NavCunAdapter extends RecyclerView.Adapter<NavCunAdapter.NavMovieHo
 
         public NavMovieHolder(View itemView) {
             super(itemView);
-            if (itemView.findViewById(R.id.ll_cun_item) != null) {
-                pflContainer = itemView.findViewById(R.id.ll_cun_item);
+            if (itemView.findViewById(R.id.ll_monitor_item) != null) {
+                pflContainer = itemView.findViewById(R.id.ll_monitor_item);
             }
         }
 
