@@ -40,7 +40,12 @@ public interface XueLiangService {
     @POST("{domain}")
     Observable<CommonResult<Map<String,Object>>> upLoadImg(@Path("domain") String domain, @PartMap Map<String, RequestBody> params);
 
-
+    /**
+     * 获取通知
+     */
+    @Headers({"Content-Type:application/json; charset=utf-8", RetrofitManager.CACHE_CONTROL_AGE + RetrofitManager.CACHE_CONTROL_NETWORK})
+    @POST("/interface/rest/http/xlwb/xlgc-wb-jdh-sytz.htm")
+    Observable<CommonResult<List>> getLoginQrCode();
 
     /**
      * 获取公告

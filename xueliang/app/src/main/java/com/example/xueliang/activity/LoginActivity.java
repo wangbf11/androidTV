@@ -6,20 +6,21 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.example.xueliang.R;
-import com.example.xueliang.base.BasePresenter;
+import com.example.xueliang.base.LoadCallBack;
+import com.example.xueliang.presenter.LoginPresenter;
 import com.example.xueliang.utils.AppUtils;
 import com.example.xueliang.utils.QRCodeUtil;
 
 /*
  * 登录页面
  */
-public class LoginActivity extends BaseMvpActivity {
+public class LoginActivity extends BaseMvpActivity<LoginPresenter> implements LoadCallBack {
 
     private ImageView mQrCode;
 
     @Override
-    public BasePresenter setPresenter() {
-        return null;
+    public LoginPresenter setPresenter() {
+        return new LoginPresenter(this);
     }
 
     @Override
@@ -34,10 +35,7 @@ public class LoginActivity extends BaseMvpActivity {
     @Override
     public void initView() {
         mQrCode = findViewById(R.id.iv_qrcode);
-        Bitmap cdd = QRCodeUtil.syncEncodeQRCode("syncEncodeQRCodesyncEncodeQRCodesyncEncodeQRCodesyncEncodeQRCodesyncEncodeQRCode", AppUtils.dip2px(158));
-        Glide.with(this)
-                .load(cdd)
-                .into(mQrCode);
+
 
     }
 
@@ -49,5 +47,27 @@ public class LoginActivity extends BaseMvpActivity {
             startActivity(intent);
             finish();
         });
+    }
+
+    @Override
+    public void loadData() {
+        presenter.getLoginQrCode();
+    }
+
+    @Override
+    public void onLoad(Object data) {
+
+    }
+
+    @Override
+    public void onLoadFail(String message) {
+
+    }
+
+    public void onGetQrCode(String message) {
+        Bitmap cdd = QRCodeUtil.syncEncodeQRCode("sfkjslfj;slkf;sdjf;j ", AppUtils.dip2px(158));
+        Glide.with(this)
+                .load(cdd)
+                .into(mQrCode);
     }
 }
