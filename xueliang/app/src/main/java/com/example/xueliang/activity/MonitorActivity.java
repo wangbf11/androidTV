@@ -10,11 +10,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.xueliang.R;
+import com.example.xueliang.adapter.BaseQuickAdapter;
 import com.example.xueliang.adapter.NavMonitorPageCunListAdapter;
 import com.example.xueliang.adapter.NavMonitorPagePointListAdapter;
 import com.example.xueliang.base.LoadCallBack;
 import com.example.xueliang.presenter.MonitorPresenter;
 import com.example.xueliang.utils.DialogUtil;
+import com.example.xueliang.utils.ToastUtils;
 import com.yan.tvprojectutils.FocusRecyclerView;
 
 import java.util.ArrayList;
@@ -149,6 +151,33 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
                     }, "取 消", (dialog, which) -> {
                         dialog.dismiss();
                     }, false);
+        });
+
+        cunAdapter.setOnItemChildFocusChangeListener(new BaseQuickAdapter.OnItemChildFocusChangeListener() {
+            @Override
+            public void onFocusChange(BaseQuickAdapter adapter, View v, boolean hasFocus, int position) {
+                monitorList.clear();
+                monitorList.add("SDFASDFSDFADFSDAF");
+                monitorList.add("测试测试测试测试测试测试测试测试");
+                pointAdapter.notifyDataSetChanged();
+            }
+        });
+
+        cunAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                monitorList.clear();
+                monitorList.add("SDFASDFSDFADFSDAF");
+                monitorList.add("测试测试测试测试测试测试测试测试");
+                pointAdapter.notifyDataSetChanged();
+            }
+        });
+
+        pointAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                ToastUtils.show("点击" + position);
+            }
         });
     }
 

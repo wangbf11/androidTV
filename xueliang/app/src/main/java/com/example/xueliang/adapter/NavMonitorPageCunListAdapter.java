@@ -1,15 +1,11 @@
 package com.example.xueliang.adapter;
 
 import android.content.Context;
-import android.util.DisplayMetrics;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.xueliang.R;
-import com.yan.tvprojectutils.AnimationHelper;
 
 import java.util.List;
 
@@ -19,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
  * Created by wbf
  */
 
-public class NavMonitorPageCunListAdapter extends RecyclerView.Adapter<NavMonitorPageCunListAdapter.NavMovieHolder> {
+public class NavMonitorPageCunListAdapter extends BaseQuickAdapter<NavMonitorPageCunListAdapter.NavMovieHolder> {
     protected final Context context;
     private final List<String> stringList;
 
@@ -39,36 +35,27 @@ public class NavMonitorPageCunListAdapter extends RecyclerView.Adapter<NavMonito
         holder.pflContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "you just touched me", Toast.LENGTH_LONG).show();
+                if (null != mOnItemChildClickListener){
+                    mOnItemChildClickListener.onItemChildClick(NavMonitorPageCunListAdapter.this,v,position);
+                }
             }
         });
+
+        //切换该村监视地点list
         holder.pflContainer.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                AnimationHelper animationHelper = new AnimationHelper();
-                animationHelper.setRatioX((v.getWidth() - dipToPx(context, 10)) / ((ViewGroup) v).getChildAt(0).getWidth());
-                animationHelper.setRatioY((v.getHeight() - dipToPx(context, 10)) / ((ViewGroup) v).getChildAt(0).getHeight());
-                if (hasFocus) {
-                    animationHelper.starLargeAnimation(((ViewGroup) v).getChildAt(0));
-                } else {
-                    animationHelper.starSmallAnimation(((ViewGroup) v).getChildAt(0));
+                if (null != mOnItemChildFocusChangeListener){
+                    mOnItemChildFocusChangeListener.onFocusChange(NavMonitorPageCunListAdapter.this,v,hasFocus,position);
                 }
             }
-
         });
-    }
-
-    private float dipToPx(Context context, float value) {
-        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
-        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, metrics);
     }
 
     @Override
     public int getItemCount() {
         return stringList.size();
     }
-
-
 
     public class NavMovieHolder extends RecyclerView.ViewHolder {
         public View pflContainer;
@@ -79,7 +66,6 @@ public class NavMonitorPageCunListAdapter extends RecyclerView.Adapter<NavMonito
                 pflContainer = itemView.findViewById(R.id.ll_cun_item);
             }
         }
-
     }
 
 }

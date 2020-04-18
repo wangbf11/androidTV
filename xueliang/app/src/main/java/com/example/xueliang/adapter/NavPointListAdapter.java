@@ -7,9 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.xueliang.R;
+import com.example.xueliang.activity.MonitorListActivity;
 import com.example.xueliang.bean.PointBean;
 
 import java.util.List;
@@ -20,7 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
  * Created by wbf
  */
 
-public class NavPointListAdapter extends RecyclerView.Adapter<NavPointListAdapter.NavMovieHolder> {
+public class NavPointListAdapter extends BaseQuickAdapter<NavPointListAdapter.NavMovieHolder> {
     protected final Context context;
     private final List<PointBean> stringList;
 
@@ -41,7 +41,9 @@ public class NavPointListAdapter extends RecyclerView.Adapter<NavPointListAdapte
         holder.pflContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "you just touched me", Toast.LENGTH_LONG).show();
+                if (context instanceof MonitorListActivity){
+                    ((MonitorListActivity)context).onPointItemChildClick(stringList.get(position));
+                }
             }
         });
     }

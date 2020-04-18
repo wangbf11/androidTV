@@ -6,8 +6,10 @@ import com.example.xueliang.R;
 import com.example.xueliang.adapter.NavGridMonitorAdapter;
 import com.example.xueliang.adapter.NavTownListAdapter;
 import com.example.xueliang.base.LoadCallBack;
+import com.example.xueliang.bean.PointBean;
 import com.example.xueliang.bean.TownBean;
 import com.example.xueliang.presenter.MonitorListPresenter;
+import com.example.xueliang.utils.ToastUtils;
 import com.example.xueliang.view.listener.MyFocusChange;
 import com.yan.tvprojectutils.FocusRecyclerView;
 
@@ -112,5 +114,8 @@ public class MonitorListActivity extends BaseMvpActivity<MonitorListPresenter> i
     @Override
     public void onLoadFail(String message) {
 
+    }
+    public void onPointItemChildClick(PointBean data) {
+        ToastUtils.show(data.getpName());
     }
 }
