@@ -4,7 +4,7 @@ import android.widget.TextView;
 
 import com.example.xueliang.R;
 import com.example.xueliang.adapter.NavGridMonitorAdapter;
-import com.example.xueliang.adapter.NavTownAdapter;
+import com.example.xueliang.adapter.NavTownListAdapter;
 import com.example.xueliang.base.LoadCallBack;
 import com.example.xueliang.bean.TownBean;
 import com.example.xueliang.presenter.MonitorListPresenter;
@@ -20,7 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 public class MonitorListActivity extends BaseMvpActivity<MonitorListPresenter> implements LoadCallBack<List<TownBean>> {
     private List<TownBean> locationList = new ArrayList<>();
     private List<String> gridList = new ArrayList<>();
-    private NavTownAdapter locationAdapter;
+    private NavTownListAdapter locationAdapter;
     private NavGridMonitorAdapter gridAdapter;
     private TextView mTv_one;
     private TextView mTv_four;
@@ -56,7 +56,7 @@ public class MonitorListActivity extends BaseMvpActivity<MonitorListPresenter> i
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
         mRv_list.setLayoutManager(mLayoutManager);
         mRv_list.setHasFixedSize(true);
-        mRv_list.setAdapter(locationAdapter = new NavTownAdapter(this, locationList));
+        mRv_list.setAdapter(locationAdapter = new NavTownListAdapter(this, locationList));
 
 
         GridLayoutManager focusGrid= new GridLayoutManager(getApplicationContext(), 1);

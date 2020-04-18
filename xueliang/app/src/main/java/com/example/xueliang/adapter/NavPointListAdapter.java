@@ -11,7 +11,6 @@ import android.widget.Toast;
 
 import com.example.xueliang.R;
 import com.example.xueliang.bean.PointBean;
-import com.yan.tvprojectutils.AnimationHelper;
 
 import java.util.List;
 
@@ -21,11 +20,11 @@ import androidx.recyclerview.widget.RecyclerView;
  * Created by wbf
  */
 
-public class NavPointAdapter extends RecyclerView.Adapter<NavPointAdapter.NavMovieHolder> {
+public class NavPointListAdapter extends RecyclerView.Adapter<NavPointListAdapter.NavMovieHolder> {
     protected final Context context;
     private final List<PointBean> stringList;
 
-    public NavPointAdapter(Context context, List<PointBean> objectList) {
+    public NavPointListAdapter(Context context, List<PointBean> objectList) {
         this.stringList = objectList;
         this.context = context;
     }
@@ -44,20 +43,6 @@ public class NavPointAdapter extends RecyclerView.Adapter<NavPointAdapter.NavMov
             public void onClick(View v) {
                 Toast.makeText(context, "you just touched me", Toast.LENGTH_LONG).show();
             }
-        });
-        holder.pflContainer.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                AnimationHelper animationHelper = new AnimationHelper();
-                animationHelper.setRatioX((v.getWidth() - dipToPx(context, 10)) / ((ViewGroup) v).getChildAt(0).getWidth());
-                animationHelper.setRatioY((v.getHeight() - dipToPx(context, 10)) / ((ViewGroup) v).getChildAt(0).getHeight());
-                if (hasFocus) {
-                    animationHelper.starLargeAnimation(((ViewGroup) v).getChildAt(0));
-                } else {
-                    animationHelper.starSmallAnimation(((ViewGroup) v).getChildAt(0));
-                }
-            }
-
         });
     }
 

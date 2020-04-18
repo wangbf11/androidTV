@@ -51,7 +51,7 @@ public class NavCunListAdapter extends RecyclerView.Adapter<NavCunListAdapter.Na
                 holder.rv_point.setLayoutManager(mLayoutManager);
                 holder.rv_point.setHasFixedSize(true);
                 List<PointBean> points = stringList.get(position).getPoints();
-                NavPointAdapter navCunListAdapter = new NavPointAdapter(context, points);
+                NavPointListAdapter navCunListAdapter = new NavPointListAdapter(context, points);
                 holder.rv_point.setAdapter(navCunListAdapter);
             }
         });

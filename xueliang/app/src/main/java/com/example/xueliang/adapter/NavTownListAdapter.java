@@ -25,11 +25,11 @@ import androidx.recyclerview.widget.RecyclerView;
  * Created by wbf
  */
 
-public class NavTownAdapter extends RecyclerView.Adapter<NavTownAdapter.NavMovieHolder> {
+public class NavTownListAdapter extends RecyclerView.Adapter<NavTownListAdapter.NavMovieHolder> {
     protected final Context context;
     private final List<TownBean> list;
 
-    public NavTownAdapter(Context context, List<TownBean> objectList) {
+    public NavTownListAdapter(Context context, List<TownBean> objectList) {
         this.list = objectList;
         this.context = context;
     }
