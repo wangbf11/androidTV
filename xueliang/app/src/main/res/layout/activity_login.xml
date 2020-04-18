@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/ic_login_background"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal">
     <LinearLayout
         android:layout_width="0dp"
@@ -45,7 +46,7 @@
             android:id="@+id/iv_qrcode"
             android:layout_width="158dp"
             android:layout_height="158dp"
-            android:src="@drawable/ic_qrcode"/>
+            tools:src="@drawable/ic_qrcode"/>
 
         <TextView
             android:layout_marginTop="44dp"

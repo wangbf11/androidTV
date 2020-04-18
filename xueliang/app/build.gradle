@@ -92,4 +92,8 @@ dependencies {
     implementation(name: 'ijkplayer-java-release', ext: 'aar')
     implementation(name: 'gahikplayersdk-release', ext: 'aar')
     implementation files('libs/ecs.jar')
+
+    implementation 'com.google.zxing:core:3.3.3'
+
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
 }
