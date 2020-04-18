@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:focusable="true"
     android:layout_height="wrap_content"
+    android:background="@drawable/selector_item_blue_background"
     android:gravity="center_vertical"
     android:orientation="vertical" >
     <LinearLayout
@@ -19,7 +20,7 @@
             android:layout_marginLeft="15dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="新街村"
+            android:text="新美镇"
             android:textSize="12sp"
             android:textColor="#fff"/>
 
@@ -40,5 +41,6 @@
         android:id="@+id/rv_cun"
         android:layout_width="match_parent"
         android:layout_marginLeft="10dp"
+        android:visibility="gone"
         android:layout_height="wrap_content"/>
 </LinearLayout>

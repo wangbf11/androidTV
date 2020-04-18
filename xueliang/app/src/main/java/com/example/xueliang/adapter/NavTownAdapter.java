@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.example.xueliang.R;
 import com.example.xueliang.bean.TownBean;
 import com.example.xueliang.bean.VillageBean;
-import com.yan.tvprojectutils.AnimationHelper;
 import com.yan.tvprojectutils.FocusRecyclerView;
 
 import java.util.List;
@@ -26,11 +25,11 @@ import androidx.recyclerview.widget.RecyclerView;
  * Created by wbf
  */
 
-public class NavLocationAdapter extends RecyclerView.Adapter<NavLocationAdapter.NavMovieHolder> {
+public class NavTownAdapter extends RecyclerView.Adapter<NavTownAdapter.NavMovieHolder> {
     protected final Context context;
     private final List<TownBean> list;
 
-    public NavLocationAdapter(Context context, List<TownBean> objectList) {
+    public NavTownAdapter(Context context, List<TownBean> objectList) {
         this.list = objectList;
         this.context = context;
     }
@@ -38,7 +37,7 @@ public class NavLocationAdapter extends RecyclerView.Adapter<NavLocationAdapter.
     @Override
     public NavMovieHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new NavMovieHolder(LayoutInflater.from(context)
-                .inflate(R.layout.item_list_cun, parent, false));
+                .inflate(R.layout.item_town_list, parent, false));
     }
 
     @Override
@@ -56,24 +55,6 @@ public class NavLocationAdapter extends RecyclerView.Adapter<NavLocationAdapter.
                 holder.rv_cun.setAdapter(navCunListAdapter);
             }
         });
-
-        holder.pflContainer.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                AnimationHelper animationHelper = new AnimationHelper();
-                animationHelper.setRatioX((v.getWidth() - dipToPx(context, 10)) / ((ViewGroup) v).getChildAt(0).getWidth());
-                animationHelper.setRatioY((v.getHeight() - dipToPx(context, 10)) / ((ViewGroup) v).getChildAt(0).getHeight());
-                if (hasFocus) {
-                    animationHelper.starLargeAnimation(((ViewGroup) v).getChildAt(0));
-                } else {
-                    animationHelper.starSmallAnimation(((ViewGroup) v).getChildAt(0));
-                }
-            }
-
-        });
-
-
-
     }
 
     private float dipToPx(Context context, float value) {

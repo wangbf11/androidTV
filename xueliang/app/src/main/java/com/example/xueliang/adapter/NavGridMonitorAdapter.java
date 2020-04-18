@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import com.example.xueliang.R;
 import com.example.xueliang.activity.MonitorActivity;
 import com.example.xueliang.utils.AppUtils;
-import com.yan.tvprojectutils.AnimationHelper;
 
 import java.util.List;
 
@@ -57,13 +56,10 @@ public class NavGridMonitorAdapter extends RecyclerView.Adapter<NavGridMonitorAd
         holder.pflContainer.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                AnimationHelper animationHelper = new AnimationHelper();
-                animationHelper.setRatioX((v.getWidth() - dipToPx(context, 10)) / ((ViewGroup) v).getChildAt(0).getWidth());
-                animationHelper.setRatioY((v.getHeight() - dipToPx(context, 10)) / ((ViewGroup) v).getChildAt(0).getHeight());
                 if (hasFocus) {
-                    animationHelper.starLargeAnimation(((ViewGroup) v).getChildAt(0));
+                    v.setBackground(context.getResources().getDrawable(R.drawable.bg_boder));
                 } else {
-                    animationHelper.starSmallAnimation(((ViewGroup) v).getChildAt(0));
+                    v.setBackground(null);
                 }
             }
 

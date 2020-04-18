@@ -33,7 +33,7 @@ public class NavPointAdapter extends RecyclerView.Adapter<NavPointAdapter.NavMov
     @Override
     public NavMovieHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new NavMovieHolder(LayoutInflater.from(context)
-                .inflate(R.layout.item_point, parent, false));
+                .inflate(R.layout.item_point_list, parent, false));
     }
 
     @Override

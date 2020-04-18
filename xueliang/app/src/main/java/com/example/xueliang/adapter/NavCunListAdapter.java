@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.example.xueliang.R;
 import com.example.xueliang.bean.PointBean;
 import com.example.xueliang.bean.VillageBean;
-import com.yan.tvprojectutils.AnimationHelper;
 import com.yan.tvprojectutils.FocusRecyclerView;
 
 import java.util.List;
@@ -38,7 +37,7 @@ public class NavCunListAdapter extends RecyclerView.Adapter<NavCunListAdapter.Na
     @Override
     public NavMovieHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new NavMovieHolder(LayoutInflater.from(context)
-                .inflate(R.layout.item_point_list, parent, false));
+                .inflate(R.layout.item_cun_list, parent, false));
     }
 
     @Override
@@ -56,22 +55,6 @@ public class NavCunListAdapter extends RecyclerView.Adapter<NavCunListAdapter.Na
                 holder.rv_point.setAdapter(navCunListAdapter);
             }
         });
-
-        holder.pflContainer.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                AnimationHelper animationHelper = new AnimationHelper();
-                animationHelper.setRatioX((v.getWidth() - dipToPx(context, 10)) / ((ViewGroup) v).getChildAt(0).getWidth());
-                animationHelper.setRatioY((v.getHeight() - dipToPx(context, 10)) / ((ViewGroup) v).getChildAt(0).getHeight());
-                if (hasFocus) {
-                    animationHelper.starLargeAnimation(((ViewGroup) v).getChildAt(0));
-                } else {
-                    animationHelper.starSmallAnimation(((ViewGroup) v).getChildAt(0));
-                }
-            }
-
-        });
-
     }
 
     private float dipToPx(Context context, float value) {
