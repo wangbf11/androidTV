@@ -69,7 +69,7 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
         surfaceView1.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
-                hikPlayer.setSurfaceViewHolder(holder);
+                //hikPlayer.setSurfaceViewHolder(holder);
             }
 
             @Override
