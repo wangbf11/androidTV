@@ -6,6 +6,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -24,6 +25,7 @@ import java.util.List;
 
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
 import hikvision.com.streamclient.GA_HIKPlayer;
 import hikvision.com.streamclient.GA_HIKPlayerDelegate;
 import hikvision.com.streamclient.GA_HIKPlayerUrlListener;
@@ -32,9 +34,10 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
 
     private TextView mTv_time;
     private LinearLayout ll_abnormal;
+    private LinearLayout ll_abnormal_click;
     private LinearLayout ll_left_list;
     private LinearLayout ll_tips;
-    private boolean mIsBottomHide =false;
+    private boolean mIsBottomHide = false;
     private boolean mIsLeftHide = false;
     private FocusRecyclerView mRv_cun;
     private FocusRecyclerView mRv_monitor;
@@ -43,6 +46,7 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
     private List<String> cunList = new ArrayList<>();
     private List<String> monitorList = new ArrayList<>();
     private GA_HIKPlayer hikPlayer;
+    private ImageView iv_left_close;
 
     @Override
     public MonitorPresenter setPresenter() {
@@ -64,8 +68,9 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
         mTv_time = findViewById(R.id.tv_time);
         ll_tips = findViewById(R.id.ll_tips);
         ll_abnormal = findViewById(R.id.ll_abnormal);
+        ll_abnormal_click = findViewById(R.id.ll_abnormal_click);
         ll_left_list = findViewById(R.id.ll_left_list);
-
+        iv_left_close = findViewById(R.id.iv_left_close);
         SurfaceView surfaceView1 = findViewById(R.id.surfaceView1);
 
         surfaceView1.getHolder().addCallback(new SurfaceHolder.Callback() {
@@ -86,19 +91,14 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
         });
 
 
-        mTv_time.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                ll_abnormal.setTranslationY(ll_abnormal.getMeasuredHeight());
-                ll_left_list.setTranslationX(-ll_left_list.getMeasuredHeight());
-                mIsBottomHide =true;
-                mIsLeftHide = true;
-            }
-        },0);
+        ll_abnormal.setVisibility(View.GONE);
+        ll_left_list.setVisibility(View.GONE);
+        mIsBottomHide = true;
+        mIsLeftHide = true;
 
 
-        mRv_cun = (FocusRecyclerView)findViewById(R.id.rv_cun_data);
-        mRv_monitor = (FocusRecyclerView)findViewById(R.id.rv_monitor_data);
+        mRv_cun = (FocusRecyclerView) findViewById(R.id.rv_cun_data);
+        mRv_monitor = (FocusRecyclerView) findViewById(R.id.rv_monitor_data);
 
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
         mRv_cun.setLayoutManager(mLayoutManager);
@@ -110,7 +110,6 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
         mRv_monitor.setAdapter(pointAdapter = new NavMonitorPagePointListAdapter(this, monitorList));
 
         createCountDownTimer();
-
 
 
         hikPlayer = new GA_HIKPlayer(new GA_HIKPlayerUrlListener() {
@@ -145,7 +144,7 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
 
     @Override
     public void initListener() {
-        ll_abnormal.setOnClickListener(v -> {
+        ll_abnormal_click.setOnClickListener(v -> {
             //上报异常
             DialogUtil.showAlert(mContext, null, "您确认要上报异常情况吗？",
                     "确 定", (dialog, which) -> {
@@ -158,10 +157,13 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
         cunAdapter.setOnItemChildFocusChangeListener(new BaseQuickAdapter.OnItemChildFocusChangeListener() {
             @Override
             public void onFocusChange(BaseQuickAdapter adapter, View v, boolean hasFocus, int position) {
-                monitorList.clear();
-                monitorList.add("SDFASDFSDFADFSDAF");
-                monitorList.add("测试测试测试测试测试测试测试测试");
-                pointAdapter.notifyDataSetChanged();
+                if (hasFocus) {
+                    monitorList.clear();
+                    monitorList.add("SDFASDFSDFADFSDAF");
+                    monitorList.add("测试测试测试测试测试测试测试测试");
+                    pointAdapter.notifyDataSetChanged();
+                }
+
             }
         });
 
@@ -180,6 +182,22 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 ToastUtils.show("点击" + position);
             }
+        });
+
+        iv_left_close.setOnClickListener(v->{
+            mIsLeftHide = false;
+            openList();
+        });
+        iv_left_close.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    v.setBackground(getResources().getDrawable(R.drawable.bg_boder));
+                } else {
+                    v.setBackground(null);
+                }
+            }
+
         });
     }
 
@@ -230,7 +248,7 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
 
                 break;
             case KeyEvent.KEYCODE_DPAD_DOWN:   //向下键
-                if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                if (event.getAction() == KeyEvent.ACTION_DOWN && mIsLeftHide) {
                     //打开异常提交栏目
                     openError();
                 }
@@ -242,7 +260,7 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
 
                 break;
             case KeyEvent.KEYCODE_DPAD_LEFT: //向左键
-                if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                if (event.getAction() == KeyEvent.ACTION_DOWN && mIsBottomHide && mIsLeftHide) {
                     //打开左边位置选中栏目
                     openList();
                 }
@@ -284,15 +302,10 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
     public void openError() {
         //图片点击事件 上下 toolbar 动画
         if (mIsBottomHide) {
-            ll_abnormal.animate()
-                    .translationYBy(-ll_abnormal.getMeasuredHeight())
-                    .setInterpolator(new FastOutSlowInInterpolator())
-                    .start();
+            ll_abnormal.setVisibility(View.VISIBLE);
+            ll_abnormal_click.requestFocus();
         } else {
-            ll_abnormal.animate()
-                    .setInterpolator(new FastOutSlowInInterpolator())
-                    .translationYBy(ll_abnormal.getMeasuredHeight())
-                    .start();
+            ll_abnormal.setVisibility(View.GONE);
         }
 
         mIsBottomHide = !mIsBottomHide;
@@ -304,15 +317,9 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
     public void openList() {
         //图片点击事件 上下 toolbar 动画
         if (mIsLeftHide) {
-            ll_left_list.animate()
-                    .setInterpolator(new FastOutSlowInInterpolator())
-                    .translationXBy(ll_left_list.getMeasuredHeight())
-                    .start();
+            ll_left_list.setVisibility(View.VISIBLE);
         } else {
-            ll_left_list.animate()
-                    .setInterpolator(new FastOutSlowInInterpolator())
-                    .translationXBy(-ll_left_list.getMeasuredHeight())
-                    .start();
+            ll_left_list.setVisibility(View.GONE);
         }
 
         mIsLeftHide = !mIsLeftHide;
@@ -322,7 +329,7 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
      * 2秒后消失提示
      */
     private void createCountDownTimer() {
-        AlphaAnimation a = new AlphaAnimation(1,0);
+        AlphaAnimation a = new AlphaAnimation(1, 0);
         // 动画时长
         a.setDuration(4000);
         // 开启动画
@@ -348,15 +355,15 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
     @Override
     protected void onResume() {
         super.onResume();
-        if (null != hikPlayer && !hikPlayer.playing){
-            hikPlayer.startRealPlayer(this,"");
+        if (null != hikPlayer && !hikPlayer.playing) {
+            hikPlayer.startRealPlayer(this, "");
         }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        if (null != hikPlayer && hikPlayer.playing){
+        if (null != hikPlayer && hikPlayer.playing) {
             hikPlayer.stopRealPlay();
         }
     }
@@ -365,7 +372,7 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
     protected void onDestroy() {
         super.onDestroy();
         // 判断是否初始化，是否预览过，判断 context是否存在
-        if (hikPlayer!=null) {
+        if (hikPlayer != null) {
             hikPlayer.destoryPlayer();
         }
 

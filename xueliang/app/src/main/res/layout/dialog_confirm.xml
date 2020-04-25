@@ -74,12 +74,13 @@
                 android:id="@+id/button_neg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:focusable="true"
                 android:paddingVertical="8dp"
                 android:paddingHorizontal="18dp"
-                android:background="@drawable/bg_dialog_bt"
+                android:background="@drawable/selector_blue_background3"
                 android:gravity="center"
                 android:text="@string/dialog_confirm"
-                android:textColor="@color/white"
+                android:textColor="@color/selector_blue_text_color"
                 android:textSize="16sp" />
 
             <TextView
@@ -88,11 +89,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="28dp"
                 android:paddingVertical="8dp"
+                android:focusable="true"
                 android:paddingHorizontal="18dp"
-                android:background="@null"
+                android:background="@drawable/selector_blue_background3"
                 android:gravity="center"
                 android:text="@string/dialog_cancel"
-                android:textColor="@color/selector_font_commit"
+                android:textColor="@color/selector_blue_text_color"
                 android:textSize="16sp" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
