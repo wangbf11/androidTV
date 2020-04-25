@@ -25,6 +25,8 @@ import java.util.List;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import hikvision.com.streamclient.GA_HIKPlayer;
+import hikvision.com.streamclient.GA_HIKPlayerDelegate;
+import hikvision.com.streamclient.GA_HIKPlayerUrlListener;
 
 public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implements LoadCallBack {
 
@@ -69,7 +71,7 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
         surfaceView1.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
-                //hikPlayer.setSurfaceViewHolder(holder);
+                hikPlayer.setSurfaceViewHolder(holder);
             }
 
             @Override
@@ -111,34 +113,34 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
 
 
 
-//        hikPlayer = new GA_HIKPlayer(new GA_HIKPlayerUrlListener() {
-//            @Override
-//            public String getPlayUrl() {
-//                runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                    }
-//                });
-//                return "";//hik
-//            }
-//        });
-//
-//        hikPlayer.setPlayerDelegate(new GA_HIKPlayerDelegate() {
-//            @Override
-//            public void didPlayFailed(GA_HIKPlayer ga_hikPlayer, Integer integer) {
-//                //播放失败了
-//            }
-//
-//            @Override
-//            public void didReceivedMessage(GA_HIKPlayer ga_hikPlayer, Integer integer) {
-//                //播放成功了
-//            }
-//
-//            @Override
-//            public void didReceivedDataLength(GA_HIKPlayer ga_hikPlayer, Integer integer) {
-//
-//            }
-//        });
+        hikPlayer = new GA_HIKPlayer(new GA_HIKPlayerUrlListener() {
+            @Override
+            public String getPlayUrl() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                    }
+                });
+                return "";//hik
+            }
+        });
+
+        hikPlayer.setPlayerDelegate(new GA_HIKPlayerDelegate() {
+            @Override
+            public void didPlayFailed(GA_HIKPlayer ga_hikPlayer, Integer integer) {
+                //播放失败了
+            }
+
+            @Override
+            public void didReceivedMessage(GA_HIKPlayer ga_hikPlayer, Integer integer) {
+                //播放成功了
+            }
+
+            @Override
+            public void didReceivedDataLength(GA_HIKPlayer ga_hikPlayer, Integer integer) {
+
+            }
+        });
     }
 
     @Override
