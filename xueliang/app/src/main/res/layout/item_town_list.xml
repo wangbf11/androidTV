@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/ll_cun_item"
     android:layout_width="match_parent"
-    android:focusable="true"
     android:layout_height="wrap_content"
-    android:background="@drawable/selector_item_blue_background"
     android:gravity="center_vertical"
     android:orientation="vertical" >
     <LinearLayout
+        android:id="@+id/ll_cun_item"
         android:layout_width="match_parent"
         android:focusable="true"
         android:background="@drawable/selector_blue_background"
