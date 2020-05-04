@@ -2,6 +2,8 @@ package com.example.xueliang.network;
 
 
 import com.example.xueliang.bean.CommonResult;
+import com.example.xueliang.bean.QrCodeBean;
+import com.example.xueliang.bean.UserInfoEntity;
 
 import java.util.List;
 import java.util.Map;
@@ -41,13 +43,6 @@ public interface XueLiangService {
     Observable<CommonResult<Map<String,Object>>> upLoadImg(@Path("domain") String domain, @PartMap Map<String, RequestBody> params);
 
     /**
-     * 获取通知
-     */
-    @Headers({"Content-Type:application/json; charset=utf-8", RetrofitManager.CACHE_CONTROL_AGE + RetrofitManager.CACHE_CONTROL_NETWORK})
-    @POST("/interface/rest/http/xlwb/xlgc-wb-jdh-sytz.htm")
-    Observable<CommonResult<List>> getLoginQrCode();
-
-    /**
      * 获取公告
      */
     @Headers({"Content-Type:application/json; charset=utf-8", RetrofitManager.CACHE_CONTROL_AGE + RetrofitManager.CACHE_CONTROL_NETWORK})
@@ -59,4 +54,16 @@ public interface XueLiangService {
     @Headers({"Content-Type:application/json; charset=utf-8", RetrofitManager.CACHE_CONTROL_AGE + RetrofitManager.CACHE_CONTROL_NETWORK})
     @POST("/interface/rest/http/xlwb/xlgc-wb-jdh-sytz.htm")
     Observable<CommonResult<List>> getNotification();
+    /**
+     * 获取登录和注册 二维码
+     */
+    @Headers({"Content-Type:application/json; charset=utf-8", RetrofitManager.CACHE_CONTROL_AGE + RetrofitManager.CACHE_CONTROL_NETWORK})
+    @POST("/interface/rest/http/xlwb/xlgc-wb-jdh-hqdlhzcdzjk.htm")
+    Observable<CommonResult<List<QrCodeBean>>> getLoginQrCode(@Body Map<String, Object> params);
+    /**
+     * 获取登录和注册状态
+     */
+    @Headers({"Content-Type:application/json; charset=utf-8", RetrofitManager.CACHE_CONTROL_AGE + RetrofitManager.CACHE_CONTROL_NETWORK})
+    @POST("/interface/rest/http/xlwb/xlgc-wb-jdh-hqdlhzczt.htm")
+    Observable<CommonResult<List<UserInfoEntity>>> getLoginInfo(@Body Map<String, Object> params);
 }

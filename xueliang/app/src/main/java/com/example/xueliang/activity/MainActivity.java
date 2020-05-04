@@ -14,6 +14,7 @@ import com.example.xueliang.base.LoadCallBack;
 import com.example.xueliang.presenter.MainPresenter;
 import com.example.xueliang.utils.AppUtils;
 import com.example.xueliang.utils.DialogUtil;
+import com.example.xueliang.utils.SPUtil;
 import com.example.xueliang.utils.ScreenUtils;
 import com.example.xueliang.view.listener.MyFocusChange;
 import com.example.xueliang.view.readview.PageLoader;
@@ -116,6 +117,11 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Load
             //退出登录
             DialogUtil.showAlert(mContext, null, "您确认要退出吗？",
                     "确 定", (dialog, which) -> {
+                        AppUtils.getApplication().exit();
+                        SPUtil.removeToken();
+                        SPUtil.removeUserInfo();
+                        Intent intent = new Intent(mContext, LoginActivity.class);
+                        startActivity(intent);
                         dialog.dismiss();
                     }, "取 消", (dialog, which) -> {
                         dialog.dismiss();

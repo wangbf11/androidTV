@@ -5,7 +5,7 @@ import android.util.Log;
 
 import com.example.xueliang.config.AppConfig;
 import com.example.xueliang.utils.AppUtils;
-import com.example.xueliang.utils.StringUtils;
+import com.example.xueliang.utils.SPUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,7 +28,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 public class RetrofitManager {
 
     public static final String BASE_URL = AppConfig.baseUrl;
-    private Handler handler=null;
+    private Handler handler = null;
     //短缓存有效期为1分钟
     public static final int CACHE_STALE_SHORT = 60;
     //长缓存有效期为7天
@@ -41,8 +41,9 @@ public class RetrofitManager {
     //查询网络的Cache-Control设置，头部Cache-Control设为max-age=0时则不会使用缓存而请求服务器
     public static final String CACHE_CONTROL_NETWORK = "max-age=0";
     private static OkHttpClient mOkHttpClient;
-    public  final XueLiangService service;
+    public final XueLiangService service;
     private static RetrofitManager mRetrofitManager;
+
     /**
      * 创建单列
      */
@@ -54,7 +55,7 @@ public class RetrofitManager {
                 }
                 return mRetrofitManager;
             }
-        }else {
+        } else {
             return mRetrofitManager;
         }
     }
@@ -104,20 +105,15 @@ public class RetrofitManager {
         public Response intercept(Chain chain) throws IOException {
 
             Request request = chain.request();
-            String token = "";
+            String token = SPUtil.getToken();
 
-            if (StringUtils.isBlank(token)){
-
-            }
             if (!RFNetUtil.isNetworkConnected()) {
-                request = request.newBuilder().addHeader("Authorization","")
+                request = request.newBuilder().addHeader("token", "")
                         .addHeader("version", AppUtils.getAppVersion())
-                        .addHeader("system", String.valueOf(2))
                         .cacheControl(CacheControl.FORCE_CACHE).build();
-            }else {
-                request = request.newBuilder().addHeader("Authorization", token)
+            } else {
+                request = request.newBuilder().addHeader("token", token)
                         .addHeader("version", AppUtils.getAppVersion())
-                        .addHeader("system", String.valueOf(2))
                         .build();
             }
 

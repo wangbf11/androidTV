@@ -1,6 +1,5 @@
 package com.example.xueliang.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 
@@ -8,9 +7,10 @@ import com.example.xueliang.base.BasePresenter;
 import com.example.xueliang.utils.AppUtils;
 
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentActivity;
 
 
-public abstract class BaseMvpActivity<T extends BasePresenter> extends Activity {
+public abstract class BaseMvpActivity<T extends BasePresenter> extends FragmentActivity {
     public Context mContext;
 
     public T presenter;

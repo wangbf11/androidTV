@@ -10,6 +10,8 @@ import com.example.xueliang.base.LoadCallBack;
 import com.example.xueliang.presenter.LoginPresenter;
 import com.example.xueliang.utils.AppUtils;
 import com.example.xueliang.utils.QRCodeUtil;
+import com.example.xueliang.utils.SPUtil;
+import com.example.xueliang.utils.StringUtils;
 
 /*
  * 登录页面
@@ -30,7 +32,6 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter> implements Lo
 
     @Override
     public void initData() {
-
     }
     @Override
     public void initView() {
@@ -51,7 +52,11 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter> implements Lo
 
     @Override
     public void loadData() {
-        presenter.getLoginQrCode();
+        if (StringUtils.isNotBlank(SPUtil.getToken())){
+            onLoginSuccess();
+        }else {
+            presenter.getLoginQrCode();
+        }
     }
 
     @Override
@@ -65,9 +70,22 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter> implements Lo
     }
 
     public void onGetQrCode(String message) {
-        Bitmap cdd = QRCodeUtil.syncEncodeQRCode("sfkjslfj;slkf;sdjf;j ", AppUtils.dip2px(158));
+        Bitmap cdd = QRCodeUtil.syncEncodeQRCode(message, AppUtils.dip2px(158));
         Glide.with(this)
                 .load(cdd)
                 .into(mQrCode);
+    }
+
+    public void onLoginSuccess() {
+        //登录成功跳转首页
+        Intent intent = new Intent();
+        intent.setClass(LoginActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }
