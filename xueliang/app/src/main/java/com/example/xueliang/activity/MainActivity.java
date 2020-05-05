@@ -36,6 +36,7 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Load
     public LinearLayout ll_monitor;
     public TextView mtvNotification;
     private View mll_notification;
+    private boolean mIsDestroy;
 
     @Override
     public MainPresenter setPresenter() {
@@ -202,6 +203,9 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Load
     public Runnable runnable = new Runnable() {
         @Override
         public void run() {
+            if (mIsDestroy){
+                return;
+            }
             if ( mPvPage.hasNextPage()){
                 mPageLoader.skipToNextPage();
             }else {
@@ -275,5 +279,11 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Load
             finish();
             AppUtils.getApplication().exit();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mIsDestroy = true;
     }
 }
