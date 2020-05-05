@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_ios_dialog">
+
+        <LinearLayout
+            android:id="@+id/top_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/dialog_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textColor="#333333"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:text="内容详情" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#17000000" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:paddingHorizontal="30dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/dialog_message"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="left"
+                    android:focusable="true"
+                    android:scrollbars="vertical"
+                    android:textColor="#000000"
+                    android:maxLines="8"
+                    android:textSize="16sp"
+                    tools:text="    为贯彻落实《中共中央 国务院关于坚持农业农村优先发展做好“三农”工作的若干意见》《中共中央办公厅 国务院办公厅关于加强和改进乡村治理的指导意见》的要求，中央农办、农业农村部、中央宣传部、民政部、司法部等部门从2019年起组织开展乡村治理示范村镇创建活动，通过示范创建活动推动健全党组织领导创建活动推动健全党组织领导的自治、法治、德治相结合的乡村治创建活动推动健全党组织领导的自治、法治、德治相结合的乡村治创建活动推动健全党组织领导的自治、法治、德治相结合的乡村治创建活动推动健全党组织领导的自治、法治、德治相结合的乡村治创建活动推动健全党组织领导的自治、法治、德治相结合的乡村治创建活动推动健全党组织领导的自治、法治、德治相结合的乡村治创建活动推动健全党组织领导的自治、法治、德治相结合的乡村治创建活动推动健全党组织领导的自治、法治、德治相结合的乡村治的自治、法治、德治相结合的乡村治理体系，培育和树立一批乡村治理典型？" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/diver"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#17000000"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/top_content"/>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/top_content"
+            android:layout_marginTop="5dp"
+            android:paddingBottom="5dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/diver">
+
+
+            <TextView
+                android:id="@+id/button_pos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center_vertical"
+                android:background="@drawable/selector_blue_background3"
+                android:focusable="true"
+                android:gravity="center"
+                android:paddingHorizontal="18dp"
+                android:layout_marginRight="8dp"
+                android:paddingVertical="8dp"
+                android:text="@string/dialog_cancel"
+                android:textColor="@color/selector_blue_text_color"
+                android:textSize="12sp" />
+        </FrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

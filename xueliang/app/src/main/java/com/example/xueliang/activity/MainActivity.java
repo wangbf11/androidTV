@@ -33,6 +33,7 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Load
     public LinearLayout dot_ll;
     public LinearLayout ll_monitor;
     public TextView mtvNotification;
+    private View mll_notification;
 
     @Override
     public MainPresenter setPresenter() {
@@ -60,6 +61,7 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Load
         mLogout = findViewById(R.id.tv_logout);
         ll_monitor = findViewById(R.id.ll_monitor);
         mtvNotification = findViewById(R.id.mtv_notification);
+        mll_notification = findViewById(R.id.ll_notification);
         dot_ll = (LinearLayout) findViewById(R.id.dot_ll);
         // 如果 API < 18 取消硬件加速
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2
@@ -68,6 +70,31 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Load
         }
         mPageLoader = mPvPage.getPageLoader();
         ll_monitor.setOnFocusChangeListener(new MyFocusChange());
+
+        ll_monitor.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    v.setBackground(mContext.getResources().getDrawable(R.drawable.bg_boder2w));
+                } else {
+                    v.setBackground(null);
+                }
+            }
+
+        });
+
+
+        mll_notification.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    v.setBackground(mContext.getResources().getDrawable(R.drawable.bg_boder2w));
+                } else {
+                    v.setBackground(null);
+                }
+            }
+
+        });
         mLogout.requestFocus();
     }
 
@@ -134,6 +161,19 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Load
             Intent intent = new Intent();
             intent.setClass(this, MonitorListActivity.class);
             startActivity(intent);
+        });
+        mll_notification.setOnClickListener(v->{
+            DialogUtil.showAlertNotice(mContext, "内容详情", mtvNotification.getText().toString(),
+                     (dialog, which) -> {
+                        AppUtils.getApplication().exit();
+                        SPUtil.removeToken();
+                        SPUtil.removeUserInfo();
+                        Intent intent = new Intent(mContext, LoginActivity.class);
+                        startActivity(intent);
+                        dialog.dismiss();
+                    }, "关 闭", (dialog, which) -> {
+                        dialog.dismiss();
+                    }, false);
         });
     }
 

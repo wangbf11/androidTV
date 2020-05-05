@@ -71,9 +71,11 @@
 
     <!--通知栏-->
     <LinearLayout
+        android:id="@+id/ll_notification"
         android:layout_width="match_parent"
         android:layout_height="34dp"
         android:background="#112D48"
+        android:focusable="true"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingLeft="8dp"
