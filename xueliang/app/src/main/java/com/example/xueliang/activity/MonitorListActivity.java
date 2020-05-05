@@ -97,7 +97,24 @@ public class MonitorListActivity extends BaseMvpActivity<MonitorListPresenter> i
             mTv_four.setSelected(true);
             mTv_one.setSelected(false);
             gridList.clear();
+
+
             gridList.addAll(gridTempList);
+
+            if(gridList.size() == 3){
+                gridList.add(null);
+            }
+
+            if(gridList.size() == 2){
+                gridList.add(null);
+                gridList.add(null);
+            }
+
+            if(gridList.size() == 1){
+                gridList.add(null);
+                gridList.add(null);
+                gridList.add(null);
+            }
             GridLayoutManager focusGrid= new GridLayoutManager(getApplicationContext(), 2);
             mRv_grid.setLayoutManager(focusGrid);
             mRv_grid.setAdapter(gridAdapter = new NavGridMonitorAdapter(this, gridList,false));
@@ -159,15 +176,8 @@ public class MonitorListActivity extends BaseMvpActivity<MonitorListPresenter> i
             gridList.add(data);
         }else {
             if (gridList.contains(data)){
-                ToastUtils.show("你添加了这个点位");
+                ToastUtils.show("你已经添加了这个点位");
                 return;
-            }
-
-            if (gridList.size() <4){
-                gridList.add(data);
-            }else {
-                gridList.remove(0);
-                gridList.add(data);
             }
 
             if (gridTempList.size() <4){
@@ -175,6 +185,24 @@ public class MonitorListActivity extends BaseMvpActivity<MonitorListPresenter> i
             }else {
                 gridTempList.remove(0);
                 gridTempList.add(data);
+            }
+
+            gridList.clear();
+            gridList.addAll(gridTempList);
+
+            if(gridList.size() == 3){
+                gridList.add(null);
+            }
+
+            if(gridList.size() == 2){
+                gridList.add(null);
+                gridList.add(null);
+            }
+
+            if(gridList.size() == 1){
+                gridList.add(null);
+                gridList.add(null);
+                gridList.add(null);
             }
         }
         gridAdapter.notifyDataSetChanged();

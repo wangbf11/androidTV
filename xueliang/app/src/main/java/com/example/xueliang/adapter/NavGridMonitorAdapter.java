@@ -3,8 +3,6 @@ package com.example.xueliang.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
-import android.util.DisplayMetrics;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,8 +52,13 @@ public class NavGridMonitorAdapter extends RecyclerView.Adapter<NavGridMonitorAd
             layoutParams.height = (AppUtils.getScreenHeight() - AppUtils.dip2px(32)) / 2;
         }
 
-
         PointBean pointBean = stringList.get(position);
+        if (pointBean == null){
+            //站位用的
+            vvPlayer.setVisibility(View.GONE);
+            return;
+        }
+        vvPlayer.setVisibility(View.VISIBLE);
         String location = pointBean.getLocation();
         String town = pointBean.getTown();
         String village = pointBean.getVillage();
@@ -64,6 +67,9 @@ public class NavGridMonitorAdapter extends RecyclerView.Adapter<NavGridMonitorAd
         vvPlayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (pointBean == null){
+                    return;
+                }
                 Intent intent = new Intent();
                 intent.setClass(context, MonitorActivity.class);
                 intent.putExtra(MonitorActivity.POINT_BEAN, pointBean);
@@ -75,19 +81,21 @@ public class NavGridMonitorAdapter extends RecyclerView.Adapter<NavGridMonitorAd
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-                    v.setBackground(context.getResources().getDrawable(R.drawable.bg_boder));
+                    holder.pflContainer.setBackground(context.getResources().getDrawable(R.drawable.bg_boder));
                 } else {
-                    v.setBackground(null);
+                    holder.pflContainer.setBackground(context.getResources().getDrawable(R.drawable.bg_white_boder));
                 }
             }
 
         });
 
         vvPlayer.setVideoPath(pointBean.getUrl());
+//        vvPlayer.setVideoPath("http://vfx.mtime.cn/Video/2019/03/19/mp4/190319222227698228.mp4");
         vvPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
                 vvPlayer.start();
+//                vvPlayer.requestFocus();
             }
         });
 
@@ -98,11 +106,6 @@ public class NavGridMonitorAdapter extends RecyclerView.Adapter<NavGridMonitorAd
             return true;
         });
 
-    }
-
-    private float dipToPx(Context context, float value) {
-        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
-        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, metrics);
     }
 
     @Override

@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cl_grid"
+    android:background="@drawable/bg_white_boder"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <VideoView
@@ -32,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
-            android:text="2019-12-25 13:25:30  星期三"
+            tools:text="2019-12-25 13:25:30  星期三"
             android:textColor="#ffffffff"
             android:textSize="10sp" />
 
@@ -47,7 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:text=" 美兴镇-新街社区-监控点位1"
+            tools:text=" 美兴镇-新街社区-监控点位1"
             android:textColor="#ffffffff"
             android:textSize="10sp" />
     </LinearLayout>
