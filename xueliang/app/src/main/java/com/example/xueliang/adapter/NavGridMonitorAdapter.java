@@ -7,9 +7,11 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.xueliang.R;
 import com.example.xueliang.activity.MonitorActivity;
+import com.example.xueliang.bean.PointBean;
 import com.example.xueliang.utils.AppUtils;
 
 import java.util.List;
@@ -22,11 +24,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class NavGridMonitorAdapter extends RecyclerView.Adapter<NavGridMonitorAdapter.NavMovieHolder> {
     protected final Context context;
-    private final List<String> stringList;
+    private final List<PointBean> stringList;
+    private boolean isOne;
 
-    public NavGridMonitorAdapter(Context context, List<String> objectList) {
+    public NavGridMonitorAdapter(Context context, List<PointBean> objectList,boolean isOne) {
         this.stringList = objectList;
         this.context = context;
+        this.isOne = isOne;
     }
 
     @Override
@@ -37,6 +41,24 @@ public class NavGridMonitorAdapter extends RecyclerView.Adapter<NavGridMonitorAd
 
     @Override
     public void onBindViewHolder(NavMovieHolder holder, int position) {
+
+        View pflContainer = holder.pflContainer;
+        ViewGroup.LayoutParams layoutParams = pflContainer.getLayoutParams();
+        if (isOne){
+            //1分频使高度
+            layoutParams.height = (AppUtils.getScreenHeight() - AppUtils.dip2px(32));
+        }else {
+            //4分频使高度
+            layoutParams.height = (AppUtils.getScreenHeight() - AppUtils.dip2px(32))/2;
+        }
+
+
+        PointBean pointBean = stringList.get(position);
+        String location = pointBean.getLocation();
+        String town = stringList.get(position).getTown();
+        String village = stringList.get(position).getVillage();
+        holder.point_name.setText(town+" " +  village+" " + location);
+        holder.point_time.setText(stringList.get(position).getEquipment_num());
         holder.pflContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -46,13 +68,6 @@ public class NavGridMonitorAdapter extends RecyclerView.Adapter<NavGridMonitorAd
             }
         });
 
-        View pflContainer = holder.pflContainer;
-        ViewGroup.LayoutParams layoutParams = pflContainer.getLayoutParams();
-        if (stringList.size() == 1){
-            layoutParams.height = (AppUtils.getScreenHeight() - AppUtils.dip2px(32));
-        }else {
-            layoutParams.height = (AppUtils.getScreenHeight() - AppUtils.dip2px(32))/2;
-        }
         holder.pflContainer.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -80,11 +95,17 @@ public class NavGridMonitorAdapter extends RecyclerView.Adapter<NavGridMonitorAd
 
     public class NavMovieHolder extends RecyclerView.ViewHolder {
         public View pflContainer;
+        public TextView point_time;
+        public TextView point_name;
+        public View point_top;
 
         public NavMovieHolder(View itemView) {
             super(itemView);
             if (itemView.findViewById(R.id.cl_grid) != null) {
                 pflContainer = itemView.findViewById(R.id.cl_grid);
+                point_time = itemView.findViewById(R.id.point_time);
+                point_name = itemView.findViewById(R.id.point_name);
+                point_top = itemView.findViewById(R.id.point_top);
             }
         }
 

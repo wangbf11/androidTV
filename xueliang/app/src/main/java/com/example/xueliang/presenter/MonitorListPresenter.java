@@ -1,8 +1,6 @@
 package com.example.xueliang.presenter;
 
 
-import android.util.Log;
-
 import com.example.xueliang.activity.MonitorListActivity;
 import com.example.xueliang.base.BasePresenter;
 import com.example.xueliang.bean.CommonResult2;
@@ -50,15 +48,22 @@ public class MonitorListPresenter extends BasePresenter<MonitorListActivity> {
                         }
                         List<TownBean> list = data.getResult();
                         if (view != null &&list != null &&list.size() >0) {
+                            TownBean townBean = list.get(0);
+                            list.clear();
+                            list.add(townBean);
                             view.onLoad(list);
                         }else {
-                            Log.e("err", "err");
+                            if (view != null){
+                                view.onLoadFail("");
+                            }
                         }
                     }
 
                     @Override
                     protected void onFail(String err) {
-                        Log.e("err", "err");
+                        if (view != null){
+                            view.onLoadFail("");
+                        }
                     }
                 });
     }
