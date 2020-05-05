@@ -13,6 +13,7 @@ import com.example.xueliang.R;
 import com.example.xueliang.activity.MonitorActivity;
 import com.example.xueliang.bean.PointBean;
 import com.example.xueliang.utils.AppUtils;
+import com.example.xueliang.view.MVideoView;
 
 import java.util.List;
 
@@ -79,6 +80,8 @@ public class NavGridMonitorAdapter extends RecyclerView.Adapter<NavGridMonitorAd
             }
 
         });
+
+        holder.point_surfaceView.startRealPlayer(pointBean.getUrl());
     }
 
     private float dipToPx(Context context, float value) {
@@ -98,6 +101,7 @@ public class NavGridMonitorAdapter extends RecyclerView.Adapter<NavGridMonitorAd
         public TextView point_time;
         public TextView point_name;
         public View point_top;
+        public MVideoView point_surfaceView;
 
         public NavMovieHolder(View itemView) {
             super(itemView);
@@ -106,6 +110,7 @@ public class NavGridMonitorAdapter extends RecyclerView.Adapter<NavGridMonitorAd
                 point_time = itemView.findViewById(R.id.point_time);
                 point_name = itemView.findViewById(R.id.point_name);
                 point_top = itemView.findViewById(R.id.point_top);
+                point_surfaceView = itemView.findViewById(R.id.point_surfaceView);
             }
         }
 

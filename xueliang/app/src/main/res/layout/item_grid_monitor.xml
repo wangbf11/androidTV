@@ -5,6 +5,15 @@
     android:focusable="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <com.example.xueliang.view.MVideoView
+        android:id="@+id/point_surfaceView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
     <!--顶部信息栏-->
     <LinearLayout
         android:id="@+id/point_top"
