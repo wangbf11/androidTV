@@ -3,6 +3,8 @@ package com.example.xueliang.activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Handler;
+import android.text.Html;
+import android.text.Spanned;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -222,8 +224,9 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Load
 
 
     public void onLoadNotice(String data) {
+        Spanned spanned = Html.fromHtml(data);
         TxtChapter txtChapter = new TxtChapter();
-        txtChapter.setBody(data);
+        txtChapter.setBody(spanned.toString());
         mPageLoader.setChapter(txtChapter);
 
         mPvPage.postDelayed(new Runnable() {
@@ -236,7 +239,8 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Load
     }
 
     public void onLoadNotification(String data) {
-        mtvNotification.setText(data);
+        Spanned spanned = Html.fromHtml(data);
+        mtvNotification.setText(spanned.toString());
     }
 
     /**
