@@ -42,6 +42,7 @@
 
 
         <TextView
+            android:id="@+id/tv_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
@@ -73,6 +74,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/point_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="村委路口球机"
@@ -81,6 +83,7 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/town_cun_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"

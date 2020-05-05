@@ -1,15 +1,17 @@
 package com.example.xueliang.presenter;
 
 
-import android.util.Log;
-
 import com.example.xueliang.activity.MonitorActivity;
 import com.example.xueliang.base.BasePresenter;
+import com.example.xueliang.bean.CommonResult2;
+import com.example.xueliang.bean.TownBean;
 import com.example.xueliang.network.ResponceSubscriber2;
 import com.example.xueliang.network.RetrofitManager;
 import com.example.xueliang.network.RxSchedulerUtils;
+import com.example.xueliang.utils.ToastUtils;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MonitorPresenter extends BasePresenter<MonitorActivity> {
@@ -19,22 +21,59 @@ public class MonitorPresenter extends BasePresenter<MonitorActivity> {
 
     public void processLogic() {
         Map<String, Object> params = new HashMap<>();
-        params.put("phoneContactList", "");
-        RetrofitManager.getDefault().getList()
+        RetrofitManager.getDefault().getTownAndCunList(params)
                 .compose(RxSchedulerUtils::toSimpleSingle)
-                .subscribe(new ResponceSubscriber2<Map<String,Object>>() {
+                .subscribe(new ResponceSubscriber2<CommonResult2<List<TownBean>>>() {
                     @Override
-                    protected void onSucess(Map<String,Object> obj) {
-                        Log.e("dd","dd");
+                    protected void onSucess(CommonResult2<List<TownBean>> data) {
+                        if (null == data){
+                            return;
+                        }
+                        List<TownBean> list = data.getResult();
+                        if (view != null &&list != null &&list.size() >0) {
+                            TownBean townBean = list.get(0);
+                            list.clear();
+                            list.add(townBean);
+                            view.onLoad(list);
+                        }else {
+                            if (view != null){
+                                view.onLoadFail("");
+                            }
+                        }
                     }
 
                     @Override
                     protected void onFail(String err) {
-
-                        Log.e("err","err");
+                        if (view != null){
+                            view.onLoadFail("");
+                        }
                     }
                 });
     }
 
+    /**
+     * 获取登录注册二维码
+     */
+    public void oneKeyQZ(String pointId) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("note", "");
+        params.put("id", pointId);
+        RetrofitManager.getDefault().oneKeyQZ(params)
+                .compose(RxSchedulerUtils::toSimpleSingle)
+                .subscribe(new ResponceSubscriber2<Map>() {
+                    @Override
+                    protected void onSucess(Map data) {
+                        ToastUtils.show("上报成功");
+                        if (view != null){
+                            view.onQZSucess("");
+                        }
+                    }
+
+                    @Override
+                    protected void onFail(String err) {
+                        ToastUtils.show("上报失败");
+                    }
+                });
+    }
 
 }

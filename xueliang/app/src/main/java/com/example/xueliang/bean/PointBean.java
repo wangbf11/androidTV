@@ -1,6 +1,8 @@
 package com.example.xueliang.bean;
 
-public class PointBean {
+import java.io.Serializable;
+
+public class PointBean implements Serializable {
     private String equipment_num;
     private String town;
     private String village;

@@ -1,5 +1,6 @@
 package com.example.xueliang.activity;
 
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -15,24 +16,30 @@ import com.example.xueliang.adapter.BaseQuickAdapter;
 import com.example.xueliang.adapter.NavMonitorPageCunListAdapter;
 import com.example.xueliang.adapter.NavMonitorPagePointListAdapter;
 import com.example.xueliang.base.LoadCallBack;
+import com.example.xueliang.bean.PointBean;
+import com.example.xueliang.bean.TownBean;
+import com.example.xueliang.bean.VillageBean;
+import com.example.xueliang.network.ResponceSubscriber;
+import com.example.xueliang.network.RetrofitManager;
+import com.example.xueliang.network.RxSchedulerUtils;
 import com.example.xueliang.presenter.MonitorPresenter;
 import com.example.xueliang.utils.DialogUtil;
-import com.example.xueliang.utils.ToastUtils;
 import com.yan.tvprojectutils.FocusRecyclerView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import androidx.recyclerview.widget.LinearLayoutManager;
-
 import hikvision.com.streamclient.GA_HIKPlayer;
 import hikvision.com.streamclient.GA_HIKPlayerDelegate;
 import hikvision.com.streamclient.GA_HIKPlayerUrlListener;
 
-public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implements LoadCallBack {
-
+public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implements LoadCallBack<List<TownBean>>  {
+    public static final String POINT_BEAN = "point_bean";
     private TextView mTv_time;
+    private TextView tv_location;
     private LinearLayout ll_abnormal;
     private LinearLayout ll_abnormal_click;
     private LinearLayout ll_left_list;
@@ -43,10 +50,13 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
     private FocusRecyclerView mRv_monitor;
     private NavMonitorPageCunListAdapter cunAdapter;
     private NavMonitorPagePointListAdapter pointAdapter;
-    private List<String> cunList = new ArrayList<>();
-    private List<String> monitorList = new ArrayList<>();
+    private List<VillageBean> cunList = new ArrayList<>();
+    private List<PointBean> monitorList = new ArrayList<>();
     private GA_HIKPlayer hikPlayer;
     private ImageView iv_left_close;
+    private PointBean mPointBean;
+    private TextView town_cun_name;
+    private TextView point_name;
 
     @Override
     public MonitorPresenter setPresenter() {
@@ -60,13 +70,16 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
 
     @Override
     public void initData() {
-
+        mPointBean = (PointBean)getIntent().getSerializableExtra(POINT_BEAN);
     }
 
     @Override
     public void initView() {
         mTv_time = findViewById(R.id.tv_time);
         ll_tips = findViewById(R.id.ll_tips);
+        tv_location = findViewById(R.id.tv_location);
+        town_cun_name = findViewById(R.id.town_cun_name);
+        point_name = findViewById(R.id.point_name);
         ll_abnormal = findViewById(R.id.ll_abnormal);
         ll_abnormal_click = findViewById(R.id.ll_abnormal_click);
         ll_left_list = findViewById(R.id.ll_left_list);
@@ -140,6 +153,19 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
 
             }
         });
+
+        updateUI();
+    }
+
+    private void updateUI() {
+        mTv_time.setText(mPointBean.getEquipment_num());
+        String location = mPointBean.getLocation();
+        String town = mPointBean.getTown();
+        String village = mPointBean.getVillage();
+        tv_location.setText(town + " " + village + " " + location);
+
+        point_name.setText(location);
+        town_cun_name.setText(town + " " + village + "   编号：" + mPointBean.getEquipment_num());
     }
 
     @Override
@@ -148,6 +174,7 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
             //上报异常
             DialogUtil.showAlert(mContext, null, "您确认要上报异常情况吗？",
                     "确 定", (dialog, which) -> {
+                        presenter.oneKeyQZ(mPointBean.getEquipment_num());
                         dialog.dismiss();
                     }, "取 消", (dialog, which) -> {
                         dialog.dismiss();
@@ -159,9 +186,31 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
             public void onFocusChange(BaseQuickAdapter adapter, View v, boolean hasFocus, int position) {
                 if (hasFocus) {
                     monitorList.clear();
-                    monitorList.add("SDFASDFSDFADFSDAF");
-                    monitorList.add("测试测试测试测试测试测试测试测试");
                     pointAdapter.notifyDataSetChanged();
+                    VillageBean villageBean = cunList.get(position);
+                    Map<String, Object> params = new HashMap<>();
+                    params.put("id", villageBean.getId());
+                    RetrofitManager.getDefault().getPointListByCunId(params)
+                            .compose(RxSchedulerUtils::toSimpleSingle)
+                            .subscribe(new ResponceSubscriber<List<PointBean>>() {
+                                @Override
+                                protected void onSucess(List<PointBean> points) {
+                                    if (points != null && points.size() > 0) {
+                                        monitorList.clear();
+                                        monitorList.addAll(points);
+                                        pointAdapter.notifyDataSetChanged();
+                                    } else {
+                                        Log.e("err", "err");
+                                    }
+                                }
+
+                                @Override
+                                protected void onFail(String err) {
+                                    Log.e("err", "err");
+                                }
+                            });
+
+
                 }
 
             }
@@ -171,16 +220,38 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 monitorList.clear();
-                monitorList.add("SDFASDFSDFADFSDAF");
-                monitorList.add("测试测试测试测试测试测试测试测试");
                 pointAdapter.notifyDataSetChanged();
+                VillageBean villageBean = cunList.get(position);
+                Map<String, Object> params = new HashMap<>();
+                params.put("id", villageBean.getId());
+                RetrofitManager.getDefault().getPointListByCunId(params)
+                        .compose(RxSchedulerUtils::toSimpleSingle)
+                        .subscribe(new ResponceSubscriber<List<PointBean>>() {
+                            @Override
+                            protected void onSucess(List<PointBean> points) {
+                                if (points != null && points.size() > 0) {
+                                    monitorList.clear();
+                                    monitorList.addAll(points);
+                                    pointAdapter.notifyDataSetChanged();
+                                } else {
+                                    Log.e("err", "err");
+                                }
+                            }
+
+                            @Override
+                            protected void onFail(String err) {
+                                Log.e("err", "err");
+                            }
+                        });
             }
         });
 
         pointAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                ToastUtils.show("点击" + position);
+                mPointBean = monitorList.get(position);
+                updateUI();
+                hikPlayer.startRealPlayer(mContext, mPointBean.getUrl());
             }
         });
 
@@ -203,31 +274,29 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
 
     @Override
     public void loadData() {
-        cunList.add("SDFASDFSDFADFSDAF");
-        cunList.add("测试测试测试测试测试测试测试测试");
-        cunList.add("测试测试测试测试");
-        cunList.add("测试");
-        cunAdapter.notifyDataSetChanged();
-
-
-        monitorList.add("SDFASDFSDFADFSDAF");
-        monitorList.add("测试测试测试测试测试测试测试测试");
-        monitorList.add("测试测试测试测试");
-        monitorList.add("测试");
-        monitorList.add("SDFASDFSDFADFSDAF");
-        monitorList.add("测试测试测试测试测试测试测试测试");
-        monitorList.add("测试测试测试测试");
-        pointAdapter.notifyDataSetChanged();
+        presenter.processLogic();
     }
 
     @Override
-    public void onLoad(Object data) {
-
+    public void onLoad(List<TownBean> data) {
+        cunList.clear();
+        cunList.addAll(data.get(0).getChild());
+        cunAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onLoadFail(String message) {
 
+    }
+
+    /**
+     * 求助成功
+     * @param message
+     */
+    public void onQZSucess(String message) {
+        if (!mIsBottomHide){
+            openError();
+        }
     }
 
     /**
@@ -356,7 +425,7 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
     protected void onResume() {
         super.onResume();
         if (null != hikPlayer && !hikPlayer.playing) {
-            hikPlayer.startRealPlayer(this, "");
+            hikPlayer.startRealPlayer(this, mPointBean.getUrl());
         }
     }
 

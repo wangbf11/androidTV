@@ -2,18 +2,19 @@ package com.example.xueliang.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import com.example.xueliang.R;
 import com.example.xueliang.activity.MonitorActivity;
 import com.example.xueliang.bean.PointBean;
 import com.example.xueliang.utils.AppUtils;
-import com.example.xueliang.view.MVideoView;
 
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class NavGridMonitorAdapter extends RecyclerView.Adapter<NavGridMonitorAd
     private final List<PointBean> stringList;
     private boolean isOne;
 
-    public NavGridMonitorAdapter(Context context, List<PointBean> objectList,boolean isOne) {
+    public NavGridMonitorAdapter(Context context, List<PointBean> objectList, boolean isOne) {
         this.stringList = objectList;
         this.context = context;
         this.isOne = isOne;
@@ -42,34 +43,35 @@ public class NavGridMonitorAdapter extends RecyclerView.Adapter<NavGridMonitorAd
 
     @Override
     public void onBindViewHolder(NavMovieHolder holder, int position) {
-
+        VideoView vvPlayer = holder.point_surfaceView;
         View pflContainer = holder.pflContainer;
         ViewGroup.LayoutParams layoutParams = pflContainer.getLayoutParams();
-        if (isOne){
+        if (isOne) {
             //1分频使高度
             layoutParams.height = (AppUtils.getScreenHeight() - AppUtils.dip2px(32));
-        }else {
+        } else {
             //4分频使高度
-            layoutParams.height = (AppUtils.getScreenHeight() - AppUtils.dip2px(32))/2;
+            layoutParams.height = (AppUtils.getScreenHeight() - AppUtils.dip2px(32)) / 2;
         }
 
 
         PointBean pointBean = stringList.get(position);
         String location = pointBean.getLocation();
-        String town = stringList.get(position).getTown();
-        String village = stringList.get(position).getVillage();
-        holder.point_name.setText(town+" " +  village+" " + location);
+        String town = pointBean.getTown();
+        String village = pointBean.getVillage();
+        holder.point_name.setText(town + " " + village + " " + location);
         holder.point_time.setText(stringList.get(position).getEquipment_num());
-        holder.pflContainer.setOnClickListener(new View.OnClickListener() {
+        vvPlayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.setClass(context, MonitorActivity.class);
+                intent.putExtra(MonitorActivity.POINT_BEAN, pointBean);
                 context.startActivity(intent);
             }
         });
 
-        holder.pflContainer.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        vvPlayer.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
@@ -81,7 +83,22 @@ public class NavGridMonitorAdapter extends RecyclerView.Adapter<NavGridMonitorAd
 
         });
 
-        holder.point_surfaceView.startRealPlayer(pointBean.getUrl());
+        vvPlayer.setVideoPath(pointBean.getUrl());
+        vvPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                vvPlayer.start();
+                vvPlayer.requestFocus();
+            }
+        });
+
+
+        vvPlayer.setOnErrorListener((mp, what, extra) -> {
+            // 缓存有问题 先删除 缓存
+            vvPlayer.stopPlayback();
+            return true;
+        });
+
     }
 
     private float dipToPx(Context context, float value) {
@@ -95,13 +112,12 @@ public class NavGridMonitorAdapter extends RecyclerView.Adapter<NavGridMonitorAd
     }
 
 
-
     public class NavMovieHolder extends RecyclerView.ViewHolder {
         public View pflContainer;
         public TextView point_time;
         public TextView point_name;
         public View point_top;
-        public MVideoView point_surfaceView;
+        public VideoView point_surfaceView;
 
         public NavMovieHolder(View itemView) {
             super(itemView);
