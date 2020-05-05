@@ -88,7 +88,6 @@ public class NavGridMonitorAdapter extends RecyclerView.Adapter<NavGridMonitorAd
             @Override
             public void onPrepared(MediaPlayer mp) {
                 vvPlayer.start();
-                vvPlayer.requestFocus();
             }
         });
 
