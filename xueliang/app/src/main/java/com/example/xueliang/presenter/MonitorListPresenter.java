@@ -1,9 +1,15 @@
 package com.example.xueliang.presenter;
 
 
+import android.util.Log;
+
 import com.example.xueliang.activity.MonitorListActivity;
 import com.example.xueliang.base.BasePresenter;
+import com.example.xueliang.bean.CommonResult2;
 import com.example.xueliang.bean.TownBean;
+import com.example.xueliang.network.ResponceSubscriber2;
+import com.example.xueliang.network.RetrofitManager;
+import com.example.xueliang.network.RxSchedulerUtils;
 import com.example.xueliang.utils.JSONUtil;
 import com.google.gson.reflect.TypeToken;
 
@@ -11,7 +17,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Single;
 import io.reactivex.SingleEmitter;
@@ -27,6 +35,36 @@ public class MonitorListPresenter extends BasePresenter<MonitorListActivity> {
     }
 
     public void processLogic() {
+        getTownAndCun();
+    }
+
+    private void getTownAndCun() {
+        Map<String, Object> params = new HashMap<>();
+        RetrofitManager.getDefault().getTownAndCunList(params)
+                .compose(RxSchedulerUtils::toSimpleSingle)
+                .subscribe(new ResponceSubscriber2<CommonResult2<List<TownBean>>>() {
+                    @Override
+                    protected void onSucess(CommonResult2<List<TownBean>> data) {
+                        if (null == data){
+                            return;
+                        }
+                        List<TownBean> list = data.getResult();
+                        if (view != null &&list != null &&list.size() >0) {
+                            view.onLoad(list);
+                        }else {
+                            Log.e("err", "err");
+                        }
+                    }
+
+                    @Override
+                    protected void onFail(String err) {
+                        Log.e("err", "err");
+                    }
+                });
+    }
+
+
+    private void test() {
         Disposable disposable = Single.create(new SingleOnSubscribe<List<TownBean>>() {
             @Override
             public void subscribe(SingleEmitter<List<TownBean>> singleSubscriber) throws Exception {

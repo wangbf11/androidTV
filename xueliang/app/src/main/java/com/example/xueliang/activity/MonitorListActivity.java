@@ -116,6 +116,6 @@ public class MonitorListActivity extends BaseMvpActivity<MonitorListPresenter> i
 
     }
     public void onPointItemChildClick(PointBean data) {
-        ToastUtils.show(data.getpName());
+        ToastUtils.show(data.getLocation());
     }
 }

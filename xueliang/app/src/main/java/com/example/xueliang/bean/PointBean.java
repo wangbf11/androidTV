@@ -1,24 +1,42 @@
 package com.example.xueliang.bean;
 
 public class PointBean {
-    private String pid;
-    private String pName;
+    private String equipment_num;
+    private String town;
+    private String village;
+    private String location;
     private String url;
 
-    public String getPid() {
-        return pid;
+    public String getEquipment_num() {
+        return equipment_num;
     }
 
-    public void setPid(String pid) {
-        this.pid = pid;
+    public void setEquipment_num(String equipment_num) {
+        this.equipment_num = equipment_num;
     }
 
-    public String getpName() {
-        return pName;
+    public String getTown() {
+        return town;
     }
 
-    public void setpName(String pName) {
-        this.pName = pName;
+    public void setTown(String town) {
+        this.town = town;
+    }
+
+    public String getVillage() {
+        return village;
+    }
+
+    public void setVillage(String village) {
+        this.village = village;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public String getUrl() {

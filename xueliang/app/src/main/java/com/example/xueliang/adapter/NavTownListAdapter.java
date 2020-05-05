@@ -42,7 +42,7 @@ public class NavTownListAdapter extends RecyclerView.Adapter<NavTownListAdapter.
 
     @Override
     public void onBindViewHolder(NavMovieHolder holder, int position) {
-        holder.tv_town.setText(list.get(position).gettName());
+        holder.tv_town.setText(list.get(position).getName());
         holder.pflContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,7 +50,7 @@ public class NavTownListAdapter extends RecyclerView.Adapter<NavTownListAdapter.
                 LinearLayoutManager mLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
                 holder.rv_cun.setLayoutManager(mLayoutManager);
                 holder.rv_cun.setHasFixedSize(true);
-                List<VillageBean> villages = list.get(position).getVillages();
+                List<VillageBean> villages = list.get(position).getChild();
                 NavCunListAdapter navCunListAdapter = new NavCunListAdapter(context, villages);
                 holder.rv_cun.setAdapter(navCunListAdapter);
             }

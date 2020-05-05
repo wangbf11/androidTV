@@ -1,33 +1,23 @@
 package com.example.xueliang.bean;
 
-import java.util.List;
-
 public class VillageBean {
-    private String vid;
-    private String vName;
-    private List<PointBean> points;
+    private String id;
+    private String name;
+//    private List<PointBean> child;
 
-    public String getVid() {
-        return vid;
+    public String getId() {
+        return id;
     }
 
-    public void setVid(String vid) {
-        this.vid = vid;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getvName() {
-        return vName;
+    public String getName() {
+        return name;
     }
 
-    public void setvName(String vName) {
-        this.vName = vName;
-    }
-
-    public List<PointBean> getPoints() {
-        return points;
-    }
-
-    public void setPoints(List<PointBean> points) {
-        this.points = points;
+    public void setName(String name) {
+        this.name = name;
     }
 }

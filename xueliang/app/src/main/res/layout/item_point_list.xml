@@ -12,17 +12,14 @@
 
     <TextView
         android:id="@+id/tv_point"
-        android:layout_marginLeft="15dp"
-        android:layout_width="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="8dp"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="wrap_content"
         android:text="新街村"
         android:textSize="12sp"
         android:textColor="#fff"/>
-
-    <View
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="wrap_content"/>
 
     <ImageView
         android:layout_width="10dp"

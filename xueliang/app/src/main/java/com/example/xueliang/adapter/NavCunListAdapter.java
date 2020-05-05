@@ -2,6 +2,7 @@ package com.example.xueliang.adapter;
 
 import android.content.Context;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,9 +15,14 @@ import android.widget.TextView;
 import com.example.xueliang.R;
 import com.example.xueliang.bean.PointBean;
 import com.example.xueliang.bean.VillageBean;
+import com.example.xueliang.network.ResponceSubscriber;
+import com.example.xueliang.network.RetrofitManager;
+import com.example.xueliang.network.RxSchedulerUtils;
 import com.yan.tvprojectutils.FocusRecyclerView;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -42,17 +48,35 @@ public class NavCunListAdapter extends RecyclerView.Adapter<NavCunListAdapter.Na
 
     @Override
     public void onBindViewHolder(NavMovieHolder holder, int position) {
-        holder.tv_cun.setText(stringList.get(position).getvName());
+        holder.tv_cun.setText(stringList.get(position).getName());
         holder.pflContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openClick( holder.iv_arrow,holder.rv_point);
-                LinearLayoutManager mLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
-                holder.rv_point.setLayoutManager(mLayoutManager);
-                holder.rv_point.setHasFixedSize(true);
-                List<PointBean> points = stringList.get(position).getPoints();
-                NavPointListAdapter navCunListAdapter = new NavPointListAdapter(context, points);
-                holder.rv_point.setAdapter(navCunListAdapter);
+                Map<String, Object> params = new HashMap<>();
+                params.put("id", stringList.get(position).getId());
+                RetrofitManager.getDefault().getPointListByCunId(params)
+                        .compose(RxSchedulerUtils::toSimpleSingle)
+                        .subscribe(new ResponceSubscriber<List<PointBean>>() {
+                            @Override
+                            protected void onSucess(List<PointBean> points) {
+                                if (points != null && points.size() > 0) {
+                                    openClick(holder.iv_arrow, holder.rv_point);
+                                    LinearLayoutManager mLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+                                    holder.rv_point.setLayoutManager(mLayoutManager);
+                                    holder.rv_point.setHasFixedSize(true);
+                                    NavPointListAdapter navCunListAdapter = new NavPointListAdapter(context, points);
+                                    holder.rv_point.setAdapter(navCunListAdapter);
+                                } else {
+                                    Log.e("err", "err");
+                                }
+                            }
+
+                            @Override
+                            protected void onFail(String err) {
+                                Log.e("err", "err");
+                            }
+                        });
+
             }
         });
     }
@@ -66,7 +90,6 @@ public class NavCunListAdapter extends RecyclerView.Adapter<NavCunListAdapter.Na
     public int getItemCount() {
         return stringList.size();
     }
-
 
 
     public class NavMovieHolder extends RecyclerView.ViewHolder {
@@ -92,10 +115,10 @@ public class NavCunListAdapter extends RecyclerView.Adapter<NavCunListAdapter.Na
      * 点击了展开详情
      */
     private void openClick(ImageView down, FocusRecyclerView tv_detail) {
-        if (tv_detail.getVisibility() == View.GONE){
-            startMoreAnima(true,down,tv_detail);
-        }else {
-            startMoreAnima(false,down,tv_detail);
+        if (tv_detail.getVisibility() == View.GONE) {
+            startMoreAnima(true, down, tv_detail);
+        } else {
+            startMoreAnima(false, down, tv_detail);
         }
     }
 
@@ -123,9 +146,9 @@ public class NavCunListAdapter extends RecyclerView.Adapter<NavCunListAdapter.Na
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                if (isOpen){
+                if (isOpen) {
                     tv_detail.setVisibility(View.VISIBLE);
-                }else {
+                } else {
                     tv_detail.setVisibility(View.GONE);
                 }
             }

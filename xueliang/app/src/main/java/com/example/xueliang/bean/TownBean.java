@@ -3,31 +3,31 @@ package com.example.xueliang.bean;
 import java.util.List;
 
 public class TownBean {
-    private String tid;
-    private String tName;
-    private List<VillageBean> villages;
+    private String id;
+    private String name;
+    private List<VillageBean> child;
 
-    public String getTid() {
-        return tid;
+    public String getId() {
+        return id;
     }
 
-    public void setTid(String tid) {
-        this.tid = tid;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String gettName() {
-        return tName;
+    public String getName() {
+        return name;
     }
 
-    public void settName(String tName) {
-        this.tName = tName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public List<VillageBean> getVillages() {
-        return villages;
+    public List<VillageBean> getChild() {
+        return child;
     }
 
-    public void setVillages(List<VillageBean> villages) {
-        this.villages = villages;
+    public void setChild(List<VillageBean> child) {
+        this.child = child;
     }
 }
