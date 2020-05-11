@@ -89,7 +89,7 @@ public class NavGridMonitorAdapter extends RecyclerView.Adapter<NavGridMonitorAd
 
         });
 
-        vvPlayer.setVideoPath("rtmp://117.139.72.126:1935/stream/example");
+        vvPlayer.setVideoPath("rtmp://58.200.131.2:1935/livetv/hunantv");
 //        vvPlayer.setVideoPath(pointBean.getUrl());
         vvPlayer.setOnPreparedListener(new IMediaPlayer.OnPreparedListener()  {
 
