@@ -1,2 +1,2 @@
-include ':app', ':tvprojectutils'
+include ':app', ':tvprojectutils','ijkplayerlibrary'
 rootProject.name='xueliang'

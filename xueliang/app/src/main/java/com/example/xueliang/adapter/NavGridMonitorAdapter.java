@@ -2,12 +2,10 @@ package com.example.xueliang.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.media.MediaPlayer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.VideoView;
 
 import com.example.xueliang.R;
 import com.example.xueliang.activity.MonitorActivity;
@@ -17,6 +15,8 @@ import com.example.xueliang.utils.AppUtils;
 import java.util.List;
 
 import androidx.recyclerview.widget.RecyclerView;
+import tv.danmaku.ijk.media.player.IMediaPlayer;
+import tv.danmaku.ijk.media.player.widget.IjkVideoView;
 
 /**
  * Created by wbf
@@ -41,7 +41,7 @@ public class NavGridMonitorAdapter extends RecyclerView.Adapter<NavGridMonitorAd
 
     @Override
     public void onBindViewHolder(NavMovieHolder holder, int position) {
-        VideoView vvPlayer = holder.point_surfaceView;
+        IjkVideoView vvPlayer = holder.point_surfaceView;
         View pflContainer = holder.pflContainer;
         ViewGroup.LayoutParams layoutParams = pflContainer.getLayoutParams();
         if (isOne) {
@@ -89,13 +89,13 @@ public class NavGridMonitorAdapter extends RecyclerView.Adapter<NavGridMonitorAd
 
         });
 
-        vvPlayer.setVideoPath(pointBean.getUrl());
-//        vvPlayer.setVideoPath("http://vfx.mtime.cn/Video/2019/03/19/mp4/190319222227698228.mp4");
-        vvPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+        vvPlayer.setVideoPath("rtmp://117.139.72.126:1935/stream/example");
+//        vvPlayer.setVideoPath(pointBean.getUrl());
+        vvPlayer.setOnPreparedListener(new IMediaPlayer.OnPreparedListener()  {
+
             @Override
-            public void onPrepared(MediaPlayer mp) {
+            public void onPrepared(IMediaPlayer iMediaPlayer) {
                 vvPlayer.start();
-//                vvPlayer.requestFocus();
             }
         });
 
@@ -119,7 +119,7 @@ public class NavGridMonitorAdapter extends RecyclerView.Adapter<NavGridMonitorAd
         public TextView point_time;
         public TextView point_name;
         public View point_top;
-        public VideoView point_surfaceView;
+        public IjkVideoView point_surfaceView;
 
         public NavMovieHolder(View itemView) {
             super(itemView);

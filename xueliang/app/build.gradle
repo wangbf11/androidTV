@@ -91,11 +91,6 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
     implementation 'io.reactivex.rxjava2:rxjava:2.2.10'
     implementation project(':tvprojectutils')
-    //sdk
-    implementation(name: 'artemis_lib-release', ext: 'aar')
-    implementation(name: 'ijkplayer-java-release', ext: 'aar')
-    implementation(name: 'gahikplayersdk-release', ext: 'aar')
-    implementation files('libs/ecs.jar')
 
     implementation 'com.google.zxing:core:3.3.3'
 
@@ -103,6 +98,8 @@ dependencies {
 
     //加载对话框
     implementation 'com.kaopiz:kprogresshud:1.2.0'
+
+    implementation project(':ijkplayerlibrary')
 
     //implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
 }

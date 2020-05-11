@@ -6,7 +6,7 @@
     android:background="@drawable/bg_white_boder"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <VideoView
+    <tv.danmaku.ijk.media.player.widget.IjkVideoView
         android:id="@+id/point_surfaceView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

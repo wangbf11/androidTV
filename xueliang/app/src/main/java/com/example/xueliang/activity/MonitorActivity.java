@@ -2,8 +2,6 @@ package com.example.xueliang.activity;
 
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -32,9 +30,8 @@ import java.util.List;
 import java.util.Map;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
-import hikvision.com.streamclient.GA_HIKPlayer;
-import hikvision.com.streamclient.GA_HIKPlayerDelegate;
-import hikvision.com.streamclient.GA_HIKPlayerUrlListener;
+import tv.danmaku.ijk.media.player.IMediaPlayer;
+import tv.danmaku.ijk.media.player.widget.IjkVideoView;
 
 public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implements LoadCallBack<List<TownBean>>  {
     public static final String POINT_BEAN = "point_bean";
@@ -52,11 +49,11 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
     private NavMonitorPagePointListAdapter pointAdapter;
     private List<VillageBean> cunList = new ArrayList<>();
     private List<PointBean> monitorList = new ArrayList<>();
-    private GA_HIKPlayer hikPlayer;
     private ImageView iv_left_close;
     private PointBean mPointBean;
     private TextView town_cun_name;
     private TextView point_name;
+    private IjkVideoView mVvPlayer;
 
     @Override
     public MonitorPresenter setPresenter() {
@@ -84,24 +81,9 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
         ll_abnormal_click = findViewById(R.id.ll_abnormal_click);
         ll_left_list = findViewById(R.id.ll_left_list);
         iv_left_close = findViewById(R.id.iv_left_close);
-        SurfaceView surfaceView1 = findViewById(R.id.surfaceView1);
+        mVvPlayer = findViewById(R.id.surfaceView1);
 
-        surfaceView1.getHolder().addCallback(new SurfaceHolder.Callback() {
-            @Override
-            public void surfaceCreated(SurfaceHolder holder) {
-                hikPlayer.setSurfaceViewHolder(holder);
-            }
 
-            @Override
-            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-
-            }
-
-            @Override
-            public void surfaceDestroyed(SurfaceHolder holder) {
-
-            }
-        });
 
 
         ll_abnormal.setVisibility(View.GONE);
@@ -124,34 +106,21 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
 
         createCountDownTimer();
 
+        // mVvPlayer.setVideoPath(mPointBean.getUrl());
+        mVvPlayer.setVideoPath("rtmp://117.139.72.126:1935/stream/example");
+        mVvPlayer.setOnPreparedListener(new IMediaPlayer.OnPreparedListener()  {
 
-        hikPlayer = new GA_HIKPlayer(new GA_HIKPlayerUrlListener() {
             @Override
-            public String getPlayUrl() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                    }
-                });
-                return "";//hik
+            public void onPrepared(IMediaPlayer iMediaPlayer) {
+                mVvPlayer.start();
             }
         });
 
-        hikPlayer.setPlayerDelegate(new GA_HIKPlayerDelegate() {
-            @Override
-            public void didPlayFailed(GA_HIKPlayer ga_hikPlayer, Integer integer) {
-                //播放失败了
-            }
 
-            @Override
-            public void didReceivedMessage(GA_HIKPlayer ga_hikPlayer, Integer integer) {
-                //播放成功了
-            }
-
-            @Override
-            public void didReceivedDataLength(GA_HIKPlayer ga_hikPlayer, Integer integer) {
-
-            }
+        mVvPlayer.setOnErrorListener((mp, what, extra) -> {
+            // 缓存有问题 先删除 缓存
+            mVvPlayer.stopPlayback();
+            return true;
         });
 
         updateUI();
@@ -251,7 +220,7 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 mPointBean = monitorList.get(position);
                 updateUI();
-                hikPlayer.startRealPlayer(mContext, mPointBean.getUrl());
+                mVvPlayer.setVideoPath(mPointBean.getUrl());
             }
         });
 
@@ -424,26 +393,20 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
     @Override
     protected void onResume() {
         super.onResume();
-        if (null != hikPlayer && !hikPlayer.playing) {
-            hikPlayer.startRealPlayer(this, mPointBean.getUrl());
-        }
+        mVvPlayer.resume();
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        if (null != hikPlayer && hikPlayer.playing) {
-            hikPlayer.stopRealPlay();
-        }
+    protected void onPause() {
+        super.onPause();
+        mVvPlayer.pause();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        // 判断是否初始化，是否预览过，判断 context是否存在
-        if (hikPlayer != null) {
-            hikPlayer.destoryPlayer();
-        }
-
+        mVvPlayer.stopPlayback();
+        mVvPlayer.release(true);
+        mVvPlayer.seekTo(0);
     }
 }
