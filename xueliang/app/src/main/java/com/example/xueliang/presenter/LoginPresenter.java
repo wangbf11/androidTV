@@ -11,6 +11,7 @@ import com.example.xueliang.bean.UserInfoEntity;
 import com.example.xueliang.network.ResponceSubscriber;
 import com.example.xueliang.network.RetrofitManager;
 import com.example.xueliang.network.RxSchedulerUtils;
+import com.example.xueliang.utils.AppUtils;
 import com.example.xueliang.utils.ParamsUtil;
 import com.example.xueliang.utils.SPUtil;
 import com.example.xueliang.utils.StringUtils;
@@ -18,7 +19,6 @@ import com.example.xueliang.utils.StringUtils;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 public class LoginPresenter extends BasePresenter<LoginActivity> {
 
@@ -34,8 +34,8 @@ public class LoginPresenter extends BasePresenter<LoginActivity> {
      */
     public void getLoginQrCode() {
         Map<String, Object> params = new HashMap<>();
-        mUuid = UUID.randomUUID().toString();
-        //params.put("uuid", AppUtils.getIMEI());
+//        mUuid = UUID.randomUUID().toString();
+        mUuid = AppUtils.getIMEI();
         params.put("uuid", mUuid);
         RetrofitManager.getDefault().getLoginQrCode(params)
                 .compose(RxSchedulerUtils::toSimpleSingle)
@@ -76,7 +76,11 @@ public class LoginPresenter extends BasePresenter<LoginActivity> {
      */
     public void getLogInfo() {
         Map<String, Object> params = new HashMap<>();
-        params.put("uuid", mUuid);
+        String imei = mUuid;
+        if (StringUtils.isBlank(imei)){
+            imei = AppUtils.getIMEI();
+        }
+        params.put("uuid", imei);
         RetrofitManager.getDefault().getLoginInfo(params)
                 .compose(RxSchedulerUtils::toSimpleSingle)
                 .subscribe(new ResponceSubscriber<List<UserInfoEntity>>() {
