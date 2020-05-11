@@ -14,6 +14,7 @@ import com.example.xueliang.utils.AppUtils;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.widget.IjkVideoView;
@@ -26,6 +27,7 @@ public class NavGridMonitorAdapter extends RecyclerView.Adapter<NavGridMonitorAd
     protected final Context context;
     private final List<PointBean> stringList;
     private boolean isOne;
+    private IjkVideoView mVvPlayer;
 
     public NavGridMonitorAdapter(Context context, List<PointBean> objectList, boolean isOne) {
         this.stringList = objectList;
@@ -41,7 +43,7 @@ public class NavGridMonitorAdapter extends RecyclerView.Adapter<NavGridMonitorAd
 
     @Override
     public void onBindViewHolder(NavMovieHolder holder, int position) {
-        IjkVideoView vvPlayer = holder.point_surfaceView;
+        mVvPlayer = holder.point_surfaceView;
         View pflContainer = holder.pflContainer;
         ViewGroup.LayoutParams layoutParams = pflContainer.getLayoutParams();
         if (isOne) {
@@ -53,21 +55,21 @@ public class NavGridMonitorAdapter extends RecyclerView.Adapter<NavGridMonitorAd
         }
 
         PointBean pointBean = stringList.get(position);
-        if (pointBean == null){
+        if (pointBean == null) {
             //站位用的
-            vvPlayer.setVisibility(View.GONE);
+            mVvPlayer.setVisibility(View.GONE);
             return;
         }
-        vvPlayer.setVisibility(View.VISIBLE);
+        mVvPlayer.setVisibility(View.VISIBLE);
         String location = pointBean.getLocation();
         String town = pointBean.getTown();
         String village = pointBean.getVillage();
         holder.point_name.setText(town + " " + village + " " + location);
         holder.point_time.setText(stringList.get(position).getEquipment_num());
-        vvPlayer.setOnClickListener(new View.OnClickListener() {
+        mVvPlayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (pointBean == null){
+                if (pointBean == null) {
                     return;
                 }
                 Intent intent = new Intent();
@@ -77,7 +79,7 @@ public class NavGridMonitorAdapter extends RecyclerView.Adapter<NavGridMonitorAd
             }
         });
 
-        vvPlayer.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        mVvPlayer.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
@@ -89,20 +91,20 @@ public class NavGridMonitorAdapter extends RecyclerView.Adapter<NavGridMonitorAd
 
         });
 
-        vvPlayer.setVideoPath("rtmp://58.200.131.2:1935/livetv/hunantv");
+        mVvPlayer.setVideoPath("rtmp://58.200.131.2:1935/livetv/hunantv");
 //        vvPlayer.setVideoPath(pointBean.getUrl());
-        vvPlayer.setOnPreparedListener(new IMediaPlayer.OnPreparedListener()  {
+        mVvPlayer.setOnPreparedListener(new IMediaPlayer.OnPreparedListener() {
 
             @Override
             public void onPrepared(IMediaPlayer iMediaPlayer) {
-                vvPlayer.start();
+                mVvPlayer.start();
             }
         });
 
 
-        vvPlayer.setOnErrorListener((mp, what, extra) -> {
+        mVvPlayer.setOnErrorListener((mp, what, extra) -> {
             // 缓存有问题 先删除 缓存
-            vvPlayer.stopPlayback();
+            mVvPlayer.stopPlayback();
             return true;
         });
 
@@ -134,4 +136,35 @@ public class NavGridMonitorAdapter extends RecyclerView.Adapter<NavGridMonitorAd
 
     }
 
+    @Override
+    public void onViewDetachedFromWindow(@NonNull NavMovieHolder holder) {
+        super.onViewDetachedFromWindow(holder);
+        if (null != mVvPlayer) {
+            mVvPlayer.pause();
+        }
+    }
+
+    @Override
+    public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        if (null != mVvPlayer) {
+            mVvPlayer.pause();
+        }
+    }
+
+    @Override
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        if (null != mVvPlayer) {
+            mVvPlayer.resume();
+        }
+    }
+
+    @Override
+    public void onViewAttachedToWindow(@NonNull NavMovieHolder holder) {
+        super.onViewAttachedToWindow(holder);
+        if (null != mVvPlayer) {
+            mVvPlayer.resume();
+        }
+    }
 }
