@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.example.xueliang.activity.LoginActivity;
 import com.example.xueliang.base.BasePresenter;
+import com.example.xueliang.bean.AppUpdateInfoBean;
 import com.example.xueliang.bean.QrCodeBean;
 import com.example.xueliang.bean.UserInfoEntity;
 import com.example.xueliang.network.ResponceSubscriber;
@@ -42,12 +43,12 @@ public class LoginPresenter extends BasePresenter<LoginActivity> {
                 .subscribe(new ResponceSubscriber<List<QrCodeBean>>() {
                     @Override
                     protected void onSucess(List<QrCodeBean> list) {
-                        if (view != null &&list != null &&list.size() >0) {
+                        if (view != null && list != null && list.size() > 0) {
                             QrCodeBean qrCodeBean = list.get(0);
                             String loginUrl = qrCodeBean.getLoginUrl();
                             int timer = qrCodeBean.getTimer();
                             mTimer = timer * 1000;
-                            if (mTimer <=0) {
+                            if (mTimer <= 0) {
                                 mTimer = 3000;
                             }
                             Map<String, Object> urlparams = new HashMap<>();
@@ -56,7 +57,7 @@ public class LoginPresenter extends BasePresenter<LoginActivity> {
                             loginUrl = loginUrl + "?" + map2urlParams;
                             view.onGetQrCode(loginUrl);
                             getLogInfo();
-                        }else {
+                        } else {
                             Log.e("err", "err");
                         }
                     }
@@ -69,15 +70,13 @@ public class LoginPresenter extends BasePresenter<LoginActivity> {
     }
 
 
-
-
     /**
      * 获取登录注册二维码
      */
     public void getLogInfo() {
         Map<String, Object> params = new HashMap<>();
         String imei = mUuid;
-        if (StringUtils.isBlank(imei)){
+        if (StringUtils.isBlank(imei)) {
             imei = AppUtils.getIMEI();
         }
         params.put("uuid", imei);
@@ -86,16 +85,16 @@ public class LoginPresenter extends BasePresenter<LoginActivity> {
                 .subscribe(new ResponceSubscriber<List<UserInfoEntity>>() {
                     @Override
                     protected void onSucess(List<UserInfoEntity> list) {
-                        if (view != null &&list != null &&list.size() >0) {
+                        if (view != null && list != null && list.size() > 0) {
                             UserInfoEntity userInfoEntity = list.get(0);
-                            if (StringUtils.isNotBlank(userInfoEntity.getToken())){
+                            if (StringUtils.isNotBlank(userInfoEntity.getToken())) {
                                 SPUtil.keepUserInfo(userInfoEntity);
                                 SPUtil.keepToken(userInfoEntity.getToken());
                                 view.onLoginSuccess();
-                            }else {
+                            } else {
                                 new Handler().postDelayed(progressRunnable, mTimer);
                             }
-                        }else {
+                        } else {
                             new Handler().postDelayed(progressRunnable, mTimer);
                         }
                     }
@@ -116,5 +115,33 @@ public class LoginPresenter extends BasePresenter<LoginActivity> {
         }
     };
 
+
+    public void getApkIsUpdate() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("version", AppUtils.getAppVersion());
+        RetrofitManager.getDefault().getApkisUpdate(params)
+                .compose(RxSchedulerUtils::toSimpleSingle)
+                .subscribe(new ResponceSubscriber<List<AppUpdateInfoBean>>() {
+                    @Override
+                    protected void onSucess(List<AppUpdateInfoBean> list) {
+                        Log.e("getApkisUpdate", "list="+list);
+                        if (view != null && list != null && list.size() > 0) {
+                            AppUpdateInfoBean appUpdateInfoBean = list.get(0);
+                            if ("0".equals(appUpdateInfoBean.getType())){//无需更新
+
+                            }else if ("1".equals(appUpdateInfoBean.getType())){//需要更新
+
+                            }else if ("2".equals(appUpdateInfoBean.getType())){//强制更新
+
+                            }
+                        }
+                    }
+
+                    @Override
+                    protected void onFail(String err) {
+                        Log.e("err", "err");
+                    }
+                });
+    }
 
 }

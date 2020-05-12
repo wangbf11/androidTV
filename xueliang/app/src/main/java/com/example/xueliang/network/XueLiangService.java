@@ -1,6 +1,7 @@
 package com.example.xueliang.network;
 
 
+import com.example.xueliang.bean.AppUpdateInfoBean;
 import com.example.xueliang.bean.CommonResult;
 import com.example.xueliang.bean.CommonResult2;
 import com.example.xueliang.bean.PointBean;
@@ -93,4 +94,11 @@ public interface XueLiangService {
     @Headers({"Content-Type:application/json; charset=utf-8", RetrofitManager.CACHE_CONTROL_AGE + RetrofitManager.CACHE_CONTROL_NETWORK})
     @GET("/interface/rest/http/xlgc/xltzxt-ywgl-jkspgl-ssjkspgl-ssjkspxx.htm")
     Observable<CommonResult<List<PointBean>>> getPointListByCunId(@QueryMap Map<String, Object> params);
+
+    /**
+     * 查询apk是否需要更新
+     */
+    @Headers({"Content-Type:application/json; charset=utf-8", RetrofitManager.CACHE_CONTROL_AGE + RetrofitManager.CACHE_CONTROL_NETWORK})
+    @POST("/interface/rest/http/xlwb/xlgc-wb-jdh-bbkz.htm")
+    Observable<CommonResult<List<AppUpdateInfoBean>>> getApkisUpdate(@Body Map<String, Object> params);
 }
