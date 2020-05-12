@@ -8,7 +8,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Debug;
-import android.telephony.TelephonyManager;
+import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -80,8 +80,11 @@ public class AppUtils {
     public static String getIMEI() {
         String imei;
         try {
-            TelephonyManager telephonyManager = (TelephonyManager)getApplication().getSystemService(Context.TELEPHONY_SERVICE);
-            imei = telephonyManager.getDeviceId();
+//            TelephonyManager telephonyManager = (TelephonyManager)getApplication().getSystemService(Context.TELEPHONY_SERVICE);
+//            imei = telephonyManager.getDeviceId();
+
+            imei = Settings.Secure.getString(getApplication().getContentResolver(),
+                    Settings.Secure.ANDROID_ID);
         } catch (Exception e) {
             imei = "";
         }

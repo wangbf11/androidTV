@@ -1,6 +1,5 @@
 package com.example.xueliang.activity;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -14,7 +13,6 @@ import com.example.xueliang.utils.AppUtils;
 import com.example.xueliang.utils.QRCodeUtil;
 import com.example.xueliang.utils.SPUtil;
 import com.example.xueliang.utils.StringUtils;
-import com.tbruyelle.rxpermissions2.RxPermissions;
 
 /*
  * 登录页面
@@ -40,15 +38,15 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter> implements Lo
     @Override
     public void initView() {
         mQrCode = findViewById(R.id.iv_qrcode);
-        RxPermissions rxPermissions = new RxPermissions(this);
-        rxPermissions.request(Manifest.permission.READ_PHONE_STATE)
-                .subscribe(
-                        aBoolean -> {
-                            if (!aBoolean) {
-                                finish();
-                            }
-                        }
-                );
+//        RxPermissions rxPermissions = new RxPermissions(this);
+//        rxPermissions.request(Manifest.permission.READ_PHONE_STATE)
+//                .subscribe(
+//                        aBoolean -> {
+//                            if (!aBoolean) {
+//                                finish();
+//                            }
+//                        }
+//                );
     }
 
     @Override
