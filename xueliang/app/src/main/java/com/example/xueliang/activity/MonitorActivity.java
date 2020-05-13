@@ -1,6 +1,5 @@
 package com.example.xueliang.activity;
 
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
@@ -17,17 +16,12 @@ import com.example.xueliang.base.LoadCallBack;
 import com.example.xueliang.bean.PointBean;
 import com.example.xueliang.bean.TownBean;
 import com.example.xueliang.bean.VillageBean;
-import com.example.xueliang.network.ResponceSubscriber;
-import com.example.xueliang.network.RetrofitManager;
-import com.example.xueliang.network.RxSchedulerUtils;
 import com.example.xueliang.presenter.MonitorPresenter;
 import com.example.xueliang.utils.DialogUtil;
 import com.yan.tvprojectutils.FocusRecyclerView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import tv.danmaku.ijk.media.player.IMediaPlayer;
@@ -107,7 +101,9 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
         createCountDownTimer();
 
         // mVvPlayer.setVideoPath(mPointBean.getUrl());
-        mVvPlayer.setVideoPath("rtmp://117.139.72.126:1935/stream/example");
+        String url = "rtmp://58.200.131.2:1935/livetv/hunantv";
+//        mVvPlayer.setVideoPath("rtmp://117.139.72.126:1935/stream/example");
+        mVvPlayer.setVideoPath(url);
         mVvPlayer.setOnPreparedListener(new IMediaPlayer.OnPreparedListener()  {
 
             @Override
@@ -157,29 +153,9 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
                     monitorList.clear();
                     pointAdapter.notifyDataSetChanged();
                     VillageBean villageBean = cunList.get(position);
-                    Map<String, Object> params = new HashMap<>();
-                    params.put("id", villageBean.getId());
-                    RetrofitManager.getDefault().getPointListByPointId(params)
-                            .compose(RxSchedulerUtils::toSimpleSingle)
-                            .subscribe(new ResponceSubscriber<List<PointBean>>() {
-                                @Override
-                                protected void onSucess(List<PointBean> points) {
-                                    if (points != null && points.size() > 0) {
-                                        monitorList.clear();
-                                        monitorList.addAll(points);
-                                        pointAdapter.notifyDataSetChanged();
-                                    } else {
-                                        Log.e("err", "err");
-                                    }
-                                }
-
-                                @Override
-                                protected void onFail(String err) {
-                                    Log.e("err", "err");
-                                }
-                            });
-
-
+                    monitorList.clear();
+                    monitorList.addAll(villageBean.getChild());
+                    pointAdapter.notifyDataSetChanged();
                 }
 
             }
@@ -191,27 +167,9 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
                 monitorList.clear();
                 pointAdapter.notifyDataSetChanged();
                 VillageBean villageBean = cunList.get(position);
-                Map<String, Object> params = new HashMap<>();
-                params.put("id", villageBean.getId());
-                RetrofitManager.getDefault().getPointListByPointId(params)
-                        .compose(RxSchedulerUtils::toSimpleSingle)
-                        .subscribe(new ResponceSubscriber<List<PointBean>>() {
-                            @Override
-                            protected void onSucess(List<PointBean> points) {
-                                if (points != null && points.size() > 0) {
-                                    monitorList.clear();
-                                    monitorList.addAll(points);
-                                    pointAdapter.notifyDataSetChanged();
-                                } else {
-                                    Log.e("err", "err");
-                                }
-                            }
-
-                            @Override
-                            protected void onFail(String err) {
-                                Log.e("err", "err");
-                            }
-                        });
+                monitorList.clear();
+                monitorList.addAll(villageBean.getChild());
+                pointAdapter.notifyDataSetChanged();
             }
         });
 
@@ -220,7 +178,12 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 mPointBean = monitorList.get(position);
                 updateUI();
-                mVvPlayer.setVideoPath(mPointBean.getUrl());
+                String url = mPointBean.getUrl();
+                url = "rtmp://58.200.131.2:1935/livetv/hunantv"; //测试代码
+                String videoPath = mVvPlayer.getVideoPath();
+                if (!url.equals(videoPath)){
+                    mVvPlayer.setVideoPath(url);
+                }
             }
         });
 

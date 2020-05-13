@@ -5,11 +5,14 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.example.xueliang.R;
 import com.example.xueliang.activity.MonitorActivity;
 import com.example.xueliang.bean.PointBean;
+import com.example.xueliang.manager.VideoManager;
 import com.example.xueliang.utils.AppUtils;
 
 import java.util.List;
@@ -27,7 +30,7 @@ public class NavGridMonitorAdapter extends RecyclerView.Adapter<NavGridMonitorAd
     protected final Context context;
     private final List<PointBean> stringList;
     private boolean isOne;
-    private IjkVideoView mVvPlayer;
+    private FrameLayout mVvPlayerContainer;
 
     public NavGridMonitorAdapter(Context context, List<PointBean> objectList, boolean isOne) {
         this.stringList = objectList;
@@ -43,7 +46,8 @@ public class NavGridMonitorAdapter extends RecyclerView.Adapter<NavGridMonitorAd
 
     @Override
     public void onBindViewHolder(NavMovieHolder holder, int position) {
-        mVvPlayer = holder.point_surfaceView;
+        PointBean pointBean = stringList.get(position);
+        mVvPlayerContainer = holder.point_surfaceView;
         View pflContainer = holder.pflContainer;
         ViewGroup.LayoutParams layoutParams = pflContainer.getLayoutParams();
         if (isOne) {
@@ -54,22 +58,32 @@ public class NavGridMonitorAdapter extends RecyclerView.Adapter<NavGridMonitorAd
             layoutParams.height = (AppUtils.getScreenHeight() - AppUtils.dip2px(32)) / 2;
         }
 
-        PointBean pointBean = stringList.get(position);
-        if (pointBean == null) {
+
+        if (pointBean == null){
             //站位用的
-            mVvPlayer.setVisibility(View.GONE);
+            mVvPlayerContainer.setVisibility(View.GONE);
             return;
         }
-        mVvPlayer.setVisibility(View.VISIBLE);
+        mVvPlayerContainer.setVisibility(View.VISIBLE);
+
+        VideoManager instance = VideoManager.getInstance();
+        IjkVideoView vvPlayer = instance.getVideoViewArrayList().get(position);
+        ViewParent parent = vvPlayer.getParent();
+        if (null != parent){
+            ((ViewGroup)parent).removeAllViews();
+        }
+        vvPlayer.setTag(pointBean.getUrl() + position);
+        mVvPlayerContainer.addView(vvPlayer);
+
         String location = pointBean.getLocation();
         String town = pointBean.getTown();
         String village = pointBean.getVillage();
         holder.point_name.setText(town + " " + village + " " + location);
         holder.point_time.setText(stringList.get(position).getEquipment_num());
-        mVvPlayer.setOnClickListener(new View.OnClickListener() {
+        vvPlayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (pointBean == null) {
+                if (pointBean == null){
                     return;
                 }
                 Intent intent = new Intent();
@@ -79,7 +93,7 @@ public class NavGridMonitorAdapter extends RecyclerView.Adapter<NavGridMonitorAd
             }
         });
 
-        mVvPlayer.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        vvPlayer.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
@@ -91,22 +105,28 @@ public class NavGridMonitorAdapter extends RecyclerView.Adapter<NavGridMonitorAd
 
         });
 
-        mVvPlayer.setVideoPath("rtmp://58.200.131.2:1935/livetv/hunantv");
-//        vvPlayer.setVideoPath(pointBean.getUrl());
-        mVvPlayer.setOnPreparedListener(new IMediaPlayer.OnPreparedListener() {
+        String url = pointBean.getUrl();
+        url = "rtmp://58.200.131.2:1935/livetv/hunantv"; //测试代码
+        if (url.equals(vvPlayer.getVideoPath())){
+            vvPlayer.resume();
+            vvPlayer.start();
+        }else {
+            vvPlayer.setVideoPath(url);
+            vvPlayer.setOnPreparedListener(new IMediaPlayer.OnPreparedListener()  {
 
-            @Override
-            public void onPrepared(IMediaPlayer iMediaPlayer) {
-                mVvPlayer.start();
-            }
-        });
+                @Override
+                public void onPrepared(IMediaPlayer iMediaPlayer) {
+                    vvPlayer.start();
+                }
+            });
 
 
-        mVvPlayer.setOnErrorListener((mp, what, extra) -> {
-            // 缓存有问题 先删除 缓存
-            mVvPlayer.stopPlayback();
-            return true;
-        });
+            vvPlayer.setOnErrorListener((mp, what, extra) -> {
+                // 缓存有问题 先删除 缓存
+                vvPlayer.stopPlayback();
+                return true;
+            });
+        }
 
     }
 
@@ -121,7 +141,7 @@ public class NavGridMonitorAdapter extends RecyclerView.Adapter<NavGridMonitorAd
         public TextView point_time;
         public TextView point_name;
         public View point_top;
-        public IjkVideoView point_surfaceView;
+        public FrameLayout point_surfaceView;
 
         public NavMovieHolder(View itemView) {
             super(itemView);
@@ -139,32 +159,13 @@ public class NavGridMonitorAdapter extends RecyclerView.Adapter<NavGridMonitorAd
     @Override
     public void onViewDetachedFromWindow(@NonNull NavMovieHolder holder) {
         super.onViewDetachedFromWindow(holder);
-        if (null != mVvPlayer) {
-            mVvPlayer.pause();
-        }
     }
 
     @Override
     public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
-        super.onAttachedToRecyclerView(recyclerView);
-        if (null != mVvPlayer) {
-            mVvPlayer.pause();
+        if (null != mVvPlayerContainer){
+            mVvPlayerContainer.removeAllViews();
         }
-    }
-
-    @Override
-    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
-        super.onAttachedToRecyclerView(recyclerView);
-        if (null != mVvPlayer) {
-            mVvPlayer.resume();
-        }
-    }
-
-    @Override
-    public void onViewAttachedToWindow(@NonNull NavMovieHolder holder) {
-        super.onViewAttachedToWindow(holder);
-        if (null != mVvPlayer) {
-            mVvPlayer.resume();
-        }
+        super.onDetachedFromRecyclerView(recyclerView);
     }
 }

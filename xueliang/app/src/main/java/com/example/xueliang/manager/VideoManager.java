@@ -84,4 +84,8 @@ public class VideoManager {
             }
         }
     }
+
+    public ArrayList<IjkVideoView> getVideoViewArrayList() {
+        return mVideoViewArrayList;
+    }
 }

@@ -101,6 +101,11 @@ public class IjkVideoView extends FrameLayout
 	private int mVideoSarNum;
 	private int mVideoSarDen;
 	private View mMediaBufferingIndicator;
+	private String mVideoPath;
+
+	public String getVideoPath() {
+		return mVideoPath;
+	}
 
 	public IjkVideoView(Context context) {
 		super(context);
@@ -219,8 +224,10 @@ public class IjkVideoView extends FrameLayout
 	 *            the path of the video.
 	 */
 	public void setVideoPath(String path) {
+		mVideoPath = path;
 		setVideoURI(Uri.parse(path));
 	}
+
 
 	/**
 	 * Sets video URI.
