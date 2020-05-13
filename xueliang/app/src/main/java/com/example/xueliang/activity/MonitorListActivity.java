@@ -135,23 +135,29 @@ public class MonitorListActivity extends BaseMvpActivity<MonitorListPresenter> i
 
 
         Map<String, Object> params = new HashMap<>();
-        params.put("id", data.get(0).getId());
-        RetrofitManager.getDefault().getPointListByCunId(params)
+        PointBean pointBean = data.get(0).getChild().get(0).getChild().get(0);
+        params.put("id", pointBean.getId());
+        RetrofitManager.getDefault().getPointListByPointId(params)
                 .compose(RxSchedulerUtils::toSimpleSingle)
                 .subscribe(new ResponceSubscriber<List<PointBean>>() {
                     @Override
                     protected void onSucess(List<PointBean> points) {
                         mKProgressHUD.dismiss();
                         if (points != null && points.size() > 0) {
-                            PointBean pointBean = points.get(0);
+                            PointBean pointBean1 = points.get(0);
                             //默认第一个点作为监控点
+                            gridTempList.clear();
+                            gridList.clear();
+                            gridList.add(pointBean1);
+                            gridTempList.add(pointBean1);
+                            gridAdapter.notifyDataSetChanged();
+                        } else {
+                            Log.e("err", "err");
                             gridTempList.clear();
                             gridList.clear();
                             gridList.add(pointBean);
                             gridTempList.add(pointBean);
                             gridAdapter.notifyDataSetChanged();
-                        } else {
-                            Log.e("err", "err");
                         }
                     }
 

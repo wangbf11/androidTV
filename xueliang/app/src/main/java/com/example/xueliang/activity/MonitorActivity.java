@@ -159,7 +159,7 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
                     VillageBean villageBean = cunList.get(position);
                     Map<String, Object> params = new HashMap<>();
                     params.put("id", villageBean.getId());
-                    RetrofitManager.getDefault().getPointListByCunId(params)
+                    RetrofitManager.getDefault().getPointListByPointId(params)
                             .compose(RxSchedulerUtils::toSimpleSingle)
                             .subscribe(new ResponceSubscriber<List<PointBean>>() {
                                 @Override
@@ -193,7 +193,7 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
                 VillageBean villageBean = cunList.get(position);
                 Map<String, Object> params = new HashMap<>();
                 params.put("id", villageBean.getId());
-                RetrofitManager.getDefault().getPointListByCunId(params)
+                RetrofitManager.getDefault().getPointListByPointId(params)
                         .compose(RxSchedulerUtils::toSimpleSingle)
                         .subscribe(new ResponceSubscriber<List<PointBean>>() {
                             @Override

@@ -91,6 +91,6 @@ public interface XueLiangService {
      * 根据村id获取点数据
      */
     @Headers({"Content-Type:application/json; charset=utf-8", RetrofitManager.CACHE_CONTROL_AGE + RetrofitManager.CACHE_CONTROL_NETWORK})
-    @GET("/interface/rest/http/xlgc/xltzxt-ywgl-jkspgl-ssjkspgl-ssjkspxx.htm")
-    Observable<CommonResult<List<PointBean>>> getPointListByCunId(@QueryMap Map<String, Object> params);
+    @GET("/interface/rest/http/xlwb/xlgc-wb-jdh-yjqz-ssjksp-x.htm")
+    Observable<CommonResult<List<PointBean>>> getPointListByPointId(@QueryMap Map<String, Object> params);
 }

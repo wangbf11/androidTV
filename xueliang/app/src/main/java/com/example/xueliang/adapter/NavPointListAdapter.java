@@ -37,7 +37,7 @@ public class NavPointListAdapter extends BaseQuickAdapter<NavPointListAdapter.Na
 
     @Override
     public void onBindViewHolder(NavMovieHolder holder, int position) {
-        holder.tv_point.setText(stringList.get(position).getLocation());
+        holder.tv_point.setText(stringList.get(position).getName());
         holder.pflContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
