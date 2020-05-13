@@ -71,7 +71,7 @@ public class LoginPresenter extends BasePresenter<LoginActivity> {
 
 
     /**
-     * 获取登录注册二维码
+     * 获取登录状态
      */
     public void getLogInfo() {
         Map<String, Object> params = new HashMap<>();
