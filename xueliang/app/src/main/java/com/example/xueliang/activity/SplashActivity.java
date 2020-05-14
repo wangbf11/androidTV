@@ -46,6 +46,7 @@ public class SplashActivity extends BaseMvpActivity {
     private TextView mProgressText;
     private AlertDialog downloadDialog;
     private String apkUrl;
+    private boolean isFoce;
 
     @Override
     public BasePresenter setPresenter() {
@@ -119,6 +120,7 @@ public class SplashActivity extends BaseMvpActivity {
 
         String cancel = "取 消";
         if ("2".equals(userInfoEntity.getType())){
+            isFoce = true;
             cancel = null; //强制更新
         }
 
@@ -135,9 +137,11 @@ public class SplashActivity extends BaseMvpActivity {
     }
 
     private void skipLogin() {
-        Intent intent = new Intent();
-        intent.setClass(SplashActivity.this, LoginActivity.class);
-        startActivity(intent);
+        if (!isFoce){
+            Intent intent = new Intent();
+            intent.setClass(SplashActivity.this, LoginActivity.class);
+            startActivity(intent);
+        }
         finish();
     }
 
