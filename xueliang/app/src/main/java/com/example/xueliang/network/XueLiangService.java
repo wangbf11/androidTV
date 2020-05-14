@@ -75,6 +75,12 @@ public interface XueLiangService {
     @POST("/interface/rest/http/xlwb/xlgc-wb-jdh-hqdlhzczt.htm")
     Observable<UserInfoEntity> getLoginInfo(@Body Map<String, Object> params);
     /**
+     * 退出登录
+     */
+    @Headers({"Content-Type:application/json; charset=utf-8", RetrofitManager.CACHE_CONTROL_AGE + RetrofitManager.CACHE_CONTROL_NETWORK})
+    @POST("/interface/rest/http/xlwb/xlgc-wb-jdh-tcdl.htm")
+    Observable<UserInfoEntity> loginOut(@Body Map<String, Object> params);
+    /**
      * 一键求助
      */
     @Headers({"Content-Type:application/json; charset=utf-8", RetrofitManager.CACHE_CONTROL_AGE + RetrofitManager.CACHE_CONTROL_NETWORK})

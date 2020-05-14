@@ -13,15 +13,23 @@ import android.widget.Toast;
 
 import com.example.xueliang.R;
 import com.example.xueliang.base.LoadCallBack;
+import com.example.xueliang.bean.UserInfoEntity;
+import com.example.xueliang.network.ResponceSubscriber2;
+import com.example.xueliang.network.RetrofitManager;
+import com.example.xueliang.network.RxSchedulerUtils;
 import com.example.xueliang.presenter.MainPresenter;
 import com.example.xueliang.utils.AppUtils;
 import com.example.xueliang.utils.DialogUtil;
 import com.example.xueliang.utils.SPUtil;
 import com.example.xueliang.utils.ScreenUtils;
+import com.example.xueliang.utils.ToastUtils;
 import com.example.xueliang.view.listener.MyFocusChange;
 import com.example.xueliang.view.readview.PageLoader;
 import com.example.xueliang.view.readview.PageView;
 import com.example.xueliang.view.readview.TxtChapter;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static androidx.core.view.ViewCompat.LAYER_TYPE_SOFTWARE;
 
@@ -147,12 +155,29 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Load
             //退出登录
             DialogUtil.showAlert(mContext, null, "您确认要退出吗？",
                     "确 定", (dialog, which) -> {
-                        AppUtils.getApplication().exit();
-                        SPUtil.removeToken();
-                        SPUtil.removeUserInfo();
-                        Intent intent = new Intent(mContext, LoginActivity.class);
-                        startActivity(intent);
                         dialog.dismiss();
+                        String mUuid = AppUtils.getIMEI();
+                        Map<String, Object> params = new HashMap<>();
+                        params.put("uuid", mUuid);
+                        RetrofitManager.getDefault().loginOut(params)
+                                .compose(RxSchedulerUtils::toSimpleSingle)
+                                .subscribe(new ResponceSubscriber2<UserInfoEntity>() {
+                                    @Override
+                                    protected void onSucess(UserInfoEntity list) {
+                                        if (null != list){
+                                            AppUtils.getApplication().exit();
+                                            SPUtil.removeToken();
+                                            SPUtil.removeUserInfo();
+                                            Intent intent = new Intent(mContext, LoginActivity.class);
+                                            startActivity(intent);
+                                        }
+                                    }
+
+                                    @Override
+                                    protected void onFail(String err) {
+                                        ToastUtils.show("退出失败");
+                                    }
+                                });
                     }, "取 消", (dialog, which) -> {
                         dialog.dismiss();
                     }, false);
