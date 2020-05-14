@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,7 @@ import com.example.xueliang.network.RxSchedulerUtils;
 import com.example.xueliang.utils.AppUtils;
 import com.example.xueliang.utils.DialogUtil;
 import com.example.xueliang.utils.StringUtils;
+import com.example.xueliang.utils.ToastUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -34,6 +36,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 
 public class SplashActivity extends BaseMvpActivity {
@@ -81,6 +84,7 @@ public class SplashActivity extends BaseMvpActivity {
                         Log.e("getApkisUpdate", "list="+list);
                         if (list != null && list.size() > 0) {
                             AppUpdateInfoBean appUpdateInfoBean = list.get(0);
+                            appUpdateInfoBean.setType("1");
                             if ("0".equals(appUpdateInfoBean.getType())){//无需更新
                                 skipLogin();
                             }else if ("1".equals(appUpdateInfoBean.getType()) || "2".equals(appUpdateInfoBean.getType())){//需要更新
@@ -300,6 +304,19 @@ public class SplashActivity extends BaseMvpActivity {
         if (!apkFile.exists()) {
             return;
         }
+
+        boolean haveInstallPermission = true;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            haveInstallPermission = mContext.getPackageManager().canRequestPackageInstalls();
+        }
+        if(!haveInstallPermission){
+            //权限没有打开则提示用户去手动打开
+            ToastUtils.show("你没有安装权限");
+            Uri packageURI = Uri.parse("package:"+mContext.getPackageName());
+            Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,packageURI);
+            startActivityForResult(intent, 1000);
+            return;
+        }
         Intent i = new Intent(Intent.ACTION_VIEW);
 
         /**
@@ -309,7 +326,7 @@ public class SplashActivity extends BaseMvpActivity {
         Uri apkUri = null;
         //判断是否是Android7.0以及更高的版本
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            apkUri = FileProvider.getUriForFile(mContext, mContext.getPackageName() + ".FileProvider", new File(apkFile.toString()));
+            apkUri = FileProvider.getUriForFile(mContext, mContext.getPackageName() + ".fileProvider", new File(apkFile.toString()));
             i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         } else {
             apkUri =Uri.parse("file://" + apkFile.toString());
@@ -318,6 +335,14 @@ public class SplashActivity extends BaseMvpActivity {
         i.setDataAndType(apkUri,
                 "application/vnd.android.package-archive");
         mContext.startActivity(i);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == 1000) {
+            installApk();
+        }
     }
 }
 
