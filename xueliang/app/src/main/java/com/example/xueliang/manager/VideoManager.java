@@ -1,8 +1,5 @@
 package com.example.xueliang.manager;
 
-import android.view.ViewGroup;
-import android.view.ViewParent;
-
 import com.example.xueliang.utils.AppUtils;
 
 import java.util.ArrayList;
@@ -41,48 +38,6 @@ public class VideoManager {
         mVideoViewArrayList.add(ijkVideoView2);
         mVideoViewArrayList.add(ijkVideoView3);
         mVideoViewArrayList.add(ijkVideoView4);
-    }
-
-    /**
-     * tag 是url
-     * @param tag
-     * @return
-     */
-    public IjkVideoView getVideoViewByTag(String tag) {
-        IjkVideoView it = null;
-        for (IjkVideoView videoView :mVideoViewArrayList){
-                if (tag.equals(videoView.getTag())){
-                    it = videoView;
-                }
-        }
-
-        if (it == null){
-            for (IjkVideoView videoView :mVideoViewArrayList){
-                if (videoView.getTag() == null){
-                    it = videoView;
-                }
-            }
-        }else {
-            ViewParent parent = it.getParent();
-            if (null != parent){
-                ViewGroup parent1 = (ViewGroup)it.getParent();
-                parent1.removeAllViews();
-            }
-        }
-        return it;
-    }
-
-    /**
-     * tag 是url 移除的时候设置为null
-     * @param tag
-     * @return
-     */
-    public void setVideoViewTagToNull(String tag) {
-        for (IjkVideoView videoView :mVideoViewArrayList){
-            if (tag.equals(videoView.getTag())){
-                videoView.setTag(null);
-            }
-        }
     }
 
     public ArrayList<IjkVideoView> getVideoViewArrayList() {

@@ -92,8 +92,8 @@ public interface XueLiangService {
      * 根据村id获取点数据
      */
     @Headers({"Content-Type:application/json; charset=utf-8", RetrofitManager.CACHE_CONTROL_AGE + RetrofitManager.CACHE_CONTROL_NETWORK})
-    @GET("/interface/rest/http/xlwb/xlgc-wb-jdh-yjqz-ssjksp-x.htm")
-    Observable<CommonResult<List<PointBean>>> getPointListByPointId(@QueryMap Map<String, Object> params);
+    @POST("/interface/rest/http/xlwb/xlgc-wb-jdh-yjqz-ssjksp-x.htm")
+    Observable<PointBean> getPointListByPointId(@Body Map<String, Object> params);
 
     /**
      * 查询apk是否需要更新

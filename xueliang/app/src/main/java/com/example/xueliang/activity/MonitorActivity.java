@@ -178,7 +178,7 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 mPointBean = monitorList.get(position);
                 updateUI();
-                String url = mPointBean.getUrl();
+                String url = mPointBean.getRtmpSrc();
                 url = "rtmp://58.200.131.2:1935/livetv/hunantv"; //测试代码
                 String videoPath = mVvPlayer.getVideoPath();
                 if (!url.equals(videoPath)){

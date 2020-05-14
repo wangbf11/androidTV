@@ -7,9 +7,9 @@ public class PointBean implements Serializable {
     private String town;
     private String village;
     private String location;
-    private String url;
     private String id;
     private String name;
+    private String rtmpSrc;
 
     public String getEquipment_num() {
         return equipment_num;
@@ -43,14 +43,6 @@ public class PointBean implements Serializable {
         this.location = location;
     }
 
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
     public String getId() {
         return id;
     }
@@ -65,5 +57,13 @@ public class PointBean implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getRtmpSrc() {
+        return rtmpSrc;
+    }
+
+    public void setRtmpSrc(String rtmpSrc) {
+        this.rtmpSrc = rtmpSrc;
     }
 }

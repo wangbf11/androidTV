@@ -9,7 +9,7 @@ import com.example.xueliang.adapter.NavTownListAdapter;
 import com.example.xueliang.base.LoadCallBack;
 import com.example.xueliang.bean.PointBean;
 import com.example.xueliang.bean.TownBean;
-import com.example.xueliang.network.ResponceSubscriber;
+import com.example.xueliang.network.ResponceSubscriber2;
 import com.example.xueliang.network.RetrofitManager;
 import com.example.xueliang.network.RxSchedulerUtils;
 import com.example.xueliang.presenter.MonitorListPresenter;
@@ -83,8 +83,10 @@ public class MonitorListActivity extends BaseMvpActivity<MonitorListPresenter> i
     public void initListener() {
         mTv_one.setOnClickListener(v->{
             //切换1分屏幕
+            PointBean pointBean = gridList.get(0);
+            gridTempList.clear();
             gridList.clear();
-            gridList.add(gridTempList.get(0));
+            gridList.add(pointBean);
             GridLayoutManager focusGrid= new GridLayoutManager(getApplicationContext(), 1);
             mRv_grid.setLayoutManager(focusGrid);
             mRv_grid.setAdapter(gridAdapter = new NavGridMonitorAdapter(this, gridList,true));
@@ -96,10 +98,6 @@ public class MonitorListActivity extends BaseMvpActivity<MonitorListPresenter> i
             //切换四分屏
             mTv_four.setSelected(true);
             mTv_one.setSelected(false);
-            gridList.clear();
-
-
-            gridList.addAll(gridTempList);
 
             if(gridList.size() == 3){
                 gridList.add(null);
@@ -134,29 +132,29 @@ public class MonitorListActivity extends BaseMvpActivity<MonitorListPresenter> i
         locationAdapter.notifyDataSetChanged();
 
 
-        Map<String, Object> params = new HashMap<>();
         PointBean pointBean = data.get(0).getChild().get(0).getChild().get(0);
+
+        Map<String, Object> params = new HashMap<>();
         params.put("id", pointBean.getId());
+        params.put("playrealUrl", "");
         RetrofitManager.getDefault().getPointListByPointId(params)
                 .compose(RxSchedulerUtils::toSimpleSingle)
-                .subscribe(new ResponceSubscriber<List<PointBean>>() {
+                .subscribe(new ResponceSubscriber2<PointBean>() {
                     @Override
-                    protected void onSucess(List<PointBean> points) {
+                    protected void onSucess(PointBean point) {
                         mKProgressHUD.dismiss();
-                        if (points != null && points.size() > 0) {
-                            PointBean pointBean1 = points.get(0);
+                        if (point != null) {
+                            point.setId(pointBean.getId());
                             //默认第一个点作为监控点
                             gridTempList.clear();
                             gridList.clear();
-                            gridList.add(pointBean1);
-                            gridTempList.add(pointBean1);
+                            gridList.add(point);
                             gridAdapter.notifyDataSetChanged();
                         } else {
                             Log.e("err", "err");
                             gridTempList.clear();
                             gridList.clear();
                             gridList.add(pointBean);
-                            gridTempList.add(pointBean);
                             gridAdapter.notifyDataSetChanged();
                         }
                     }
@@ -175,42 +173,80 @@ public class MonitorListActivity extends BaseMvpActivity<MonitorListPresenter> i
         mKProgressHUD.dismiss();
     }
 
-    public void onPointItemChildClick(PointBean data) {
-
-        if (mTv_one.isSelected()){
-            gridList.clear();
-            gridList.add(data);
-        }else {
-            if (gridList.contains(data)){
+    public void onPointItemChildClick(PointBean pointBean) {
+        List<PointBean> objects = new ArrayList<>();
+        for (PointBean item :gridList){
+            if (item != null){
+                objects.add(item);
+            }
+            if (item != null && pointBean.getId().equals(item.getId())){
                 ToastUtils.show("你已经添加了这个点位");
                 return;
             }
-
-            if (gridTempList.size() <4){
-                gridTempList.add(data);
-            }else {
-                gridTempList.remove(0);
-                gridTempList.add(data);
-            }
-
-            gridList.clear();
-            gridList.addAll(gridTempList);
-
-            if(gridList.size() == 3){
-                gridList.add(null);
-            }
-
-            if(gridList.size() == 2){
-                gridList.add(null);
-                gridList.add(null);
-            }
-
-            if(gridList.size() == 1){
-                gridList.add(null);
-                gridList.add(null);
-                gridList.add(null);
-            }
         }
-        gridAdapter.notifyDataSetChanged();
+
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("id", pointBean.getId());
+        params.put("playrealUrl", "");
+        RetrofitManager.getDefault().getPointListByPointId(params)
+                .compose(RxSchedulerUtils::toSimpleSingle)
+                .subscribe(new ResponceSubscriber2<PointBean>() {
+                    @Override
+                    protected void onSucess(PointBean data) {
+                        mKProgressHUD.dismiss();
+                        if (data != null) {
+                            data.setId(pointBean.getId());
+                            //默认第一个点作为监控点
+                            if (mTv_one.isSelected()){
+                                gridList.clear();
+                                gridList.add(data);
+                            }else {
+                                if (objects.size() <4){
+                                    objects.add(data);
+                                    gridList.clear();
+                                    gridList.addAll(objects);
+                                }else {
+                                    //重第一个 开始重新 覆盖
+                                    if (gridTempList.size() <4){
+                                        gridTempList.add(data);
+                                        PointBean pointBean1 = gridList.get(gridTempList.size()-1);
+                                        pointBean1.setId(data.getId());
+                                        pointBean1.setId(data.getRtmpSrc());
+                                        if (gridTempList.size() == 4){
+                                            gridTempList.clear();
+                                        }
+                                    }
+                                }
+
+
+                                if(gridList.size() == 3){
+                                    gridList.add(null);
+                                }
+
+                                if(gridList.size() == 2){
+                                    gridList.add(null);
+                                    gridList.add(null);
+                                }
+
+                                if(gridList.size() == 1){
+                                    gridList.add(null);
+                                    gridList.add(null);
+                                    gridList.add(null);
+                                }
+                            }
+                            gridAdapter.notifyDataSetChanged();
+                        } else {
+                            Log.e("err", "err");
+
+                        }
+                    }
+
+                    @Override
+                    protected void onFail(String err) {
+                        mKProgressHUD.dismiss();
+                        Log.e("err", "err");
+                    }
+                });
     }
 }

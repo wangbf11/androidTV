@@ -72,7 +72,6 @@ public class NavGridMonitorAdapter extends RecyclerView.Adapter<NavGridMonitorAd
         if (null != parent){
             ((ViewGroup)parent).removeAllViews();
         }
-        vvPlayer.setTag(pointBean.getUrl() + position);
         mVvPlayerContainer.addView(vvPlayer);
 
         String location = pointBean.getLocation();
@@ -105,7 +104,7 @@ public class NavGridMonitorAdapter extends RecyclerView.Adapter<NavGridMonitorAd
 
         });
 
-        String url = pointBean.getUrl();
+        String url = pointBean.getRtmpSrc();
         url = "rtmp://58.200.131.2:1935/livetv/hunantv"; //测试代码
         if (url.equals(vvPlayer.getVideoPath())){
             vvPlayer.resume();
