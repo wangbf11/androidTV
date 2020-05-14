@@ -100,8 +100,8 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
 
         createCountDownTimer();
 
-        // mVvPlayer.setVideoPath(mPointBean.getUrl());
-        String url = "rtmp://58.200.131.2:1935/livetv/hunantv";
+        String url = mPointBean.getRtmpSrc();
+//        String url = "rtmp://58.200.131.2:1935/livetv/hunantv";
 //        mVvPlayer.setVideoPath("rtmp://117.139.72.126:1935/stream/example");
         mVvPlayer.setVideoPath(url);
         mVvPlayer.setOnPreparedListener(new IMediaPlayer.OnPreparedListener()  {
@@ -179,7 +179,7 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
                 mPointBean = monitorList.get(position);
                 updateUI();
                 String url = mPointBean.getRtmpSrc();
-                url = "rtmp://58.200.131.2:1935/livetv/hunantv"; //测试代码
+//                url = "rtmp://58.200.131.2:1935/livetv/hunantv"; //测试代码
                 String videoPath = mVvPlayer.getVideoPath();
                 if (!url.equals(videoPath)){
                     mVvPlayer.setVideoPath(url);

@@ -105,7 +105,7 @@ public class NavGridMonitorAdapter extends RecyclerView.Adapter<NavGridMonitorAd
         });
 
         String url = pointBean.getRtmpSrc();
-        url = "rtmp://58.200.131.2:1935/livetv/hunantv"; //测试代码
+//        url = "rtmp://58.200.131.2:1935/livetv/hunantv"; //测试代码
         if (url.equals(vvPlayer.getVideoPath())){
             vvPlayer.resume();
             vvPlayer.start();
