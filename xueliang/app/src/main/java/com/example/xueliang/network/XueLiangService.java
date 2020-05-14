@@ -73,7 +73,7 @@ public interface XueLiangService {
      */
     @Headers({"Content-Type:application/json; charset=utf-8", RetrofitManager.CACHE_CONTROL_AGE + RetrofitManager.CACHE_CONTROL_NETWORK})
     @POST("/interface/rest/http/xlwb/xlgc-wb-jdh-hqdlhzczt.htm")
-    Observable<CommonResult<List<UserInfoEntity>>> getLoginInfo(@Body Map<String, Object> params);
+    Observable<UserInfoEntity> getLoginInfo(@Body Map<String, Object> params);
     /**
      * 一键求助
      */

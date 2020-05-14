@@ -10,6 +10,7 @@ import com.example.xueliang.bean.AppUpdateInfoBean;
 import com.example.xueliang.bean.QrCodeBean;
 import com.example.xueliang.bean.UserInfoEntity;
 import com.example.xueliang.network.ResponceSubscriber;
+import com.example.xueliang.network.ResponceSubscriber2;
 import com.example.xueliang.network.RetrofitManager;
 import com.example.xueliang.network.RxSchedulerUtils;
 import com.example.xueliang.utils.AppUtils;
@@ -82,11 +83,10 @@ public class LoginPresenter extends BasePresenter<LoginActivity> {
         params.put("uuid", imei);
         RetrofitManager.getDefault().getLoginInfo(params)
                 .compose(RxSchedulerUtils::toSimpleSingle)
-                .subscribe(new ResponceSubscriber<List<UserInfoEntity>>() {
+                .subscribe(new ResponceSubscriber2<UserInfoEntity>() {
                     @Override
-                    protected void onSucess(List<UserInfoEntity> list) {
-                        if (view != null && list != null && list.size() > 0) {
-                            UserInfoEntity userInfoEntity = list.get(0);
+                    protected void onSucess(UserInfoEntity userInfoEntity) {
+                        if (view != null && userInfoEntity != null) {
                             if (StringUtils.isNotBlank(userInfoEntity.getToken())) {
                                 SPUtil.keepUserInfo(userInfoEntity);
                                 SPUtil.keepToken(userInfoEntity.getToken());
@@ -95,7 +95,9 @@ public class LoginPresenter extends BasePresenter<LoginActivity> {
                                 new Handler().postDelayed(progressRunnable, mTimer);
                             }
                         } else {
-                            new Handler().postDelayed(progressRunnable, mTimer);
+                            if (view != null){
+                                new Handler().postDelayed(progressRunnable, mTimer);
+                            }
                         }
                     }
 
