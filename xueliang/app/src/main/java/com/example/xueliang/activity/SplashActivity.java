@@ -163,6 +163,7 @@ public class SplashActivity extends BaseMvpActivity {
             builder.setNegativeButton(mContext.getString(R.string.dialog_cancel ), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+                    interceptFlag = true;
                     skipLogin();
                     dialog.dismiss();
                 }
@@ -170,8 +171,8 @@ public class SplashActivity extends BaseMvpActivity {
             builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
                 @Override
                 public void onCancel(DialogInterface dialog) {
+                    interceptFlag = true;
                     dialog.dismiss();
-                    //退出app
                 }
             });
         }
