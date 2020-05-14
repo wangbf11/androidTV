@@ -84,7 +84,7 @@ public class SplashActivity extends BaseMvpActivity {
                         Log.e("getApkisUpdate", "list="+list);
                         if (list != null && list.size() > 0) {
                             AppUpdateInfoBean appUpdateInfoBean = list.get(0);
-                            appUpdateInfoBean.setType("1");
+//                            appUpdateInfoBean.setType("1");
                             if ("0".equals(appUpdateInfoBean.getType())){//无需更新
                                 skipLogin();
                             }else if ("1".equals(appUpdateInfoBean.getType()) || "2".equals(appUpdateInfoBean.getType())){//需要更新
