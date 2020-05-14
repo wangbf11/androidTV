@@ -9,6 +9,7 @@ import com.example.xueliang.adapter.NavTownListAdapter;
 import com.example.xueliang.base.LoadCallBack;
 import com.example.xueliang.bean.PointBean;
 import com.example.xueliang.bean.TownBean;
+import com.example.xueliang.manager.VideoManager;
 import com.example.xueliang.network.ResponceSubscriber2;
 import com.example.xueliang.network.RetrofitManager;
 import com.example.xueliang.network.RxSchedulerUtils;
@@ -248,5 +249,11 @@ public class MonitorListActivity extends BaseMvpActivity<MonitorListPresenter> i
                         Log.e("err", "err");
                     }
                 });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        VideoManager.getInstance().onPause();
     }
 }

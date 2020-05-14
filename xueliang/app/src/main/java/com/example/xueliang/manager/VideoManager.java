@@ -43,4 +43,11 @@ public class VideoManager {
     public ArrayList<IjkVideoView> getVideoViewArrayList() {
         return mVideoViewArrayList;
     }
+
+    public void onPause() {
+        for (IjkVideoView item :mVideoViewArrayList){
+            item.pause();
+        }
+
+    }
 }
