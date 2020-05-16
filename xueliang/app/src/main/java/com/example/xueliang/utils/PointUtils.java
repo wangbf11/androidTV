@@ -10,11 +10,11 @@ public class PointUtils {
      * @return
      */
     public static String getPlayerUrl(PointBean pointBean) {
-        String url = pointBean.getRtmpSrc();
-        if (url == null && pointBean.getRtspSrc() != null) {
-            url = pointBean.getRtspSrc();
+        String url = pointBean.getRtspSrc();
+        if (StringUtils.isEmpty(url) && StringUtils.isNotEmpty(pointBean.getRtmpSrc())) {
+            url = pointBean.getRtmpSrc();
         }
-        if (url == null) {
+        if (StringUtils.isEmpty(url)) {
             url = "rtmp://58.200.131.2:1935/livetv/hunantv"; //测试代码
         }
         return url;
