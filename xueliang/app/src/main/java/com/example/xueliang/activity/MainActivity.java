@@ -44,7 +44,6 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Load
     public LinearLayout ll_monitor;
     public TextView mtvNotification;
     private View mll_notification;
-    private TextView logoNameAndPhone;
     private boolean mIsDestroy;
     private TextView tv_user;
     private TextView tv_location;
@@ -78,21 +77,6 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Load
         mtvNotification = findViewById(R.id.mtv_notification);
         mll_notification = findViewById(R.id.ll_notification);
         dot_ll = (LinearLayout) findViewById(R.id.dot_ll);
-        logoNameAndPhone = (TextView)findViewById(R.id.logoNameAndPhone);
-
-        UserInfoEntity info = SPUtil.getUserInfo();
-        String content = "负责人:";
-        if (info != null) {
-            if (info.getNickName() != null) {
-                content  = content + info.getNickName() + "  ";
-            }else {
-                content  = content + "  ";
-            }
-            if (info.getPhone() != null) {
-                content = content + info.getPhone();
-            }
-        }
-        logoNameAndPhone.setText(content);
 
         // 如果 API < 18 取消硬件加速
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2
