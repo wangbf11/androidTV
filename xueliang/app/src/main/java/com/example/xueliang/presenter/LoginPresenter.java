@@ -36,7 +36,6 @@ public class LoginPresenter extends BasePresenter<LoginActivity> {
      */
     public void getLoginQrCode() {
         Map<String, Object> params = new HashMap<>();
-//        mUuid = UUID.randomUUID().toString();
         mUuid = AppUtils.getIMEI();
         params.put("uuid", mUuid);
         RetrofitManager.getDefault().getLoginQrCode(params)

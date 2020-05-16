@@ -61,7 +61,7 @@ public class MainPresenter extends BasePresenter<MainActivity> {
                         if (null != list && list.size() >0){
                             Map map = (Map)list.get(0);
                             String notication = (String)map.get("notication");
-                            if (null != view){
+                            if (null != view && notication != null){
                                 view.onLoadNotification(notication);
                             }
                         }

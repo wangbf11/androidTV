@@ -1,6 +1,7 @@
 package com.example.xueliang.network;
 
 
+import com.example.xueliang.bean.AppLogoInfoBean;
 import com.example.xueliang.bean.AppUpdateInfoBean;
 import com.example.xueliang.bean.CommonResult;
 import com.example.xueliang.bean.CommonResult2;
@@ -107,4 +108,11 @@ public interface XueLiangService {
     @Headers({"Content-Type:application/json; charset=utf-8", RetrofitManager.CACHE_CONTROL_AGE + RetrofitManager.CACHE_CONTROL_NETWORK})
     @POST("/interface/rest/http/xlwb/xlgc-wb-jdh-bbkz.htm")
     Observable<CommonResult<List<AppUpdateInfoBean>>> getApkisUpdate(@Body Map<String, Object> params);
+
+    /**
+     * 查询App的logo的url和名字
+     */
+    @Headers({"Content-Type:application/json; charset=utf-8", RetrofitManager.CACHE_CONTROL_AGE + RetrofitManager.CACHE_CONTROL_NETWORK})
+    @POST("/interface/rest/http/xlwb/xlgc-wb-logo.htm")
+    Observable<CommonResult<List<AppLogoInfoBean>>> getAppNameAndLogoUrl(@Body Map<String, Object> params);
 }

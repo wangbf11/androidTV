@@ -17,12 +17,16 @@ import android.widget.TextView;
 
 import com.example.xueliang.R;
 import com.example.xueliang.base.BasePresenter;
+import com.example.xueliang.bean.AppLogoInfoBean;
 import com.example.xueliang.bean.AppUpdateInfoBean;
+import com.example.xueliang.bean.CommonResult;
 import com.example.xueliang.network.ResponceSubscriber;
+import com.example.xueliang.network.ResponceSubscriber2;
 import com.example.xueliang.network.RetrofitManager;
 import com.example.xueliang.network.RxSchedulerUtils;
 import com.example.xueliang.utils.AppUtils;
 import com.example.xueliang.utils.DialogUtil;
+import com.example.xueliang.utils.SPUtil;
 import com.example.xueliang.utils.StringUtils;
 import com.example.xueliang.utils.ToastUtils;
 
@@ -65,6 +69,7 @@ public class SplashActivity extends BaseMvpActivity {
 
     @Override
     public void initView() {
+        getAppLogoInfo();
         getApkIsUpdate();
     }
 
@@ -73,6 +78,26 @@ public class SplashActivity extends BaseMvpActivity {
 
     }
 
+    public  void getAppLogoInfo () {
+        Map<String, Object> params = new HashMap<>();
+        RetrofitManager.getDefault().getAppNameAndLogoUrl(params)
+                .compose(RxSchedulerUtils::toSimpleSingle)
+                .subscribe(new ResponceSubscriber<List<AppLogoInfoBean>>() {
+
+                    @Override
+                    protected void onSucess(List<AppLogoInfoBean> list) {
+                        if (list != null && list.size() > 0) {
+                            AppLogoInfoBean appLogoInfoBean = list.get(0);
+                            SPUtil.keepAppLogoInfo(appLogoInfoBean);
+                        }
+                    }
+
+                    @Override
+                    protected void onFail(String message) {
+                        super.onFail(message);
+                    }
+                });
+    }
 
     public void getApkIsUpdate() {
         Map<String, Object> params = new HashMap<>();

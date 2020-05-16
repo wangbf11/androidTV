@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.example.xueliang.base.BaseApplication;
+import com.example.xueliang.bean.AppLogoInfoBean;
 import com.example.xueliang.bean.UserInfoEntity;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -142,6 +143,21 @@ public class SPUtil {
         } else {
             Gson gson = new Gson();
             return gson.fromJson(read, (new TypeToken<UserInfoEntity>() {}).getType());
+        }
+    }
+
+    public static void keepAppLogoInfo(AppLogoInfoBean appLogoInfo) {
+        Gson gson = new Gson();
+        putString(BaseApplication.getContext(),"pipe_user_info",gson.toJson(appLogoInfo));
+    }
+
+    public static AppLogoInfoBean getAppLogoInfo() {
+        String read = getString(BaseApplication.getContext(),"pipe_user_info","");
+        if (StringUtils.isBlank(read)) {
+            return null;
+        } else {
+            Gson gson = new Gson();
+            return gson.fromJson(read, (new TypeToken<AppLogoInfoBean>() {}).getType());
         }
     }
 
