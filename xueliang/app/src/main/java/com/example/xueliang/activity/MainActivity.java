@@ -99,10 +99,13 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Load
             mPvPage.setLayerType(LAYER_TYPE_SOFTWARE, null);
         }
         UserInfoEntity userInfo = SPUtil.getUserInfo();
-        String nickName = userInfo.getNickName();
-        String phone = userInfo.getPhone();
-        tv_user.setText("负责人："+nickName +" " + phone);
-
+        if (userInfo != null) {
+            String nickName = userInfo.getNickName();
+            String phone = userInfo.getPhone();
+            tv_user.setText("负责人："+nickName +" " + phone);
+        }else {
+            tv_user.setText("负责人："+"" +" " + "");
+        }
         mPageLoader = mPvPage.getPageLoader();
         ll_monitor.setOnFocusChangeListener(new MyFocusChange());
 

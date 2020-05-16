@@ -18,6 +18,9 @@ import com.example.xueliang.bean.TownBean;
 import com.example.xueliang.bean.VillageBean;
 import com.example.xueliang.presenter.MonitorPresenter;
 import com.example.xueliang.utils.DialogUtil;
+import com.example.xueliang.utils.PointUtils;
+import com.example.xueliang.utils.StringUtils;
+import com.example.xueliang.utils.ToastUtils;
 import com.yan.tvprojectutils.FocusRecyclerView;
 
 import java.util.ArrayList;
@@ -100,9 +103,7 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
 
         createCountDownTimer();
 
-        String url = mPointBean.getRtmpSrc();
-//        String url = "rtmp://58.200.131.2:1935/livetv/hunantv";
-//        mVvPlayer.setVideoPath("rtmp://117.139.72.126:1935/stream/example");
+        String url = PointUtils.getPlayerUrl(mPointBean);
         mVvPlayer.setVideoPath(url);
         mVvPlayer.setOnPreparedListener(new IMediaPlayer.OnPreparedListener()  {
 
@@ -126,24 +127,42 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
         mTv_time.setText(mPointBean.getEquipment_num());
         String location = mPointBean.getLocation();
         String town = mPointBean.getTown();
+
         String village = mPointBean.getVillage();
+        String equipment_num = mPointBean.getEquipment_num();
+        if (StringUtils.isEmpty(village)) {
+            village = "";
+        }
+        if (StringUtils.isEmpty(town)) {
+            town = "";
+        }
+        if (StringUtils.isEmpty(location)) {
+            location = "";
+        }
+        if (StringUtils.isEmpty(equipment_num)) {
+            equipment_num = "";
+        }
         tv_location.setText(town + " " + village + " " + location);
 
         point_name.setText(location);
-        town_cun_name.setText(town + " " + village + "   编号：" + mPointBean.getEquipment_num());
+        town_cun_name.setText(town + " " + village + "   编号：" + equipment_num);
     }
 
     @Override
     public void initListener() {
         ll_abnormal_click.setOnClickListener(v -> {
-            //上报异常
-            DialogUtil.showAlert(mContext, null, "您确认要上报异常情况吗？",
-                    "确 定", (dialog, which) -> {
-                        presenter.oneKeyQZ(mPointBean.getEquipment_num());
-                        dialog.dismiss();
-                    }, "取 消", (dialog, which) -> {
-                        dialog.dismiss();
-                    }, false);
+            if (mPointBean.getEquipment_num() != null) {
+                //上报异常
+                DialogUtil.showAlert(mContext, null, "您确认要上报异常情况吗？",
+                        "确 定", (dialog, which) -> {
+                            presenter.oneKeyQZ(mPointBean.getEquipment_num());
+                            dialog.dismiss();
+                        }, "取 消", (dialog, which) -> {
+                            dialog.dismiss();
+                        }, false);
+            }else{
+                ToastUtils.show("上报的equipment_num为空不能上报！！");
+            }
         });
 
         cunAdapter.setOnItemChildFocusChangeListener(new BaseQuickAdapter.OnItemChildFocusChangeListener() {
@@ -178,8 +197,7 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 mPointBean = monitorList.get(position);
                 updateUI();
-                String url = mPointBean.getRtmpSrc();
-//                url = "rtmp://58.200.131.2:1935/livetv/hunantv"; //测试代码
+                String url = PointUtils.getPlayerUrl(mPointBean);
                 String videoPath = mVvPlayer.getVideoPath();
                 if (!url.equals(videoPath)){
                     mVvPlayer.setVideoPath(url);

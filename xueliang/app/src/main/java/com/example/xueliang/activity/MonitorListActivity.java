@@ -213,7 +213,9 @@ public class MonitorListActivity extends BaseMvpActivity<MonitorListPresenter> i
                                         gridTempList.add(data);
                                         PointBean pointBean1 = gridList.get(gridTempList.size()-1);
                                         pointBean1.setId(data.getId());
-                                        pointBean1.setId(data.getRtmpSrc());
+                                        pointBean1.setRtmpSrc(data.getRtmpSrc());
+                                        pointBean1.setRtspSrc(data.getRtspSrc());
+                                        pointBean1.setEquipment_num(data.getEquipment_num());
                                         if (gridTempList.size() == 4){
                                             gridTempList.clear();
                                         }

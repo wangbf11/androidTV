@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide;
 import com.example.xueliang.R;
 import com.example.xueliang.base.LoadCallBack;
 import com.example.xueliang.bean.AppLogoInfoBean;
+import com.example.xueliang.bean.UserInfoEntity;
 import com.example.xueliang.presenter.LoginPresenter;
 import com.example.xueliang.utils.AppUtils;
 import com.example.xueliang.utils.QRCodeUtil;
@@ -77,9 +78,12 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter> implements Lo
 
     @Override
     public void loadData() {
-        if (StringUtils.isNotBlank(SPUtil.getToken())){
+        UserInfoEntity userInfoEntity = SPUtil.getUserInfo();
+        if (StringUtils.isNotBlank(SPUtil.getToken()) && userInfoEntity != null && userInfoEntity.getNickName() != null && userInfoEntity.getPhone() != null){
             onLoginSuccess();
         }else {
+            SPUtil.removeUserInfo();
+            SPUtil.removeToken();
             presenter.getLoginQrCode();
         }
     }

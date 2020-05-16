@@ -14,6 +14,7 @@ import com.example.xueliang.activity.MonitorActivity;
 import com.example.xueliang.bean.PointBean;
 import com.example.xueliang.manager.VideoManager;
 import com.example.xueliang.utils.AppUtils;
+import com.example.xueliang.utils.PointUtils;
 
 import java.util.List;
 
@@ -104,27 +105,28 @@ public class NavGridMonitorAdapter extends RecyclerView.Adapter<NavGridMonitorAd
 
         });
 
-        String url = pointBean.getRtmpSrc();
-//        url = "rtmp://58.200.131.2:1935/livetv/hunantv"; //测试代码
-        if (url.equals(vvPlayer.getVideoPath())){
+        String url = PointUtils.getPlayerUrl(pointBean);
+        if (url != null && url.equals(vvPlayer.getVideoPath())){
             vvPlayer.resume();
             vvPlayer.start();
         }else {
-            vvPlayer.setVideoPath(url);
-            vvPlayer.setOnPreparedListener(new IMediaPlayer.OnPreparedListener()  {
+            if (url != null ) {
+                vvPlayer.setVideoPath(url);
+                vvPlayer.setOnPreparedListener(new IMediaPlayer.OnPreparedListener()  {
 
-                @Override
-                public void onPrepared(IMediaPlayer iMediaPlayer) {
-                    vvPlayer.start();
-                }
-            });
+                    @Override
+                    public void onPrepared(IMediaPlayer iMediaPlayer) {
+                        vvPlayer.start();
+                    }
+                });
 
 
-            vvPlayer.setOnErrorListener((mp, what, extra) -> {
-                // 缓存有问题 先删除 缓存
-                vvPlayer.stopPlayback();
-                return true;
-            });
+                vvPlayer.setOnErrorListener((mp, what, extra) -> {
+                    // 缓存有问题 先删除 缓存
+                    vvPlayer.stopPlayback();
+                    return true;
+                });
+            }
         }
 
     }

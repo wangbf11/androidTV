@@ -10,6 +10,15 @@ public class PointBean implements Serializable {
     private String id;
     private String name;
     private String rtmpSrc;
+    private String rtspSrc;
+
+    public String getRtspSrc() {
+        return rtspSrc;
+    }
+
+    public void setRtspSrc(String rtspSrc) {
+        this.rtspSrc = rtspSrc;
+    }
 
     public String getEquipment_num() {
         return equipment_num;
