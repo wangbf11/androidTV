@@ -46,6 +46,8 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Load
     private View mll_notification;
     private TextView logoNameAndPhone;
     private boolean mIsDestroy;
+    private TextView tv_user;
+    private TextView tv_location;
 
     @Override
     public MainPresenter setPresenter() {
@@ -68,6 +70,8 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Load
 
     @Override
     public void initView() {
+        tv_user = findViewById(R.id.tv_user);
+        tv_location = findViewById(R.id.tv_location);
         mPvPage = findViewById(R.id.read_pv_page);
         mLogout = findViewById(R.id.tv_logout);
         ll_monitor = findViewById(R.id.ll_monitor);
@@ -95,6 +99,11 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Load
                 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             mPvPage.setLayerType(LAYER_TYPE_SOFTWARE, null);
         }
+        UserInfoEntity userInfo = SPUtil.getUserInfo();
+        String nickName = userInfo.getNickName();
+        String phone = userInfo.getPhone();
+        tv_user.setText("负责人："+nickName +" " + phone);
+
         mPageLoader = mPvPage.getPageLoader();
         ll_monitor.setOnFocusChangeListener(new MyFocusChange());
 
