@@ -51,12 +51,12 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter> implements Lo
 
     @Override
     public void initListener() {
-        mQrCode.setOnClickListener(v->{
-            Intent intent = new Intent();
-            intent.setClass(LoginActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        });
+//        mQrCode.setOnClickListener(v->{
+//            Intent intent = new Intent();
+//            intent.setClass(LoginActivity.this, MainActivity.class);
+//            startActivity(intent);
+//            finish();
+//        });
     }
 
     @Override
