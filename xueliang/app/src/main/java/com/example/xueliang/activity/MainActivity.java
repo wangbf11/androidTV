@@ -7,12 +7,15 @@ import android.text.Html;
 import android.text.Spanned;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.xueliang.R;
 import com.example.xueliang.base.LoadCallBack;
+import com.example.xueliang.bean.AppLogoInfoBean;
 import com.example.xueliang.bean.UserInfoEntity;
 import com.example.xueliang.network.ResponceSubscriber2;
 import com.example.xueliang.network.RetrofitManager;
@@ -47,6 +50,8 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Load
     private boolean mIsDestroy;
     private TextView tv_user;
     private TextView tv_location;
+    private ImageView main_logo1;
+    private ImageView main_logo2;
 
     @Override
     public MainPresenter setPresenter() {
@@ -65,6 +70,14 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Load
     @Override
     public void loadData() {
         presenter.processLogic();//调用接口
+
+        AppLogoInfoBean appLogoInfoBean =  SPUtil.getAppLogoInfo();
+        if (appLogoInfoBean != null ){
+            if (appLogoInfoBean.getLogo() != null) {
+                Glide.with(this).load(appLogoInfoBean.getLogo()).into(main_logo1);
+                Glide.with(this).load(appLogoInfoBean.getLogo()).into(main_logo2);
+            }
+        }
     }
 
     @Override
@@ -77,6 +90,8 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Load
         mtvNotification = findViewById(R.id.mtv_notification);
         mll_notification = findViewById(R.id.ll_notification);
         dot_ll = (LinearLayout) findViewById(R.id.dot_ll);
+        main_logo1 = findViewById(R.id.main_logo1);
+        main_logo2 = findViewById(R.id.main_logo2);
 
         // 如果 API < 18 取消硬件加速
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2

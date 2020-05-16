@@ -16,6 +16,7 @@
         android:paddingRight="15dp">
 
         <ImageView
+            android:id="@+id/main_logo1"
             android:layout_width="27dp"
             android:layout_height="27dp"
             android:src="@drawable/ic_logo" />
@@ -37,6 +38,7 @@
 
 
         <ImageView
+            android:id="@+id/main_logo2"
             android:layout_width="16dp"
             android:layout_height="16dp"
             android:src="@drawable/ic_logo" />
