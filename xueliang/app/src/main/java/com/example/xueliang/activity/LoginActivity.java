@@ -3,6 +3,7 @@ package com.example.xueliang.activity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,6 +16,8 @@ import com.example.xueliang.utils.AppUtils;
 import com.example.xueliang.utils.QRCodeUtil;
 import com.example.xueliang.utils.SPUtil;
 import com.example.xueliang.utils.StringUtils;
+
+import retrofit2.http.Url;
 
 /*
  * 登录页面
@@ -78,7 +81,7 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter> implements Lo
                 login_name.setText(appLogoInfoBean.getName());
             }
             if (appLogoInfoBean.getLogo() != null) {
-//                login_logo.setImageDrawable();
+                Glide.with(this).load(appLogoInfoBean.getLogo()).into(login_logo);
             }
         }
     }
