@@ -19,9 +19,7 @@ import com.example.xueliang.R;
 import com.example.xueliang.base.BasePresenter;
 import com.example.xueliang.bean.AppLogoInfoBean;
 import com.example.xueliang.bean.AppUpdateInfoBean;
-import com.example.xueliang.bean.CommonResult;
 import com.example.xueliang.network.ResponceSubscriber;
-import com.example.xueliang.network.ResponceSubscriber2;
 import com.example.xueliang.network.RetrofitManager;
 import com.example.xueliang.network.RxSchedulerUtils;
 import com.example.xueliang.utils.AppUtils;
@@ -70,7 +68,6 @@ public class SplashActivity extends BaseMvpActivity {
     @Override
     public void initView() {
         getAppLogoInfo();
-        getApkIsUpdate();
     }
 
     @Override
@@ -90,11 +87,13 @@ public class SplashActivity extends BaseMvpActivity {
                             AppLogoInfoBean appLogoInfoBean = list.get(0);
                             SPUtil.keepAppLogoInfo(appLogoInfoBean);
                         }
+                        getApkIsUpdate();
                     }
 
                     @Override
                     protected void onFail(String message) {
                         super.onFail(message);
+                        getApkIsUpdate();
                     }
                 });
     }

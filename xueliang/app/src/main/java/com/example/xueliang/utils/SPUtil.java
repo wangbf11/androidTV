@@ -148,11 +148,11 @@ public class SPUtil {
 
     public static void keepAppLogoInfo(AppLogoInfoBean appLogoInfo) {
         Gson gson = new Gson();
-        putString(BaseApplication.getContext(),"pipe_user_info",gson.toJson(appLogoInfo));
+        putString(BaseApplication.getContext(),"pipe_logo_info",gson.toJson(appLogoInfo));
     }
 
     public static AppLogoInfoBean getAppLogoInfo() {
-        String read = getString(BaseApplication.getContext(),"pipe_user_info","");
+        String read = getString(BaseApplication.getContext(),"pipe_logo_info","");
         if (StringUtils.isBlank(read)) {
             return null;
         } else {
