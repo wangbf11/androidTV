@@ -25,6 +25,7 @@ import com.example.xueliang.utils.AppUtils;
 import com.example.xueliang.utils.DialogUtil;
 import com.example.xueliang.utils.SPUtil;
 import com.example.xueliang.utils.ScreenUtils;
+import com.example.xueliang.utils.StringUtils;
 import com.example.xueliang.utils.ToastUtils;
 import com.example.xueliang.view.listener.MyFocusChange;
 import com.example.xueliang.view.readview.PageLoader;
@@ -102,8 +103,14 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Load
         if (userInfo != null) {
             String nickName = userInfo.getNickName();
             String phone = userInfo.getPhone();
+            String address = userInfo.getAddress();
+            if (StringUtils.isEmpty(address)) {
+                address = "";
+            }
             tv_user.setText("负责人："+nickName +" " + phone);
+            tv_location.setText(address);
         }else {
+            tv_location.setText("");
             tv_user.setText("负责人："+"" +" " + "");
         }
         mPageLoader = mPvPage.getPageLoader();

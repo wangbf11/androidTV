@@ -5,9 +5,17 @@ public class UserInfoEntity {
     private int register;
     private String phone;
     private String nickName;
+    private String address;
     private String token;
     private String error_code;
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
     public String getPhone() {
         return phone;
