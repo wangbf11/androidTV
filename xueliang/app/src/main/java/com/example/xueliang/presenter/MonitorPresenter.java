@@ -8,6 +8,7 @@ import com.example.xueliang.bean.TownBean;
 import com.example.xueliang.network.ResponceSubscriber2;
 import com.example.xueliang.network.RetrofitManager;
 import com.example.xueliang.network.RxSchedulerUtils;
+import com.example.xueliang.utils.StringUtils;
 import com.example.xueliang.utils.ToastUtils;
 
 import java.util.HashMap;
@@ -63,15 +64,25 @@ public class MonitorPresenter extends BasePresenter<MonitorActivity> {
                 .subscribe(new ResponceSubscriber2<Map>() {
                     @Override
                     protected void onSucess(Map data) {
-                        ToastUtils.show("上报成功");
-                        if (view != null){
-                            view.onQZSucess("");
+                        String msg = (String) data.get("msg");
+                        if (data != null && StringUtils.isNotEmpty(msg)) {
+                            Double msgState = (Double) data.get("msgState");
+                            if (msgState == 1) {
+                                ToastUtils.show("上传成功!");
+                                if (view != null){
+                                    view.onQZSucess("");
+                                }
+                            }else{
+                                ToastUtils.show(msg);
+                            }
+                        }else{
+                            ToastUtils.show("上报失败!");
                         }
                     }
 
                     @Override
                     protected void onFail(String err) {
-                        ToastUtils.show("上报失败");
+                        ToastUtils.show("上报失败!");
                     }
                 });
     }

@@ -151,17 +151,18 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
     @Override
     public void initListener() {
         ll_abnormal_click.setOnClickListener(v -> {
-            if (mPointBean.getEquipment_num() != null) {
+            String id = mPointBean.getId();
+            if (StringUtils.isNotEmpty(id)) {
                 //上报异常
                 DialogUtil.showAlert(mContext, null, "您确认要上报异常情况吗？",
                         "确 定", (dialog, which) -> {
-                            presenter.oneKeyQZ(mPointBean.getEquipment_num());
+                            presenter.oneKeyQZ(mPointBean.getId());
                             dialog.dismiss();
                         }, "取 消", (dialog, which) -> {
                             dialog.dismiss();
                         }, false);
             }else{
-                ToastUtils.show("上报的equipment_num为空不能上报！！");
+                ToastUtils.show("上报的Id为空不能上报!");
             }
         });
 
