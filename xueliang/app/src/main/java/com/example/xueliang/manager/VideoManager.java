@@ -1,6 +1,7 @@
 package com.example.xueliang.manager;
 
 import com.example.xueliang.utils.AppUtils;
+import com.example.xueliang.utils.StringUtils;
 
 import java.util.ArrayList;
 
@@ -46,7 +47,18 @@ public class VideoManager {
 
     public void onPause() {
         for (IjkVideoView item :mVideoViewArrayList){
-            item.pause();
+            if (StringUtils.isNotBlank(item.getVideoPath())){
+                item.pause();
+            }
+        }
+
+    }
+    public void onResume() {
+        for (IjkVideoView item :mVideoViewArrayList){
+            if (StringUtils.isNotBlank(item.getVideoPath())){
+                item.resume();
+                item.start();
+            }
         }
 
     }

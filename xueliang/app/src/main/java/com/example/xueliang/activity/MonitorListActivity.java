@@ -256,4 +256,10 @@ public class MonitorListActivity extends BaseMvpActivity<MonitorListPresenter> i
         super.onPause();
         VideoManager.getInstance().onPause();
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        VideoManager.getInstance().onResume();
+    }
 }
