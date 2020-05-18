@@ -23,7 +23,7 @@ public class MainPresenter extends BasePresenter<MainActivity> {
     }
 
     /**
-     * 获取通知
+     * 获取公告
      */
     private void getMainNotice() {
         RetrofitManager.getDefault().getNotice()
