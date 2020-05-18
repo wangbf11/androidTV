@@ -10,13 +10,13 @@ public class PointUtils {
      * @return
      */
     public static String getPlayerUrl(PointBean pointBean) {
-        String url = pointBean.getRtspSrc();
-        if (StringUtils.isEmpty(url) && StringUtils.isNotEmpty(pointBean.getRtmpSrc())) {
-            url = pointBean.getRtmpSrc();
-        }
-        if (StringUtils.isEmpty(url)) {
-            url = "rtmp://58.200.131.2:1935/livetv/hunantv"; //测试代码
-        }
+        String url = pointBean.getPlayrealUrl();
+//        if (StringUtils.isEmpty(url) && StringUtils.isNotEmpty(pointBean.getRtmpSrc())) {
+//            url = pointBean.getRtmpSrc();
+//        }
+//        if (StringUtils.isEmpty(url)) {
+//            url = "rtmp://58.200.131.2:1935/livetv/hunantv"; //测试代码
+//        }
         return url;
     }
 }

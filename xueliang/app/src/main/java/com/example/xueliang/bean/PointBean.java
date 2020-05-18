@@ -11,6 +11,15 @@ public class PointBean implements Serializable {
     private String name;
     private String rtmpSrc;
     private String rtspSrc;
+    private String playrealUrl;
+
+    public String getPlayrealUrl() {
+        return playrealUrl;
+    }
+
+    public void setPlayrealUrl(String playrealUrl) {
+        this.playrealUrl = playrealUrl;
+    }
 
     public String getRtspSrc() {
         return rtspSrc;
@@ -75,4 +84,6 @@ public class PointBean implements Serializable {
     public void setRtmpSrc(String rtmpSrc) {
         this.rtmpSrc = rtmpSrc;
     }
+
+
 }
