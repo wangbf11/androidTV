@@ -44,7 +44,8 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter> implements Lo
         mQrCode = findViewById(R.id.iv_qrcode);
         login_logo = findViewById(R.id.login_logo);
         login_name = findViewById(R.id.login_name);
-
+        TextView tv_version = findViewById(R.id.tv_version);
+        tv_version.setText("v" +AppUtils.getAppVersion());
 //        RxPermissions rxPermissions = new RxPermissions(this);
 //        rxPermissions.request(Manifest.permission.READ_PHONE_STATE)
 //                .subscribe(
