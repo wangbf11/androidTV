@@ -25,6 +25,7 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter> implements Lo
     private ImageView mQrCode;
     private ImageView login_logo;
     private TextView login_name;
+    private TextView login_version;
     @Override
     public LoginPresenter setPresenter() {
         return new LoginPresenter(this);

@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
-            android:text="小金县美兴镇新街村"
+            android:text=""
             android:textColor="#ffffffff"
             android:textSize="10sp" />
 
