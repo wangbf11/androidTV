@@ -129,7 +129,7 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
         String town = mPointBean.getTown();
 
         String village = mPointBean.getVillage();
-        String equipment_num = mPointBean.getEquipment_num();
+        String id = mPointBean.getId();
         if (StringUtils.isEmpty(village)) {
             village = "";
         }
@@ -139,13 +139,13 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
         if (StringUtils.isEmpty(location)) {
             location = "";
         }
-        if (StringUtils.isEmpty(equipment_num)) {
-            equipment_num = "";
+        if (StringUtils.isEmpty(id)) {
+            id = "";
         }
         tv_location.setText(town + " " + village + " " + location);
 
         point_name.setText(location);
-        town_cun_name.setText(town + " " + village + "   编号：" + equipment_num);
+        town_cun_name.setText(town + " " + village + "   编号：" + id);
     }
 
     @Override
