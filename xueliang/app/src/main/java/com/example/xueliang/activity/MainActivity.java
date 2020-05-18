@@ -73,10 +73,19 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Load
         presenter.processLogic();//调用接口
 
         AppLogoInfoBean appLogoInfoBean =  SPUtil.getAppLogoInfo();
+        UserInfoEntity userInfoEntity = SPUtil.getUserInfo();
         if (appLogoInfoBean != null ){
             if (appLogoInfoBean.getLogo() != null) {
                 Glide.with(this).load(appLogoInfoBean.getLogo()).into(main_logo1);
-                Glide.with(this).load(appLogoInfoBean.getLogo()).into(main_logo2);
+            }else{
+                if (userInfoEntity == null || (userInfoEntity != null && StringUtils.isEmpty(userInfoEntity.getAvatar()))) {
+                    Glide.with(this).load(appLogoInfoBean.getLogo()).into(main_logo2);
+                }
+            }
+        }
+        if (userInfoEntity != null){
+            if (StringUtils.isNotEmpty(userInfoEntity.getAvatar())) {
+                Glide.with(this).load(userInfoEntity.getAvatar()).into(main_logo2);
             }
         }
     }

@@ -31,18 +31,21 @@ public class MainPresenter extends BasePresenter<MainActivity> {
                 .subscribe(new ResponceSubscriber<List>() {
                     @Override
                     protected void onSucess(List list) {
+                        String notice = "";
                         if (null != list && list.size() >0){
                             Map map = (Map)list.get(0);
-                            String notice = (String)map.get("notice");
-                            if (null != view){
-                                view.onLoadNotice(notice);
-                            }
+                            notice = (String)map.get("notice");
+                        }
+                        if (null != view){
+                            view.onLoadNotice(notice);
                         }
                     }
 
                     @Override
                     protected void onFail(String err) {
-
+                        if (null != view){
+                            view.onLoadNotice("");
+                        }
                         Log.e("err","err");
                     }
                 });
@@ -58,18 +61,21 @@ public class MainPresenter extends BasePresenter<MainActivity> {
                 .subscribe(new ResponceSubscriber<List>() {
                     @Override
                     protected void onSucess(List list) {
+                        String notication = "";
                         if (null != list && list.size() >0){
                             Map map = (Map)list.get(0);
-                            String notication = (String)map.get("notication");
-                            if (null != view && notication != null){
-                                view.onLoadNotification(notication);
-                            }
+                            notication = (String)map.get("notication");
+                        }
+                        if (null != view && notication != null){
+                            view.onLoadNotification(notication);
                         }
                     }
 
                     @Override
                     protected void onFail(String err) {
-
+                        if (null != view ){
+                            view.onLoadNotification("");
+                        }
                         Log.e("err","err");
                     }
                 });

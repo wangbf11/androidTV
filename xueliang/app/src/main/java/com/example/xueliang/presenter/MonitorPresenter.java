@@ -32,9 +32,6 @@ public class MonitorPresenter extends BasePresenter<MonitorActivity> {
                         }
                         List<TownBean> list = data.getResult();
                         if (view != null &&list != null &&list.size() >0) {
-                            TownBean townBean = list.get(0);
-                            list.clear();
-                            list.add(townBean);
                             view.onLoad(list);
                         }else {
                             if (view != null){
