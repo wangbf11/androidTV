@@ -99,7 +99,7 @@ public interface XueLiangService {
      * 根据村id获取点数据
      */
     @Headers({"Content-Type:application/json; charset=utf-8", RetrofitManager.CACHE_CONTROL_AGE + RetrofitManager.CACHE_CONTROL_NETWORK})
-    @POST("/interface/rest/http/xlwb/xlgc-wb-jdh-yjqz-ssjksp-x.htm")
+    @POST("/interface/rest/http/xlwb/xlgc-wb-jdh-yjqz-ssjksp-x-hqsp.htm")
     Observable<PointBean> getPointListByPointId(@Body Map<String, Object> params);
 
     /**

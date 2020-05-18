@@ -137,7 +137,6 @@ public class MonitorListActivity extends BaseMvpActivity<MonitorListPresenter> i
 
         Map<String, Object> params = new HashMap<>();
         params.put("id", pointBean.getId());
-        params.put("playrealUrl", "");
         RetrofitManager.getDefault().getPointListByPointId(params)
                 .compose(RxSchedulerUtils::toSimpleSingle)
                 .subscribe(new ResponceSubscriber2<PointBean>() {
@@ -189,7 +188,6 @@ public class MonitorListActivity extends BaseMvpActivity<MonitorListPresenter> i
 
         Map<String, Object> params = new HashMap<>();
         params.put("id", pointBean.getId());
-        params.put("playrealUrl", "");
         RetrofitManager.getDefault().getPointListByPointId(params)
                 .compose(RxSchedulerUtils::toSimpleSingle)
                 .subscribe(new ResponceSubscriber2<PointBean>() {
