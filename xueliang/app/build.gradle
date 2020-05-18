@@ -29,7 +29,7 @@ android {
         minSdkVersion 17
         targetSdkVersion 29
         versionCode getIncreasedVersionCode()
-        versionName "1.0.5"
+        versionName "1.0.6"
         multiDexEnabled true
         ndk {
             //设置支持的SO库架构
@@ -103,6 +103,7 @@ dependencies {
 
 //    implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
 }
+
 //versionCode取时间戳对应的天数（即1970.1.1到当前天数）
 static def getIncreasedVersionCode() {
     return (int) (System.currentTimeMillis() / (1000 * 60 * 60 * 24))
