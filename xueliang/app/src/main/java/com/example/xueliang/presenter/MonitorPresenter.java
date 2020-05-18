@@ -54,7 +54,6 @@ public class MonitorPresenter extends BasePresenter<MonitorActivity> {
      */
     public void oneKeyQZ(String pointId) {
         Map<String, Object> params = new HashMap<>();
-        params.put("note", "");
         params.put("id", pointId);
         RetrofitManager.getDefault().oneKeyQZ(params)
                 .compose(RxSchedulerUtils::toSimpleSingle)
