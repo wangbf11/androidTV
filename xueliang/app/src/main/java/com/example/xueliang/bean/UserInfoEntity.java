@@ -5,9 +5,18 @@ public class UserInfoEntity {
     private int register;
     private String phone;
     private String nickName;
+    private String avatar;
     private String address;
     private String token;
     private String error_code;
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
 
     public String getAddress() {
         return address;

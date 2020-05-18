@@ -42,7 +42,8 @@ public class NavPointListAdapter extends BaseQuickAdapter<NavPointListAdapter.Na
             @Override
             public void onClick(View v) {
                 if (context instanceof MonitorListActivity){
-                    ((MonitorListActivity)context).onPointItemChildClick(stringList.get(position));
+                    PointBean pointBean = stringList.get(position);
+                    ((MonitorListActivity)context).onPointItemChildClick(pointBean);
                 }
             }
         });
