@@ -265,7 +265,7 @@ public class SplashActivity extends BaseMvpActivity {
                 String apkName = packageName + "_" + AppUtils.getAppVersion() + ".apk";
                 String tmpApk = packageName + "_" +  AppUtils.getAppVersion()  + ".tmp";
                 // 判断是否挂载了SD卡
-                savePath = AppUtils.getApplication().getFilesDir();
+                savePath = AppUtils.getApplication().getCacheDir();
                 if (savePath !=null) {
                 }
 
