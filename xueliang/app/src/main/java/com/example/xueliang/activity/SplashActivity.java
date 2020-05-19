@@ -261,11 +261,11 @@ public class SplashActivity extends BaseMvpActivity {
         public void run() {
             try {
                 //下载的apk文件与包名关联，防止多个app同时更新时apk文件名冲突
-                String packageName = AppUtils.getApplication().getPackageName();
-                String apkName = packageName + "_" + AppUtils.getAppVersion() + ".apk";
-                String tmpApk = packageName + "_" +  AppUtils.getAppVersion()  + ".tmp";
+//                String packageName = AppUtils.getApplication().getPackageName();
+                String apkName =  "xueliang_" + AppUtils.getAppVersionCode() + ".apk";
+                String tmpApk =  "xueliang_" +  AppUtils.getAppVersionCode()  + ".tmp";
                 // 判断是否挂载了SD卡
-                savePath = AppUtils.getApplication().getCacheDir();
+                savePath = AppUtils.getApplication().getFilesDir();
                 if (savePath !=null) {
                 }
 
