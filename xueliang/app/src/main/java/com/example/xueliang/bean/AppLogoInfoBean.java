@@ -6,6 +6,7 @@ public class AppLogoInfoBean implements Serializable {
 
     private String logo;
     private String name;
+    private String time;
 
     public String getLogo() {
         return logo;
@@ -21,5 +22,13 @@ public class AppLogoInfoBean implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 }

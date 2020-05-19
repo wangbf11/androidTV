@@ -1,25 +1,40 @@
 package com.example.xueliang.presenter;
 
 
+import android.os.Handler;
 import android.util.Log;
 
 import com.example.xueliang.activity.MainActivity;
 import com.example.xueliang.base.BasePresenter;
+import com.example.xueliang.bean.AppLogoInfoBean;
 import com.example.xueliang.network.ResponceSubscriber;
 import com.example.xueliang.network.RetrofitManager;
 import com.example.xueliang.network.RxSchedulerUtils;
+import com.example.xueliang.utils.SPUtil;
 
 import java.util.List;
 import java.util.Map;
 
 public class MainPresenter extends BasePresenter<MainActivity> {
+
+    private int mTime;
+
     public MainPresenter(MainActivity view) {
         this.view = view;
     }
 
     public void processLogic() {
+        AppLogoInfoBean appLogoInfo = SPUtil.getAppLogoInfo();
+        String time = appLogoInfo.getTime();
+        mTime = 10 *60* 1000 ; //默认10分钟
+        try {
+            int i = Integer.parseInt(time);
+            mTime = i *60* 1000 ; //默认10分钟
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
         getMainNotice();
-        getMainNotification();
     }
 
     /**
@@ -39,6 +54,7 @@ public class MainPresenter extends BasePresenter<MainActivity> {
                         if (null != view){
                             view.onLoadNotice(notice);
                         }
+                        getMainNotification();
                     }
 
                     @Override
@@ -47,6 +63,7 @@ public class MainPresenter extends BasePresenter<MainActivity> {
                             view.onLoadNotice("");
                         }
                         Log.e("err","err");
+                        getMainNotification();
                     }
                 });
     }
@@ -69,6 +86,7 @@ public class MainPresenter extends BasePresenter<MainActivity> {
                         if (null != view && notication != null){
                             view.onLoadNotification(notication);
                         }
+                        new Handler().postDelayed(progressRunnable, mTime);
                     }
 
                     @Override
@@ -76,9 +94,17 @@ public class MainPresenter extends BasePresenter<MainActivity> {
                         if (null != view ){
                             view.onLoadNotification("");
                         }
-                        Log.e("err","err");
+                        new Handler().postDelayed(progressRunnable, mTime);
                     }
                 });
     }
+
+
+    public Runnable progressRunnable = new Runnable() {
+        @Override
+        public void run() {
+            getMainNotice();
+        }
+    };
 
 }
