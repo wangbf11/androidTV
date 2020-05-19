@@ -92,7 +92,7 @@ public interface XueLiangService {
      * 获取镇和村数据
      */
     @Headers({"Content-Type:application/json; charset=utf-8", RetrofitManager.CACHE_CONTROL_AGE + RetrofitManager.CACHE_CONTROL_NETWORK})
-    @GET("/interface/rest/http/xlwb/xlgc-wb-jdh-zcdwxz.htm")
+    @GET("/interface/rest/http/xlwb/xlgc-wb-jdh-xzcdw.htm")
     Observable<CommonResult2<List<TownBean>>> getTownAndCunList(@QueryMap Map<String, Object> params);
 
     /**
