@@ -2,6 +2,7 @@ package com.example.xueliang.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import com.example.xueliang.bean.PointBean;
 import com.example.xueliang.manager.VideoManager;
 import com.example.xueliang.utils.AppUtils;
 import com.example.xueliang.utils.PointUtils;
+import com.example.xueliang.utils.StringUtils;
 
 import java.util.List;
 
@@ -111,6 +113,9 @@ public class NavGridMonitorAdapter extends RecyclerView.Adapter<NavGridMonitorAd
             vvPlayer.start();
         }else {
             if (url != null ) {
+                if (StringUtils.isNotBlank(vvPlayer.getVideoPath())){
+                    vvPlayer.stopPlayback();
+                }
                 vvPlayer.setVideoPath(url);
                 vvPlayer.setOnPreparedListener(new IMediaPlayer.OnPreparedListener()  {
 
@@ -123,6 +128,7 @@ public class NavGridMonitorAdapter extends RecyclerView.Adapter<NavGridMonitorAd
 
                 vvPlayer.setOnErrorListener((mp, what, extra) -> {
                     // 缓存有问题 先删除 缓存
+                    Log.e("vvPlayerOnError:",what +" ");
                     vvPlayer.stopPlayback();
                     return true;
                 });

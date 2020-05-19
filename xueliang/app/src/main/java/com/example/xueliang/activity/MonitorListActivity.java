@@ -185,7 +185,7 @@ public class MonitorListActivity extends BaseMvpActivity<MonitorListPresenter> i
             }
         }
 
-
+        VideoManager.getInstance().onPause();//每次添加都站停一下视频
         Map<String, Object> params = new HashMap<>();
         params.put("id", pointBean.getId());
         RetrofitManager.getDefault().getPointListByPointId(params)
