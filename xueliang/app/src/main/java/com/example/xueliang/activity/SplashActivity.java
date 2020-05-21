@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
@@ -265,8 +266,12 @@ public class SplashActivity extends BaseMvpActivity {
                 String apkName =  "xueliang.apk";
                 String tmpApk =  "xueliang.tmp";
                 // 判断是否挂载了SD卡
-                savePath = AppUtils.getApplication().getFilesDir();
-                if (savePath !=null) {
+                if (Environment.getExternalStorageState().equals(
+                        Environment.MEDIA_MOUNTED)) {
+                    savePath = AppUtils.getApplication().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
+//                    AppUtils.getApplication().getExternalStorageDirectory()
+                }else {
+                    savePath = AppUtils.getApplication().getFilesDir();
                 }
 
                 apkFile = new File(savePath, apkName);
