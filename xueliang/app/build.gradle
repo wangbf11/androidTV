@@ -28,8 +28,8 @@ android {
         applicationId "com.example.xueliang"
         minSdkVersion 17
         targetSdkVersion 29
-        versionCode 1012
-        versionName "1.0.12"
+        versionCode 1013
+        versionName "1.0.13"
         multiDexEnabled true
 
         ndk {
@@ -102,7 +102,7 @@ dependencies {
 
     implementation project(':ijkplayerlibrary')
 
-//    implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
+    implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
 }
 
 //versionCode取时间戳对应的天数（即1970.1.1到当前天数）

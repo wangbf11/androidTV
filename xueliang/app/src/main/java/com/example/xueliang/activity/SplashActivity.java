@@ -1,5 +1,6 @@
 package com.example.xueliang.activity;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -28,6 +29,7 @@ import com.example.xueliang.utils.DialogUtil;
 import com.example.xueliang.utils.SPUtil;
 import com.example.xueliang.utils.StringUtils;
 import com.example.xueliang.utils.ToastUtils;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -66,9 +68,18 @@ public class SplashActivity extends BaseMvpActivity {
 
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public void initView() {
-        getAppLogoInfo();
+        RxPermissions rxPermissions=new RxPermissions(this);
+        rxPermissions.request(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE).subscribe(b-> {
+            if (b){
+                getAppLogoInfo();
+            }else{
+                finish();
+            }
+            });
+
     }
 
     @Override
@@ -202,6 +213,7 @@ public class SplashActivity extends BaseMvpActivity {
                 public void onCancel(DialogInterface dialog) {
                     interceptFlag = true;
                     dialog.dismiss();
+                    finish();
                 }
             });
         }
@@ -356,7 +368,7 @@ public class SplashActivity extends BaseMvpActivity {
         /**
          * 让安装界面在运行的APP的前面
          */
-        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         Uri apkUri = null;
         //判断是否是Android7.0以及更高的版本
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -368,7 +380,11 @@ public class SplashActivity extends BaseMvpActivity {
 
         i.setDataAndType(apkUri,
                 "application/vnd.android.package-archive");
-        mContext.startActivity(i);
+        try {
+            mContext.startActivity(i);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
