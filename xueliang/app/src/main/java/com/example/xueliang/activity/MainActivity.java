@@ -108,20 +108,8 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Load
                 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             mPvPage.setLayerType(LAYER_TYPE_SOFTWARE, null);
         }
-        UserInfoEntity userInfo = SPUtil.getUserInfo();
-        if (userInfo != null) {
-            String nickName = userInfo.getNickName();
-            String phone = userInfo.getPhone();
-            String address = userInfo.getAddress();
-            if (StringUtils.isEmpty(address)) {
-                address = "";
-            }
-            tv_user.setText("负责人："+nickName +" " + phone);
-            tv_location.setText(address);
-        }else {
-            tv_location.setText("");
-            tv_user.setText("负责人："+"" +" " + "");
-        }
+        updateUserInfo();
+
         mPageLoader = mPvPage.getPageLoader();
         ll_monitor.setOnFocusChangeListener(new MyFocusChange());
 
@@ -150,6 +138,24 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Load
 
         });
         mLogout.requestFocus();
+    }
+
+
+    private void updateUserInfo(){
+        UserInfoEntity userInfo = SPUtil.getUserInfo();
+        if (userInfo != null) {
+            String nickName = userInfo.getNickName();
+            String phone = userInfo.getPhone();
+            String address = userInfo.getAddress();
+            if (StringUtils.isEmpty(address)) {
+                address = "";
+            }
+            tv_user.setText("负责人："+nickName +" " + phone);
+            tv_location.setText(address);
+        }else {
+            tv_location.setText("");
+            tv_user.setText("负责人："+"" +" " + "");
+        }
     }
 
     @Override
@@ -313,6 +319,10 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Load
     public void onLoadNotification(String data) {
         Spanned spanned = Html.fromHtml(data);
         mtvNotification.setText(spanned.toString());
+    }
+
+    public void onLoadUserInfo(UserInfoEntity userInfoEntity) {
+        updateUserInfo();
     }
 
     /**

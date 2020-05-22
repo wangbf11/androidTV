@@ -12,6 +12,24 @@ public class PointBean implements Serializable {
     private String rtmpSrc;
     private String rtspSrc;
     private String playrealUrl;
+    private String msg;
+    private Integer msgState;
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    public Integer getMsgState() {
+        return msgState;
+    }
+
+    public void setMsgState(Integer msgState) {
+        this.msgState = msgState;
+    }
 
     public String getPlayrealUrl() {
         return playrealUrl;

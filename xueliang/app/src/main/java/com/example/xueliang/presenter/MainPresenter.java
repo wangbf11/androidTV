@@ -7,11 +7,16 @@ import android.util.Log;
 import com.example.xueliang.activity.MainActivity;
 import com.example.xueliang.base.BasePresenter;
 import com.example.xueliang.bean.AppLogoInfoBean;
+import com.example.xueliang.bean.UserInfoEntity;
 import com.example.xueliang.network.ResponceSubscriber;
+import com.example.xueliang.network.ResponceSubscriber2;
 import com.example.xueliang.network.RetrofitManager;
 import com.example.xueliang.network.RxSchedulerUtils;
+import com.example.xueliang.utils.AppUtils;
 import com.example.xueliang.utils.SPUtil;
+import com.example.xueliang.utils.StringUtils;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -55,6 +60,7 @@ public class MainPresenter extends BasePresenter<MainActivity> {
                             view.onLoadNotice(notice);
                         }
                         getMainNotification();
+                        getLogInfo();
                     }
 
                     @Override
@@ -64,6 +70,7 @@ public class MainPresenter extends BasePresenter<MainActivity> {
                         }
                         Log.e("err","err");
                         getMainNotification();
+                        getLogInfo();
                     }
                 });
     }
@@ -99,6 +106,36 @@ public class MainPresenter extends BasePresenter<MainActivity> {
                 });
     }
 
+
+    /**
+     * 获取登录状态
+     */
+    public void getLogInfo() {
+        Map<String, Object> params = new HashMap<>();
+        String imei =  AppUtils.getIMEI();
+        params.put("uuid", imei);
+        RetrofitManager.getDefault().getLoginInfo(params)
+                .compose(RxSchedulerUtils::toSimpleSingle)
+                .subscribe(new ResponceSubscriber2<UserInfoEntity>() {
+                    @Override
+                    protected void onSucess(UserInfoEntity userInfoEntity) {
+                        if (view != null && userInfoEntity != null) {
+                            if (StringUtils.isNotBlank(userInfoEntity.getToken())) {
+                                SPUtil.keepUserInfo(userInfoEntity);
+                                SPUtil.keepToken(userInfoEntity.getToken());
+                                if (null != view){
+                                    view.onLoadUserInfo(userInfoEntity);
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    protected void onFail(String err) {
+
+                    }
+                });
+    }
 
     public Runnable progressRunnable = new Runnable() {
         @Override

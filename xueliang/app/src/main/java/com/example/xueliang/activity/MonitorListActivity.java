@@ -15,6 +15,7 @@ import com.example.xueliang.network.RetrofitManager;
 import com.example.xueliang.network.RxSchedulerUtils;
 import com.example.xueliang.presenter.MonitorListPresenter;
 import com.example.xueliang.utils.ProgressHUD;
+import com.example.xueliang.utils.StringUtils;
 import com.example.xueliang.utils.ToastUtils;
 import com.example.xueliang.view.listener.MyFocusChange;
 import com.kaopiz.kprogresshud.KProgressHUD;
@@ -144,18 +145,32 @@ public class MonitorListActivity extends BaseMvpActivity<MonitorListPresenter> i
                     protected void onSucess(PointBean point) {
                         mKProgressHUD.dismiss();
                         if (point != null) {
-                            point.setId(pointBean.getId());
-                            //默认第一个点作为监控点
-                            gridTempList.clear();
-                            gridList.clear();
-                            gridList.add(point);
-                            gridAdapter.notifyDataSetChanged();
+                            if (point.getMsgState() == 1) {
+                                point.setId(pointBean.getId());
+                                //默认第一个点作为监控点
+                                gridTempList.clear();
+                                gridList.clear();
+                                gridList.add(point);
+                                gridAdapter.notifyDataSetChanged();
+                            }else{
+                                String msg = point.getMsg();
+                                if (StringUtils.isNotEmpty(msg)) {
+                                    ToastUtils.show(msg);
+                                }
+                            }
                         } else {
-                            Log.e("err", "err");
-                            gridTempList.clear();
-                            gridList.clear();
-                            gridList.add(pointBean);
-                            gridAdapter.notifyDataSetChanged();
+                            if (point.getMsgState() == 1) {
+                                Log.e("err", "err");
+                                gridTempList.clear();
+                                gridList.clear();
+                                gridList.add(pointBean);
+                                gridAdapter.notifyDataSetChanged();
+                            }else{
+                                String msg = point.getMsg();
+                                if (StringUtils.isNotEmpty(msg)) {
+                                    ToastUtils.show(msg);
+                                }
+                            }
                         }
                     }
 
@@ -195,6 +210,13 @@ public class MonitorListActivity extends BaseMvpActivity<MonitorListPresenter> i
                     protected void onSucess(PointBean data) {
                         mKProgressHUD.dismiss();
                         if (data != null) {
+                            if (data.getMsgState() != 1) {
+                                String msg = data.getMsg();
+                                if (StringUtils.isNotEmpty(msg)) {
+                                    ToastUtils.show(msg);
+                                }
+                                return;
+                            }
                             data.setId(pointBean.getId());
                             //默认第一个点作为监控点
                             if (mTv_one.isSelected()){
