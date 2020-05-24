@@ -1,56 +1,44 @@
 package com.example.xueliang.activity;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.xueliang.R;
-import com.example.xueliang.adapter.BaseQuickAdapter;
-import com.example.xueliang.adapter.NavMonitorPageCunListAdapter;
-import com.example.xueliang.adapter.NavMonitorPagePointListAdapter;
 import com.example.xueliang.base.LoadCallBack;
 import com.example.xueliang.bean.PointBean;
 import com.example.xueliang.bean.TownBean;
-import com.example.xueliang.bean.VillageBean;
 import com.example.xueliang.presenter.MonitorPresenter;
 import com.example.xueliang.utils.DialogUtil;
 import com.example.xueliang.utils.PointUtils;
 import com.example.xueliang.utils.StringUtils;
 import com.example.xueliang.utils.ToastUtils;
-import com.yan.tvprojectutils.FocusRecyclerView;
+import com.example.xueliang.view.MonitorPickerDialog;
+import com.example.xueliang.view.listener.OnPickListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
 import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.widget.IjkVideoView;
 
-public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implements LoadCallBack<List<TownBean>>  {
+public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implements LoadCallBack<List<TownBean>> {
     public static final String POINT_BEAN = "point_bean";
     private TextView mTv_time;
     private TextView tv_location;
-    private LinearLayout ll_abnormal;
-    private LinearLayout ll_abnormal_click;
-    private LinearLayout ll_left_list;
     private LinearLayout ll_tips;
-    private boolean mIsBottomHide = false;
-    private boolean mIsLeftHide = false;
-    private FocusRecyclerView mRv_cun;
-    private FocusRecyclerView mRv_monitor;
-    private NavMonitorPageCunListAdapter cunAdapter;
-    private NavMonitorPagePointListAdapter pointAdapter;
-    private List<VillageBean> cunList = new ArrayList<>();
-    private List<PointBean> monitorList = new ArrayList<>();
-    private ImageView iv_left_close;
+
+
     private PointBean mPointBean;
     private TextView town_cun_name;
     private TextView point_name;
     private IjkVideoView mVvPlayer;
+    private MonitorPickerDialog mCountryPickerDialog;
+    private Dialog mExceptionDialog;
 
     @Override
     public MonitorPresenter setPresenter() {
@@ -64,7 +52,7 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
 
     @Override
     public void initData() {
-        mPointBean = (PointBean)getIntent().getSerializableExtra(POINT_BEAN);
+        mPointBean = (PointBean) getIntent().getSerializableExtra(POINT_BEAN);
     }
 
     @Override
@@ -74,38 +62,14 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
         tv_location = findViewById(R.id.tv_location);
         town_cun_name = findViewById(R.id.town_cun_name);
         point_name = findViewById(R.id.point_name);
-        ll_abnormal = findViewById(R.id.ll_abnormal);
-        ll_abnormal_click = findViewById(R.id.ll_abnormal_click);
-        ll_left_list = findViewById(R.id.ll_left_list);
-        iv_left_close = findViewById(R.id.iv_left_close);
+
         mVvPlayer = findViewById(R.id.surfaceView1);
-
-
-
-
-        ll_abnormal.setVisibility(View.GONE);
-        ll_left_list.setVisibility(View.GONE);
-        mIsBottomHide = true;
-        mIsLeftHide = true;
-
-
-        mRv_cun = (FocusRecyclerView) findViewById(R.id.rv_cun_data);
-        mRv_monitor = (FocusRecyclerView) findViewById(R.id.rv_monitor_data);
-
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
-        mRv_cun.setLayoutManager(mLayoutManager);
-        mRv_cun.setHasFixedSize(true);
-        mRv_cun.setAdapter(cunAdapter = new NavMonitorPageCunListAdapter(this, cunList));
-        LinearLayoutManager mLayoutManager2 = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
-        mRv_monitor.setLayoutManager(mLayoutManager2);
-        mRv_monitor.setHasFixedSize(true);
-        mRv_monitor.setAdapter(pointAdapter = new NavMonitorPagePointListAdapter(this, monitorList));
 
         createCountDownTimer();
 
         String url = PointUtils.getPlayerUrl(mPointBean);
         mVvPlayer.setVideoPath(url);
-        mVvPlayer.setOnPreparedListener(new IMediaPlayer.OnPreparedListener()  {
+        mVvPlayer.setOnPreparedListener(new IMediaPlayer.OnPreparedListener() {
 
             @Override
             public void onPrepared(IMediaPlayer iMediaPlayer) {
@@ -121,6 +85,50 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
         });
 
         updateUI();
+
+        mCountryPickerDialog = new MonitorPickerDialog(this);
+        mCountryPickerDialog.setOnPickListener(new OnPickListener() {
+            @Override
+            public void onPick(int position, PointBean data, Dialog dialog) {
+                mPointBean = data;
+                updateUI();
+                String url = PointUtils.getPlayerUrl(mPointBean);
+                String videoPath = mVvPlayer.getVideoPath();
+                if (!url.equals(videoPath)){
+                    mVvPlayer.stopPlayback();
+                    mVvPlayer.setVideoPath(url);
+                    mVvPlayer.start();
+                }
+                dialog.dismiss();
+            }
+
+            @Override
+            public void onCancel() {
+                mCountryPickerDialog.dismiss();
+            }
+        });
+
+
+        mExceptionDialog = DialogUtil.CreateAlertException(mContext, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog2, int which2) {
+                mExceptionDialog.dismiss();
+                String id = mPointBean.getId();
+                if (StringUtils.isNotEmpty(id)) {
+                    //上报异常
+                    DialogUtil.showAlert(mContext, null, "您确认要上报异常情况吗？",
+                            "确 定", (dialog, which) -> {
+                                presenter.oneKeyQZ(mPointBean.getId());
+                                dialog.dismiss();
+                            }, "取 消", (dialog, which) -> {
+                                dialog.dismiss();
+                            }, false);
+                } else {
+                    ToastUtils.show("上报的Id为空不能上报!");
+                }
+            }
+        }, false);
+
     }
 
     private void updateUI() {
@@ -150,77 +158,7 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
 
     @Override
     public void initListener() {
-        ll_abnormal_click.setOnClickListener(v -> {
-            String id = mPointBean.getId();
-            if (StringUtils.isNotEmpty(id)) {
-                //上报异常
-                DialogUtil.showAlert(mContext, null, "您确认要上报异常情况吗？",
-                        "确 定", (dialog, which) -> {
-                            presenter.oneKeyQZ(mPointBean.getId());
-                            dialog.dismiss();
-                        }, "取 消", (dialog, which) -> {
-                            dialog.dismiss();
-                        }, false);
-            }else{
-                ToastUtils.show("上报的Id为空不能上报!");
-            }
-        });
 
-        cunAdapter.setOnItemChildFocusChangeListener(new BaseQuickAdapter.OnItemChildFocusChangeListener() {
-            @Override
-            public void onFocusChange(BaseQuickAdapter adapter, View v, boolean hasFocus, int position) {
-                if (hasFocus) {
-                    monitorList.clear();
-                    pointAdapter.notifyDataSetChanged();
-                    VillageBean villageBean = cunList.get(position);
-                    monitorList.clear();
-                    monitorList.addAll(villageBean.getChild());
-                    pointAdapter.notifyDataSetChanged();
-                }
-
-            }
-        });
-
-        cunAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
-            @Override
-            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                monitorList.clear();
-                pointAdapter.notifyDataSetChanged();
-                VillageBean villageBean = cunList.get(position);
-                monitorList.clear();
-                monitorList.addAll(villageBean.getChild());
-                pointAdapter.notifyDataSetChanged();
-            }
-        });
-
-        pointAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
-            @Override
-            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                mPointBean = monitorList.get(position);
-                updateUI();
-                String url = PointUtils.getPlayerUrl(mPointBean);
-                String videoPath = mVvPlayer.getVideoPath();
-                if (!url.equals(videoPath)){
-                    mVvPlayer.setVideoPath(url);
-                }
-            }
-        });
-
-        iv_left_close.setOnClickListener(v->{
-            mIsLeftHide = false;
-            openList();
-        });
-        iv_left_close.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    v.setBackground(getResources().getDrawable(R.drawable.bg_boder));
-                } else {
-                    v.setBackground(null);
-                }
-            }
-
-        });
     }
 
     @Override
@@ -230,9 +168,6 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
 
     @Override
     public void onLoad(List<TownBean> data) {
-        cunList.clear();
-        cunList.addAll(data.get(0).getChild());
-        cunAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -242,12 +177,11 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
 
     /**
      * 求助成功
+     *
      * @param message
      */
     public void onQZSucess(String message) {
-        if (!mIsBottomHide){
-            openError();
-        }
+
     }
 
     /**
@@ -268,9 +202,9 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
 
                 break;
             case KeyEvent.KEYCODE_DPAD_DOWN:   //向下键
-                if (event.getAction() == KeyEvent.ACTION_DOWN && mIsLeftHide) {
+                if (event.getAction() == KeyEvent.ACTION_DOWN && !mCountryPickerDialog.isShowing() &&!mExceptionDialog.isShowing()) {
                     //打开异常提交栏目
-                    openError();
+                    mExceptionDialog.show();
                 }
                 break;
             case KeyEvent.KEYCODE_DPAD_UP:   //向上键
@@ -280,9 +214,9 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
 
                 break;
             case KeyEvent.KEYCODE_DPAD_LEFT: //向左键
-                if (event.getAction() == KeyEvent.ACTION_DOWN && mIsBottomHide && mIsLeftHide) {
+                if (event.getAction() == KeyEvent.ACTION_DOWN && !mCountryPickerDialog.isShowing() &&!mExceptionDialog.isShowing()) {
                     //打开左边位置选中栏目
-                    openList();
+                    mCountryPickerDialog.show();
                 }
                 break;
             case KeyEvent.KEYCODE_DPAD_RIGHT:  //向右键
@@ -313,36 +247,6 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
         }
         return super.onKeyDown(keyCode, event);
 
-    }
-
-
-    /**
-     * 打开和隐藏报警按钮
-     */
-    public void openError() {
-        //图片点击事件 上下 toolbar 动画
-        if (mIsBottomHide) {
-            ll_abnormal.setVisibility(View.VISIBLE);
-            ll_abnormal_click.requestFocus();
-        } else {
-            ll_abnormal.setVisibility(View.GONE);
-        }
-
-        mIsBottomHide = !mIsBottomHide;
-    }
-
-    /**
-     * 打开和隐藏左边栏目
-     */
-    public void openList() {
-        //图片点击事件 上下 toolbar 动画
-        if (mIsLeftHide) {
-            ll_left_list.setVisibility(View.VISIBLE);
-        } else {
-            ll_left_list.setVisibility(View.GONE);
-        }
-
-        mIsLeftHide = !mIsLeftHide;
     }
 
     /**

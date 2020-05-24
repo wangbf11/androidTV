@@ -15,6 +15,8 @@ import android.widget.TextView;
 
 import com.example.xueliang.R;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 
 /**
  * Created by wbf on 2019/1/17.
@@ -155,6 +157,33 @@ public class DialogUtil {
 //		dlg.setCanceledOnTouchOutside(true);
         dlg.setCancelable(isCancel);
         dlg.show();
+        return dlg;
+    }
+
+    /**
+     * 异常报告弹框
+     */
+    public static Dialog CreateAlertException(Context context,final DialogInterface.OnClickListener posLis, boolean isCancel) {
+        final Dialog dlg = new Dialog(context, R.style.Dialog2);
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        ConstraintLayout layout = (ConstraintLayout) inflater.inflate(R.layout.exception_layout, null);
+        LinearLayout abnormal = (LinearLayout)layout.findViewById(R.id.ll_abnormal_click);
+        abnormal.requestFocus();
+        abnormal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                posLis.onClick(dlg,0);
+            }
+        });
+        dlg.setContentView(layout);
+        Window w = dlg.getWindow();
+        WindowManager.LayoutParams lp = w.getAttributes();
+        lp.gravity = Gravity.BOTTOM;
+        lp.width =  WindowManager.LayoutParams.MATCH_PARENT; // 宽度
+        lp.height = WindowManager.LayoutParams.MATCH_PARENT; // 高度
+        dlg.onWindowAttributesChanged(lp);
+//		dlg.setCanceledOnTouchOutside(true);
+        dlg.setCancelable(isCancel);
         return dlg;
     }
 }
