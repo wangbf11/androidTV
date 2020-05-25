@@ -121,6 +121,7 @@ public class NavGridMonitorAdapter extends RecyclerView.Adapter<NavGridMonitorAd
 
                     @Override
                     public void onPrepared(IMediaPlayer iMediaPlayer) {
+                        iMediaPlayer.setVolume(0f, 0f);
                         vvPlayer.start();
                     }
                 });
