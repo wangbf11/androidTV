@@ -228,6 +228,27 @@ public class MonitorListActivity extends BaseMvpActivity<MonitorListPresenter> i
                                     objects.add(data);
                                     gridList.clear();
                                     gridList.addAll(objects);
+                                    if(gridList.size() == 4){
+                                        gridAdapter.notifyItemChanged(3);
+                                    }
+
+                                    if(gridList.size() == 3){
+                                        gridList.add(null);
+                                        gridAdapter.notifyItemChanged(2);
+                                    }
+
+                                    if(gridList.size() == 2){
+                                        gridList.add(null);
+                                        gridList.add(null);
+                                        gridAdapter.notifyItemChanged(1);
+                                    }
+
+                                    if(gridList.size() == 1){
+                                        gridList.add(null);
+                                        gridList.add(null);
+                                        gridList.add(null);
+                                        gridAdapter.notifyDataSetChanged();
+                                    }
                                 }else {
                                     //重第一个 开始重新 覆盖
                                     if (gridTempList.size() <4){
@@ -254,27 +275,6 @@ public class MonitorListActivity extends BaseMvpActivity<MonitorListPresenter> i
                                             gridAdapter.notifyItemChanged(0);
                                         }
                                     }
-                                }
-                                if(gridList.size() == 4){
-                                    gridAdapter.notifyItemChanged(3);
-                                }
-
-                                if(gridList.size() == 3){
-                                    gridList.add(null);
-                                    gridAdapter.notifyItemChanged(2);
-                                }
-
-                                if(gridList.size() == 2){
-                                    gridList.add(null);
-                                    gridList.add(null);
-                                    gridAdapter.notifyItemChanged(1);
-                                }
-
-                                if(gridList.size() == 1){
-                                    gridList.add(null);
-                                    gridList.add(null);
-                                    gridList.add(null);
-                                    gridAdapter.notifyDataSetChanged();
                                 }
                             }
                         } else {
