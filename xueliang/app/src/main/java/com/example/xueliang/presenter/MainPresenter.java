@@ -1,9 +1,11 @@
 package com.example.xueliang.presenter;
 
 
+import android.content.Intent;
 import android.os.Handler;
 import android.util.Log;
 
+import com.example.xueliang.activity.LoginActivity;
 import com.example.xueliang.activity.MainActivity;
 import com.example.xueliang.base.BasePresenter;
 import com.example.xueliang.bean.AppLogoInfoBean;
@@ -120,11 +122,19 @@ public class MainPresenter extends BasePresenter<MainActivity> {
                     @Override
                     protected void onSucess(UserInfoEntity userInfoEntity) {
                         if (view != null && userInfoEntity != null) {
-                            if (StringUtils.isNotBlank(userInfoEntity.getToken())) {
-                                SPUtil.keepUserInfo(userInfoEntity);
-                                SPUtil.keepToken(userInfoEntity.getToken());
-                                if (null != view){
-                                    view.onLoadUserInfo(userInfoEntity);
+                            if (userInfoEntity.getMsgState() == 2){
+                                AppUtils.getApplication().exit();
+                                SPUtil.removeToken();
+                                SPUtil.removeUserInfo();
+                                Intent intent = new Intent(view, LoginActivity.class);
+                                view.startActivity(intent);
+                            }else {
+                                if (StringUtils.isNotBlank(userInfoEntity.getToken())) {
+                                    SPUtil.keepUserInfo(userInfoEntity);
+                                    SPUtil.keepToken(userInfoEntity.getToken());
+                                    if (null != view){
+                                        view.onLoadUserInfo(userInfoEntity);
+                                    }
                                 }
                             }
                         }

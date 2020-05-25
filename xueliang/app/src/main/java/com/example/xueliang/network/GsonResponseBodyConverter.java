@@ -2,8 +2,6 @@ package com.example.xueliang.network;
 
 import android.util.Log;
 
-import com.example.xueliang.bean.CommonResult;
-import com.example.xueliang.utils.JSONUtil;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -28,10 +26,6 @@ public class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> 
     @Override
     public T convert(ResponseBody value) throws IOException {
         String response = value.string();
-        CommonResult commonResult = JSONUtil.parseJSON(response, CommonResult.class);
-        if (null != commonResult && 2==commonResult.getMsgState()){
-            throw new HttpCodeException("",203);
-        }
         Log.d("response ----------> " , response);
         return gson.fromJson(response, type);
     }

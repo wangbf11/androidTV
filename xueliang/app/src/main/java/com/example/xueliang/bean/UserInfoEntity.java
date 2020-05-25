@@ -9,6 +9,7 @@ public class UserInfoEntity {
     private String address;
     private String token;
     private String error_code;
+    private int msgState;
 
     public String getAvatar() {
         return avatar;
@@ -72,5 +73,13 @@ public class UserInfoEntity {
 
     public void setError_code(String error_code) {
         this.error_code = error_code;
+    }
+
+    public int getMsgState() {
+        return msgState;
+    }
+
+    public void setMsgState(int msgState) {
+        this.msgState = msgState;
     }
 }
