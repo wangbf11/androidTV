@@ -7,6 +7,7 @@ package com.example.xueliang.bean;
 public class CommonResult<T> {
     private T list;
     private String msg;
+    private int msgState;
 
     public T getList() {
         return list;
@@ -22,5 +23,13 @@ public class CommonResult<T> {
 
     public void setMsg(String msg) {
         this.msg = msg;
+    }
+
+    public int getMsgState() {
+        return msgState;
+    }
+
+    public void setMsgState(int msgState) {
+        this.msgState = msgState;
     }
 }

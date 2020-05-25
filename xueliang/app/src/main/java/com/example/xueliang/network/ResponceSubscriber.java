@@ -2,9 +2,13 @@ package com.example.xueliang.network;
 
 
 import android.content.Context;
+import android.content.Intent;
 
+import com.example.xueliang.activity.LoginActivity;
 import com.example.xueliang.bean.CommonResult;
 import com.example.xueliang.utils.AppUtils;
+import com.example.xueliang.utils.SPUtil;
+import com.example.xueliang.utils.StringUtils;
 import com.google.gson.JsonSyntaxException;
 
 import io.reactivex.Observer;
@@ -82,6 +86,18 @@ public abstract class ResponceSubscriber<T> implements Observer<CommonResult<T>>
             onFail(e.getMessage());
         } else if (e instanceof HttpCodeException) {
             onFail(e.getMessage());
+            if (((HttpCodeException) e).code() == 203){
+                if (StringUtils.isNotBlank(SPUtil.getToken())){
+                    //如果是登录状态就 退出登录
+                    AppUtils.getApplication().exit();
+                    SPUtil.removeToken();
+                    SPUtil.removeUserInfo();
+                    Intent intent = new Intent(mContext, LoginActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    mContext.startActivity(intent);
+                }
+
+            }
         }else if (e instanceof ServerException) {
             onFail(e.getMessage());
         }else if (e instanceof JsonSyntaxException) {
