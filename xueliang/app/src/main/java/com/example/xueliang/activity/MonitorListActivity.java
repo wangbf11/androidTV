@@ -200,7 +200,7 @@ public class MonitorListActivity extends BaseMvpActivity<MonitorListPresenter> i
             }
         }
 
-        VideoManager.getInstance().onPause();//每次添加都站停一下视频
+        //VideoManager.getInstance().onPause();//每次添加都站停一下视频
         Map<String, Object> params = new HashMap<>();
         params.put("id", pointBean.getId());
         RetrofitManager.getDefault().getPointListByPointId(params)
@@ -222,6 +222,7 @@ public class MonitorListActivity extends BaseMvpActivity<MonitorListPresenter> i
                             if (mTv_one.isSelected()){
                                 gridList.clear();
                                 gridList.add(data);
+                                gridAdapter.notifyDataSetChanged();
                             }else {
                                 if (objects.size() <4){
                                     objects.add(data);
@@ -241,24 +242,28 @@ public class MonitorListActivity extends BaseMvpActivity<MonitorListPresenter> i
                                         }
                                     }
                                 }
-
+                                if(gridList.size() == 4){
+                                    gridAdapter.notifyItemChanged(3);
+                                }
 
                                 if(gridList.size() == 3){
                                     gridList.add(null);
+                                    gridAdapter.notifyItemChanged(2);
                                 }
 
                                 if(gridList.size() == 2){
                                     gridList.add(null);
                                     gridList.add(null);
+                                    gridAdapter.notifyItemChanged(1);
                                 }
 
                                 if(gridList.size() == 1){
                                     gridList.add(null);
                                     gridList.add(null);
                                     gridList.add(null);
+                                    gridAdapter.notifyDataSetChanged();
                                 }
                             }
-                            gridAdapter.notifyDataSetChanged();
                         } else {
                             Log.e("err", "err");
 
