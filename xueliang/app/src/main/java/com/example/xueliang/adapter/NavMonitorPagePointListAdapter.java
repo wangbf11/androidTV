@@ -35,7 +35,7 @@ public class NavMonitorPagePointListAdapter extends BaseQuickAdapter<NavMonitorP
     @Override
     public void onBindViewHolder(NavMovieHolder holder, int position) {
         PointBean pointBean = stringList.get(position);
-        holder.tv_point_name.setText(pointBean.getLocation());
+        holder.tv_point_name.setText(pointBean.getName());
         holder.pflContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
