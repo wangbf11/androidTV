@@ -237,8 +237,21 @@ public class MonitorListActivity extends BaseMvpActivity<MonitorListPresenter> i
                                         pointBean1.setRtmpSrc(data.getRtmpSrc());
                                         pointBean1.setRtspSrc(data.getRtspSrc());
                                         pointBean1.setEquipment_num(data.getEquipment_num());
-                                        if (gridTempList.size() == 4){
+                                        if(gridTempList.size() == 4){
                                             gridTempList.clear();
+                                            gridAdapter.notifyItemChanged(3);
+                                        }
+
+                                        if(gridTempList.size() == 3){
+                                            gridAdapter.notifyItemChanged(2);
+                                        }
+
+                                        if(gridTempList.size() == 2){
+                                            gridAdapter.notifyItemChanged(1);
+                                        }
+
+                                        if(gridTempList.size() == 1){
+                                            gridAdapter.notifyItemChanged(0);
                                         }
                                     }
                                 }
