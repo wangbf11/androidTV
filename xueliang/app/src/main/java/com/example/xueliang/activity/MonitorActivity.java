@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.LinearLayout;
@@ -52,6 +53,7 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
 
     @Override
     public void initData() {
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         mPointBean = (PointBean) getIntent().getSerializableExtra(POINT_BEAN);
     }
 

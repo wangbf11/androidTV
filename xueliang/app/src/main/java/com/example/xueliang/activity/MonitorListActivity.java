@@ -1,6 +1,9 @@
 package com.example.xueliang.activity;
 
+import android.annotation.SuppressLint;
+import android.os.PowerManager;
 import android.util.Log;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.example.xueliang.R;
@@ -40,6 +43,7 @@ public class MonitorListActivity extends BaseMvpActivity<MonitorListPresenter> i
     private FocusRecyclerView mRv_grid;
     private FocusRecyclerView mRv_list;
     private KProgressHUD mKProgressHUD;
+    private PowerManager.WakeLock mWakeLock;
 
     @Override
     public MonitorListPresenter setPresenter() {
@@ -51,9 +55,19 @@ public class MonitorListActivity extends BaseMvpActivity<MonitorListPresenter> i
         return R.layout.activity_monitor_list;
     }
 
+    @SuppressLint("InvalidWakeLockTag")
     @Override
     public void initData() {
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
+        if (powerManager != null) {
+            try {
+                mWakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK, "WakeLock");
+            }catch (Exception e){
+                e.printStackTrace();
+            }
 
+        }
     }
 
     @Override
@@ -73,9 +87,9 @@ public class MonitorListActivity extends BaseMvpActivity<MonitorListPresenter> i
         mRv_list.setAdapter(locationAdapter = new NavTownListAdapter(this, locationList));
 
 
-        GridLayoutManager focusGrid= new GridLayoutManager(getApplicationContext(), 1);
+        GridLayoutManager focusGrid = new GridLayoutManager(getApplicationContext(), 1);
         mRv_grid.setLayoutManager(focusGrid);
-        mRv_grid.setAdapter(gridAdapter = new NavGridMonitorAdapter(this, gridList,true));
+        mRv_grid.setAdapter(gridAdapter = new NavGridMonitorAdapter(this, gridList, true));
 
         mTv_one.setOnFocusChangeListener(new MyFocusChange());
         mTv_four.setOnFocusChangeListener(new MyFocusChange());
@@ -83,41 +97,41 @@ public class MonitorListActivity extends BaseMvpActivity<MonitorListPresenter> i
 
     @Override
     public void initListener() {
-        mTv_one.setOnClickListener(v->{
+        mTv_one.setOnClickListener(v -> {
             //切换1分屏幕
             PointBean pointBean = gridList.get(0);
             gridTempList.clear();
             gridList.clear();
             gridList.add(pointBean);
-            GridLayoutManager focusGrid= new GridLayoutManager(getApplicationContext(), 1);
+            GridLayoutManager focusGrid = new GridLayoutManager(getApplicationContext(), 1);
             mRv_grid.setLayoutManager(focusGrid);
-            mRv_grid.setAdapter(gridAdapter = new NavGridMonitorAdapter(this, gridList,true));
+            mRv_grid.setAdapter(gridAdapter = new NavGridMonitorAdapter(this, gridList, true));
             mTv_one.setSelected(true);
             mTv_four.setSelected(false);
         });
 
-        mTv_four.setOnClickListener(v->{
+        mTv_four.setOnClickListener(v -> {
             //切换四分屏
             mTv_four.setSelected(true);
             mTv_one.setSelected(false);
 
-            if(gridList.size() == 3){
+            if (gridList.size() == 3) {
                 gridList.add(null);
             }
 
-            if(gridList.size() == 2){
+            if (gridList.size() == 2) {
                 gridList.add(null);
                 gridList.add(null);
             }
 
-            if(gridList.size() == 1){
+            if (gridList.size() == 1) {
                 gridList.add(null);
                 gridList.add(null);
                 gridList.add(null);
             }
-            GridLayoutManager focusGrid= new GridLayoutManager(getApplicationContext(), 2);
+            GridLayoutManager focusGrid = new GridLayoutManager(getApplicationContext(), 2);
             mRv_grid.setLayoutManager(focusGrid);
-            mRv_grid.setAdapter(gridAdapter = new NavGridMonitorAdapter(this, gridList,false));
+            mRv_grid.setAdapter(gridAdapter = new NavGridMonitorAdapter(this, gridList, false));
         });
     }
 
@@ -152,7 +166,7 @@ public class MonitorListActivity extends BaseMvpActivity<MonitorListPresenter> i
                                 gridList.clear();
                                 gridList.add(point);
                                 gridAdapter.notifyDataSetChanged();
-                            }else{
+                            } else {
                                 String msg = point.getMsg();
                                 if (StringUtils.isNotEmpty(msg)) {
                                     ToastUtils.show(msg);
@@ -165,7 +179,7 @@ public class MonitorListActivity extends BaseMvpActivity<MonitorListPresenter> i
                                 gridList.clear();
                                 gridList.add(pointBean);
                                 gridAdapter.notifyDataSetChanged();
-                            }else{
+                            } else {
                                 String msg = point.getMsg();
                                 if (StringUtils.isNotEmpty(msg)) {
                                     ToastUtils.show(msg);
@@ -190,11 +204,11 @@ public class MonitorListActivity extends BaseMvpActivity<MonitorListPresenter> i
 
     public void onPointItemChildClick(PointBean pointBean) {
         List<PointBean> objects = new ArrayList<>();
-        for (PointBean item :gridList){
-            if (item != null){
+        for (PointBean item : gridList) {
+            if (item != null) {
                 objects.add(item);
             }
-            if (item != null && pointBean.getId().equals(item.getId())){
+            if (item != null && pointBean.getId().equals(item.getId())) {
                 ToastUtils.show("你已经添加了这个点位");
                 return;
             }
@@ -219,59 +233,59 @@ public class MonitorListActivity extends BaseMvpActivity<MonitorListPresenter> i
                             }
                             data.setId(pointBean.getId());
                             //默认第一个点作为监控点
-                            if (mTv_one.isSelected()){
+                            if (mTv_one.isSelected()) {
                                 gridList.clear();
                                 gridList.add(data);
                                 gridAdapter.notifyDataSetChanged();
-                            }else {
-                                if (objects.size() <4){
+                            } else {
+                                if (objects.size() < 4) {
                                     objects.add(data);
                                     gridList.clear();
                                     gridList.addAll(objects);
-                                    if(gridList.size() == 4){
+                                    if (gridList.size() == 4) {
                                         gridAdapter.notifyItemChanged(3);
                                     }
 
-                                    if(gridList.size() == 3){
+                                    if (gridList.size() == 3) {
                                         gridList.add(null);
                                         gridAdapter.notifyItemChanged(2);
                                     }
 
-                                    if(gridList.size() == 2){
+                                    if (gridList.size() == 2) {
                                         gridList.add(null);
                                         gridList.add(null);
                                         gridAdapter.notifyItemChanged(1);
                                     }
 
-                                    if(gridList.size() == 1){
+                                    if (gridList.size() == 1) {
                                         gridList.add(null);
                                         gridList.add(null);
                                         gridList.add(null);
                                         gridAdapter.notifyDataSetChanged();
                                     }
-                                }else {
+                                } else {
                                     //重第一个 开始重新 覆盖
-                                    if (gridTempList.size() <4){
+                                    if (gridTempList.size() < 4) {
                                         gridTempList.add(data);
-                                        PointBean pointBean1 = gridList.get(gridTempList.size()-1);
+                                        PointBean pointBean1 = gridList.get(gridTempList.size() - 1);
                                         pointBean1.setId(data.getId());
                                         pointBean1.setRtmpSrc(data.getRtmpSrc());
                                         pointBean1.setRtspSrc(data.getRtspSrc());
                                         pointBean1.setEquipment_num(data.getEquipment_num());
-                                        if(gridTempList.size() == 4){
+                                        if (gridTempList.size() == 4) {
                                             gridTempList.clear();
                                             gridAdapter.notifyItemChanged(3);
                                         }
 
-                                        if(gridTempList.size() == 3){
+                                        if (gridTempList.size() == 3) {
                                             gridAdapter.notifyItemChanged(2);
                                         }
 
-                                        if(gridTempList.size() == 2){
+                                        if (gridTempList.size() == 2) {
                                             gridAdapter.notifyItemChanged(1);
                                         }
 
-                                        if(gridTempList.size() == 1){
+                                        if (gridTempList.size() == 1) {
                                             gridAdapter.notifyItemChanged(0);
                                         }
                                     }
@@ -294,12 +308,27 @@ public class MonitorListActivity extends BaseMvpActivity<MonitorListPresenter> i
     @Override
     protected void onPause() {
         super.onPause();
+        if (mWakeLock != null) {
+            try {
+                mWakeLock.release();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         VideoManager.getInstance().onPause();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        if (mWakeLock != null) {
+            try {
+                mWakeLock.acquire();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
         VideoManager.getInstance().onResume();
     }
 }
