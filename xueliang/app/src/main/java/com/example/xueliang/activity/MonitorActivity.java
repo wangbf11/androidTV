@@ -2,6 +2,7 @@ package com.example.xueliang.activity;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -14,15 +15,22 @@ import com.example.xueliang.R;
 import com.example.xueliang.base.LoadCallBack;
 import com.example.xueliang.bean.PointBean;
 import com.example.xueliang.bean.TownBean;
+import com.example.xueliang.network.ResponceSubscriber2;
+import com.example.xueliang.network.RetrofitManager;
+import com.example.xueliang.network.RxSchedulerUtils;
 import com.example.xueliang.presenter.MonitorPresenter;
 import com.example.xueliang.utils.DialogUtil;
 import com.example.xueliang.utils.PointUtils;
+import com.example.xueliang.utils.ProgressHUD;
 import com.example.xueliang.utils.StringUtils;
 import com.example.xueliang.utils.ToastUtils;
 import com.example.xueliang.view.MonitorPickerDialog;
 import com.example.xueliang.view.listener.OnPickListener;
+import com.kaopiz.kprogresshud.KProgressHUD;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.widget.IjkVideoView;
@@ -40,6 +48,7 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
     private IjkVideoView mVvPlayer;
     private MonitorPickerDialog mCountryPickerDialog;
     private Dialog mExceptionDialog;
+    private KProgressHUD mKProgressHUD;
 
     @Override
     public MonitorPresenter setPresenter() {
@@ -75,6 +84,9 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
 
             @Override
             public void onPrepared(IMediaPlayer iMediaPlayer) {
+                if(null != mKProgressHUD){
+                    mKProgressHUD.dismiss();
+                }
                 mVvPlayer.start();
             }
         });
@@ -93,14 +105,7 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
             @Override
             public void onPick(int position, PointBean data, Dialog dialog) {
                 mPointBean = data;
-                updateUI();
-                String url = PointUtils.getPlayerUrl(mPointBean);
-                String videoPath = mVvPlayer.getVideoPath();
-                if (!url.equals(videoPath)){
-                    mVvPlayer.stopPlayback();
-                    mVvPlayer.setVideoPath(url);
-                    mVvPlayer.start();
-                }
+                onClickChange();
                 dialog.dismiss();
             }
 
@@ -130,6 +135,38 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
                 }
             }
         }, false);
+
+    }
+
+    public void onClickChange() {
+        mKProgressHUD = ProgressHUD.show(this);
+        Map<String, Object> params = new HashMap<>();
+        params.put("id", mPointBean.getId());
+        RetrofitManager.getDefault().getPointListByPointId(params)
+                .compose(RxSchedulerUtils::toSimpleSingle)
+                .subscribe(new ResponceSubscriber2<PointBean>() {
+                    @Override
+                    protected void onSucess(PointBean point) {
+                        mPointBean.setRtmpSrc(point.getRtmpSrc());
+                        mPointBean.setRtspSrc(point.getRtspSrc());
+                        mPointBean.setEquipment_num(point.getEquipment_num());
+                        String url = PointUtils.getPlayerUrl(mPointBean);
+                        String videoPath = mVvPlayer.getVideoPath();
+                        if (!url.equals(videoPath)){
+                            mVvPlayer.stopPlayback();
+                            mVvPlayer.setVideoPath(url);
+                            mVvPlayer.start();
+                        }
+                        updateUI();
+                    }
+
+                    @Override
+                    protected void onFail(String err) {
+                        mKProgressHUD.dismiss();
+                        Log.e("err", "err");
+                        ToastUtils.show("切换视频失败");
+                    }
+                });
 
     }
 
@@ -198,7 +235,11 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
 
                 break;
             case KeyEvent.KEYCODE_BACK:    //返回键
-
+                if (event.getAction() == KeyEvent.ACTION_DOWN && !mCountryPickerDialog.isShowing() &&!mExceptionDialog.isShowing()) {
+                    //打开左边位置选中栏目
+                    mCountryPickerDialog.show();
+                    return true;
+                }
                 break;
             case KeyEvent.KEYCODE_SETTINGS: //设置键
 
