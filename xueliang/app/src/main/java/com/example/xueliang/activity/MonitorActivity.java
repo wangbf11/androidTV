@@ -235,11 +235,6 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
 
                 break;
             case KeyEvent.KEYCODE_BACK:    //返回键
-                if (event.getAction() == KeyEvent.ACTION_DOWN && !mCountryPickerDialog.isShowing() &&!mExceptionDialog.isShowing()) {
-                    //打开左边位置选中栏目
-                    mCountryPickerDialog.show();
-                    return true;
-                }
                 break;
             case KeyEvent.KEYCODE_SETTINGS: //设置键
 
