@@ -95,6 +95,8 @@ public class MonitorActivity extends BaseMvpActivity<MonitorPresenter> implement
         mVvPlayer.setOnErrorListener((mp, what, extra) -> {
             // 缓存有问题 先删除 缓存
             mVvPlayer.stopPlayback();
+            mVvPlayer.resume();
+            mVvPlayer.start();//重新连接
             return true;
         });
 

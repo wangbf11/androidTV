@@ -131,6 +131,8 @@ public class NavGridMonitorAdapter extends RecyclerView.Adapter<NavGridMonitorAd
                     // 缓存有问题 先删除 缓存
                     Log.e("vvPlayerOnError:",what +" ");
                     vvPlayer.stopPlayback();
+                    vvPlayer.resume();
+                    vvPlayer.start();//重新连接
                     return true;
                 });
             }
