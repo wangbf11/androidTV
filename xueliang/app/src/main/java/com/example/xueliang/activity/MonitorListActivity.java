@@ -99,6 +99,7 @@ public class MonitorListActivity extends BaseMvpActivity<MonitorListPresenter> i
     public void initListener() {
         mTv_one.setOnClickListener(v -> {
             //切换1分屏幕
+            VideoManager.getInstance().onPause();
             PointBean pointBean = gridList.get(0);
             gridTempList.clear();
             gridList.clear();
